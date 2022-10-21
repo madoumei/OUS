@@ -1,0 +1,418 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.dao.ResidentVisitorDao">
+    <sql id="select_clause">
+		a.pid,
+		a.userid,
+		a.pName,
+		a.createTime,
+		a.remark,
+		a.account
+    </sql>
+    
+    <sql id="select_clause2">
+		CONCAT('C',a.`rid`) AS rid,
+		a.pid,
+		a.userid,
+		a.company,
+		a.name,
+		a.avatar,
+		a.age,
+		a.sex,
+		a.pName,
+		a.leader,
+		a.phone,
+		a.area,
+		a.startDate,
+		a.endDate,
+		a.remark,
+		a.job,
+		a.department,
+		a.face,
+		a.cardid,
+		a.rstatus,
+		a.refuseCause,
+		a.approver,
+		a.egids,
+		a.account,
+		a.plateNum
+    </sql>
+    
+    <sql id="select_clause3">
+		a.rid,
+		a.name,
+		a.avatar,
+		a.startDate,
+		a.endDate,
+		a.face
+    </sql>    
+   
+    
+    <insert id="addProject"  keyProperty="pid" parameterType="ResidentProject">
+		INSERT INTO qcv_resident_project (
+			userid,
+		    pName,
+		    createTime,
+			remark,
+			account
+		) VALUES (
+			#{userid,jdbcType=INTEGER},
+			#{pName,jdbcType=VARCHAR},
+			Now(),
+			#{remark,jdbcType=VARCHAR},
+			#{account,jdbcType=VARCHAR}
+		)
+    </insert>
+    
+    <insert id="updateProject" parameterType="ResidentProject">
+        UPDATE qcv_resident_project SET   
+			pName=#{pName},
+			remark=#{remark},
+			account=#{account}
+          WHERE pid = #{pid} and userid = #{userid}
+      </insert>
+    
+	 <select id="getProject" resultType="ResidentProject">
+        SELECT
+           a.*,COUNT(r.`pid`) AS pcount 
+        FROM
+            qcv_resident_project  a LEFT JOIN `qcv_resident_visitor` r  ON a.`pid`=r.`pid` 
+             WHERE  a.userid = #{userid} 
+             <if test='account != null and account != "" and  account != "null"'>
+				and a.account  like "%"#{account}"%"
+			</if>
+			 <if test='pid != 0'>
+				 and a.pid=#{pid}
+			 </if>
+               GROUP BY a.pid ORDER BY a.pid DESC
+      </select>
+      
+      <select id="getProjectByName" parameterType="ResidentProject" resultType="ResidentProject">
+        SELECT
+          <include refid="select_clause"/>
+        FROM
+            qcv_resident_project a where a.pName=#{pName} and a.userid = #{userid}
+      </select>
+      
+     <delete id="delProject" parameterType="ResidentProject">
+        DELETE FROM qcv_resident_project WHERE pid=#{pid}  and  userid = #{userid}
+     </delete>  
+     
+      <insert id="addResidentVisitor"   parameterType="ResidentVisitor">
+		INSERT INTO qcv_resident_visitor (
+		    rid,
+			pid,
+			userid,
+			company,
+			name,
+			avatar,
+			age,
+			sex,
+			pName,
+			leader,
+			phone,
+			area,
+			startDate,
+			endDate,
+			remark,
+			job,
+			department,
+			cardid,
+			egids,
+			account,
+			plateNum
+		) VALUES (
+			#{rid,jdbcType=VARCHAR},
+			#{pid,jdbcType=INTEGER},
+			#{userid,jdbcType=INTEGER},
+			#{company,jdbcType=VARCHAR},
+			#{name,jdbcType=VARCHAR},
+			#{avatar,jdbcType=VARCHAR},
+			#{age,jdbcType=VARCHAR},
+			#{sex,jdbcType=VARCHAR},
+			#{pName,jdbcType=VARCHAR},
+			#{leader,jdbcType=VARCHAR},
+			#{phone,jdbcType=VARCHAR},
+			#{area,jdbcType=VARCHAR},
+			#{startDate,jdbcType=VARCHAR},
+			#{endDate,jdbcType=VARCHAR},
+			#{remark,jdbcType=VARCHAR},
+			#{job,jdbcType=VARCHAR},
+			#{department,jdbcType=VARCHAR},
+			#{cardid,jdbcType=VARCHAR},
+			#{egids,jdbcType=VARCHAR},
+			#{account,jdbcType=VARCHAR},
+			#{plateNum,jdbcType=VARCHAR}
+		)
+    </insert>
+    
+     <insert id="batchAddResidentVisitor"   parameterType="java.util.List">
+		INSERT INTO qcv_resident_visitor (
+		    rid,
+			pid,
+			userid,
+			company,
+			name,
+			avatar,
+			age,
+			sex,
+			pName,
+			leader,
+			phone,
+			area,
+			startDate,
+			endDate,
+			remark,
+			job,
+			department,
+			cardid,
+			account,
+			egids,
+		 	plateNum
+		) VALUES
+		<foreach collection="list" item="rvList" index="index"  separator="," > 
+	        (#{rvList.rid},#{rvList.pid},#{rvList.userid},#{rvList.company},#{rvList.name},#{rvList.avatar},
+	         #{rvList.age},#{rvList.sex},#{rvList.pName},#{rvList.leader},#{rvList.phone},#{rvList.area},#{rvList.startDate},
+	         #{rvList.endDate},#{rvList.remark},#{rvList.job},#{rvList.department},#{rvList.cardid},#{rvList.account},#{rvList.egids},#{rvList.plateNum})
+	    </foreach> 
+    </insert>
+     
+     
+      <update id="updateResidentVisitor" parameterType="ResidentVisitor">
+        UPDATE qcv_resident_visitor 
+		<set>   
+			<if test="pid != 0">
+				pid=#{pid,jdbcType=INTEGER},
+			</if>
+			<if test="company != null">
+				company=#{company,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null">
+				name=#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="avatar != null">
+				avatar=#{avatar,jdbcType=VARCHAR},
+			</if>	
+			<if test="age != null">
+				age=#{age,jdbcType=VARCHAR},
+			</if>
+			<if test="sex != null">
+				sex=#{sex,jdbcType=INTEGER},
+			</if>
+			<if test="pName != null">
+				pName=#{pName,jdbcType=VARCHAR},
+			</if>
+			<if test="leader != null">
+				leader=#{leader,jdbcType=VARCHAR},
+			</if>
+			<if test="phone != null">
+				phone=#{phone,jdbcType=VARCHAR},
+			</if>	
+			<if test="area != null">
+				area=#{area,jdbcType=VARCHAR},
+			</if>	
+			<if test="startDate != null">
+				startDate=#{startDate,jdbcType=VARCHAR},
+			</if>	
+			<if test="endDate != null">
+				endDate=#{endDate,jdbcType=VARCHAR},
+			</if>	
+			<if test="remark != null">
+				remark=#{remark,jdbcType=VARCHAR},
+			</if>	
+			<if test="job != null">
+				job=#{job,jdbcType=VARCHAR},
+			</if>
+			<if test="department != null">
+				department=#{department,jdbcType=VARCHAR},
+			</if>	
+			<if test="cardid != null">
+				cardid=#{cardid,jdbcType=VARCHAR},
+			</if>
+			<if test="egids != null">
+				egids=#{egids,jdbcType=VARCHAR},
+			</if>	
+			<if test="account != null">
+				account=#{account,jdbcType=VARCHAR},
+			</if>
+			<if test="plateNum != null">
+				plateNum=#{plateNum,jdbcType=VARCHAR},
+			</if>
+			</set>
+          WHERE rid = #{rid}
+      </update>
+      
+      <insert id="updateResidentFace" parameterType="ResidentVisitor">
+        UPDATE qcv_resident_visitor SET   
+			face=#{face} 
+          WHERE rid = #{rid} 
+      </insert>
+      
+        <update id="updateRvPermission" parameterType="ResidentVisitor">
+        UPDATE qcv_resident_visitor 
+		<set>   
+			rstatus=#{rstatus,jdbcType=INTEGER},
+			refuseCause=#{refuseCause,jdbcType=VARCHAR},
+			approver=#{approver,jdbcType=VARCHAR}
+      	</set>
+          WHERE rid = #{rid}
+      </update>
+      
+      
+       <insert id="batchUpdateRvAvatar" parameterType="java.util.List">
+	        <foreach collection="list" item="rvlist" index="index"  open="" close=""  separator=";">
+	                update qcv_resident_visitor 
+	                <set>
+	                	avatar= #{rvlist.avatar}  
+	                </set>
+	                where phone = #{rvlist.phone} and userid=#{rvlist.userid}
+	         </foreach>
+       </insert>
+      
+       <select id="getResidentVisitor" resultType="ResidentVisitor">
+        SELECT
+           <include refid="select_clause2"/>
+        FROM
+            qcv_resident_visitor a where  a.userid=#{userid}
+<!--		   <if test='pid != 0'>-->
+<!--			   and a.pid=#{pid}-->
+<!--		   </if>-->
+		   <if test='plateNum != null and plateNum != "" and  plateNum != "null"'>
+			   and a.plateNum=#{plateNum}
+		   </if>
+            <if test='account != null and account != "" and  account != "null"'>
+				and a.account  like "%"#{account}"%"
+			</if>
+		   <if test='company != null and company != "" and  company != "null"'>
+			   and a.company  = #{company}
+		   </if>
+		   <if test='pName != null and pName != "" and  pName != "null"'>
+			   and a.pName  = #{pName}
+		   </if>
+            order by a.rid desc
+      </select>
+      
+       <select id="getResidentVisitorByRid" resultType="ResidentVisitor">
+        SELECT
+           <include refid="select_clause2"/>
+        FROM
+            qcv_resident_visitor a where a.rid=#{rid}
+             
+ 		   <if test='userid != "0"'>
+              and a.userid= #{userid} 
+           </if>
+      	</select>
+      	
+      	 <select id="getResidentVisitorByUserid" resultType="ResidentVisitor">
+        SELECT
+           <include refid="select_clause2"/>
+        FROM
+            qcv_resident_visitor a where a.userid= #{userid} 
+            
+             <if test='rstatus != "-1"'>
+              and a.rstatus= #{rstatus}   
+           </if>
+      	</select>
+      
+       <select id="getResidentVisitorByName" resultType="ResidentVisitor">
+        SELECT
+           <include refid="select_clause2"/>
+        FROM
+            qcv_resident_visitor a where a.name like "%"#{name}"%" and a.userid=#{userid}
+		   <if test='company != null and company != "" and  company != "null"'>
+			   and a.company  = #{company}
+		   </if>
+      </select>
+      
+       <select id="getResidentVisitorByPhone" resultType="ResidentVisitor">
+        SELECT
+           <include refid="select_clause2"/>
+        FROM
+            qcv_resident_visitor a where a.phone=#{phone} and a.userid=#{userid} limit 0,1
+      </select>
+      
+       <select id="getAllResidentCompany" resultType="ResidentVisitor">
+        SELECT
+          company,count(1) as pcount
+        FROM
+            qcv_resident_visitor where userid=#{userid} group by company order by company
+      </select>
+      
+       <select id="getResidentVisitorByCompany" resultType="ResidentVisitor">
+        SELECT
+          <include refid="select_clause2"/>
+        FROM
+            qcv_resident_visitor a where a.company=#{company} and a.userid=#{userid} order by a.rid desc
+      </select>
+      
+      <select id="getResidentVisitorByCardId" resultType="ResidentVisitor">
+        SELECT
+          <include refid="select_clause2"/>
+        FROM
+            qcv_resident_visitor a where a.cardid=#{cardid} and a.userid=#{userid}
+      </select>
+      
+      <select id="getRvReport" parameterType="RvReport" resultType="RvReport">
+      SELECT company,r.pName,COUNT(1) AS rCount,rDate FROM 
+         (SELECT * FROM (SELECT r.company,r.pid,DATE_FORMAT(openDate, '%Y-%m-%d') AS rDate,v.`mobile` 
+          FROM `qcv_resident_visitor` r LEFT JOIN `qcv_opendoor_info` v ON r.`cardId`=v.`mobile` 
+          WHERE DATE_FORMAT(v.openDate, '%Y-%m-%d') &gt;= #{startDate} and 
+           DATE_FORMAT(v.openDate, '%Y-%m-%d')  &lt;= #{endDate} AND direction='进门' and r.userid=#{userid} and v.userid=#{userid}
+             <if test='company != null and company != "" and  company != "null"'>
+              and r.company like "%"#{company}"%"
+             </if>
+            ) t
+           GROUP BY company,pid,rDate,mobile) s,qcv_resident_project r WHERE s.pid=r.`pid` 
+            <if test='pName != null and pName != "" and  pName != "null"'>
+              and pName like "%"#{pName}"%"
+             </if>
+           
+           GROUP BY s.company,s.pid,s.rDate order by rDate desc
+      </select>
+
+	<select id="getRvOpenInfo" parameterType="RvReport" resultType="RvReport">
+		SELECT s.*,r.`pName` FROM (SELECT leader,company,pid,NAME, mobile,
+		MIN(
+		CASE direction
+		WHEN '进门' THEN
+		openDate
+		END
+		) enterDoor,
+		MAX(
+		CASE direction
+		WHEN '出门' THEN
+		openDate
+		END
+		) outDoor
+		FROM (SELECT r.leader,r.company,r.pid,r.`name`,v.openDate,v.`mobile`,DATE_FORMAT(openDate, '%Y-%m-%d') AS oDate,v.`direction`
+		FROM `qcv_resident_visitor` r LEFT JOIN `qcv_opendoor_info` v ON r.`phone`=v.`mobile`
+		WHERE DATE_FORMAT(v.openDate, '%Y-%m-%d') &gt;= #{startDate} and  DATE_FORMAT(v.openDate, '%Y-%m-%d')  &lt;= #{endDate}
+		and v.userid=#{userid}
+		<if test='company != null and company != "" and  company != "null"'>
+			and r.company like "%"#{company}"%"
+		</if>
+
+		<if test='name != null and name != "" and  name != "null"'>
+			and r.name like "%"#{name}"%"
+		</if>
+		) t GROUP BY mobile,oDate ) s,qcv_resident_project r WHERE s.pid=r.`pid`
+
+		<if test='pName != null and pName != "" and  pName != "null"'>
+			and pName like "%"#{pName}"%"
+		</if>
+
+		order by enterDoor desc
+
+	</select>
+      
+      <delete id="delRVisitorByPid" parameterType="ResidentVisitor">
+        DELETE FROM qcv_resident_visitor WHERE pid=#{pid}  and userid=#{userid}
+      </delete>  
+      
+      <delete id="delResidentVisitor">
+        DELETE FROM qcv_resident_visitor WHERE userid=#{userid} and rid in 
+         <foreach collection="rids" index="index" item="rids" open="(" separator="," close=")">     
+       		 #{rids}     
+         </foreach> 
+     </delete>
+    
+</mapper>

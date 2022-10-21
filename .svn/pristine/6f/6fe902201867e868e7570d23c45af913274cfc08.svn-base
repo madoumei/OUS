@@ -1,0 +1,82 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.dao.TokenManageDao">
+    <sql id="select_clause">
+		a.id,
+		a.userid,
+		a.email,
+	 	a.token,
+		a.expireDate,
+		a.clientType,
+		a.uuid,
+		a.license
+    </sql>
+    
+    
+       <insert id="addToken" useGeneratedKeys="true" keyProperty="id"  parameterType="TokenManage">
+		INSERT INTO qcv_token_manage (
+			userid,
+		    email,
+			token,
+			expireDate,
+			clientType,
+			uuid,
+			license
+		) VALUES (
+			#{userid,jdbcType=INTEGER},
+			#{email,jdbcType=VARCHAR},
+			#{token,jdbcType=VARCHAR},
+			#{expireDate},
+			#{clientType,jdbcType=INTEGER},
+			#{uuid,jdbcType=VARCHAR},
+			#{license,jdbcType=VARCHAR}
+		)
+    </insert>
+   
+      
+      <select id="getToken"  parameterType="java.util.Map" resultType="TokenManage">
+        SELECT 
+         <include refid="select_clause"/>
+        FROM  
+        	qcv_token_manage a where a.userid=#{userid} and a.clientType=#{clientType} 
+        	
+        	<if test='token != null and token != "" and  token != "null"'>
+               and a.token= #{token}
+            </if>
+      </select>
+      
+      <select id="getClient"  parameterType="java.util.Map" resultType="TokenManage">
+        SELECT 
+         <include refid="select_clause"/>
+        FROM  
+        	qcv_token_manage a where a.userid=#{userid} and a.clientType=#{clientType} and a.uuid= #{uuid}
+      </select>
+      
+       <select id="getClients"   resultType="TokenManage">
+        SELECT 
+         <include refid="select_clause"/>
+        FROM  
+        	qcv_token_manage a where a.userid=#{userid} 
+      </select>
+      
+      
+       <select id="checkToken"   resultType="TokenManage">
+        SELECT 
+         <include refid="select_clause"/>
+        FROM  
+        	qcv_token_manage a where a.userid=#{userid} and a.authToken= #{token}
+      </select>
+      
+	    <insert id="updateTokenManage" parameterType="TokenManage">
+	       UPDATE qcv_token_manage SET
+				token=#{token,jdbcType=VARCHAR},
+	       		expireDate=#{expireDate},
+	       		license=#{license}
+	         WHERE id = #{id}
+	    </insert>
+      
+     <delete id="delTokenManage" parameterType="Integer">
+        DELETE FROM qcv_token_manage WHERE id = #{id}
+     </delete>
+      
+      
+</mapper>

@@ -1,0 +1,263 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.dao.SubAccountDao">
+    <sql id="select_clause">
+	  a.id,
+	  a.userid,
+	  a.email,
+	  a.phone,
+	  a.logo,
+	  a.companyName,
+	  a.floor,
+	  a.roomNumber,
+	  a.refreshDate,
+	  a.balance,
+	  a.egids,
+	  a.sType,
+	  a.gids,
+	  a.vaPerm,
+	  a.adminType,
+	  a.subAccountiId,
+	  a.isUse,
+	  a.vegids,
+	  a.companyProfile,
+	  a.meetingPoint
+    </sql>
+    
+    <sql id="select_clause2">
+	  a.id,
+	  a.userid,
+	  a.email,
+	  a.password,
+	  a.phone,
+	  a.logo,
+	  a.companyName,
+	  a.floor,
+	  a.roomNumber,
+	  a.refreshDate,
+	  a.balance,
+	  a.egids,
+	  a.sType,
+	  a.gids,
+	  a.vaPerm,
+	  a.adminType,
+	  a.subAccountiId,
+	  a.isUse,
+	  a.vegids,
+	  a.companyProfile,
+	  a.meetingPoint
+    </sql>
+    
+    <select id="getSubAccountByEmail"  resultType="SubAccount">
+        SELECT
+           <include refid="select_clause2"/>
+        FROM
+            qcv_sub_account a where a.email=#{email} 
+     </select>
+     
+     <select id="getAllSubAccountEmail"  resultType="SubAccount">
+           SELECT a.id,a.email FROM qcv_sub_account a
+     </select>
+    
+     <select id="getSubAccountByUserid"  parameterType="ReqSubAccount"  resultType="SubAccount">
+        SELECT
+           <include refid="select_clause"/>,fristPinyin(companyName) as cname
+        FROM
+            qcv_sub_account a where a.userid=#{userid} 
+             <if test='isUse == "0"'>
+	            and a.isUse=1 
+	         </if>
+			 <if test='gids != null and gids != "" and  gids != "null"'>
+				 and CONCAT(',',a.gids, ',') REGEXP concat(',(',replace(#{gids},',','|'),'),')>0
+			 </if>
+              ORDER BY cname,CONVERT(companyName USING gbk)  ASC 
+      </select>
+      
+      <select id="getSubAccountById"  resultType="SubAccount">
+        SELECT
+            <include refid="select_clause"/>
+        FROM
+            qcv_sub_account a where  a.id=#{id}
+      </select>
+      
+      <select id="getSubAccountPassword"  resultType="SubAccount">
+        SELECT
+            <include refid="select_clause2"/>
+        FROM
+            qcv_sub_account a where  a.id=#{id}
+      </select>
+      
+      <select id="getSubAccountByCompany"  resultType="SubAccount">
+        SELECT
+            <include refid="select_clause"/>
+        FROM
+            qcv_sub_account a where  a.companyName=#{companyName}
+      </select>
+      
+      <select id="CheckSubAccountByCompany"  resultType="SubAccount">
+        SELECT u.company,u.userid FROM qcv_users u where u.company=#{companyName}
+		UNION ALL
+		SELECT s.companyName,s.userid FROM qcv_sub_account s where s.companyName=#{companyName}
+      </select>
+      
+       <select id="getAllCompanybySA"  resultType="CompanyInfo">
+        SELECT company,userid,"0" AS sid,"u" AS ctype FROM qcv_users
+		UNION ALL
+		SELECT s.companyName,s.userid,s.id as sid,"s" AS ctype FROM qcv_sub_account s ,qcv_users u WHERE s.userid=u.userid and s.isUse=1 AND u.subAccount=1 
+      </select>
+      
+      <select id="getAllCompany"  resultType="CompanyInfo">
+        SELECT a.company,a.userid FROM qcv_users a
+		UNION ALL
+		SELECT s.companyName,s.userid FROM qcv_sub_account s where s.isUse=1
+      </select>
+      
+    
+     <insert id="addSubAccount" useGeneratedKeys="true" keyProperty="id" parameterType="SubAccount">
+		INSERT INTO qcv_sub_account (
+		    userid,
+		    email,
+		    phone,
+		    logo,
+		    companyName,
+		    floor,
+	 		roomNumber,
+	 		balance,
+	 		egids,
+	  		gids,
+	  		vaPerm,
+	  		adminType,
+	  		subAccountiId,
+	  		vegids,
+	  		companyProfile,
+	  		meetingPoint
+		) VALUES (
+			#{userid,jdbcType=INTEGER},
+			#{email,jdbcType=VARCHAR},
+			#{phone,jdbcType=VARCHAR},
+			#{logo,jdbcType=VARCHAR},
+			#{companyName,jdbcType=VARCHAR},
+			#{floor,jdbcType=VARCHAR},
+			#{roomNumber,jdbcType=VARCHAR},
+			#{balance,jdbcType=DECIMAL},
+			#{egids,jdbcType=VARCHAR},
+			#{gids,jdbcType=VARCHAR},
+			#{vaPerm,jdbcType=INTEGER},
+			#{adminType,jdbcType=INTEGER},
+			#{subAccountiId,jdbcType=INTEGER},
+			#{vegids,jdbcType=VARCHAR},
+			#{companyProfile,jdbcType=VARCHAR},
+			#{meetingPoint,jdbcType=VARCHAR}
+		)
+    </insert>
+    
+      <insert id="batchAddSubAccount"  useGeneratedKeys="true" keyProperty="id"  parameterType="java.util.List">
+		INSERT INTO qcv_sub_account (
+		    userid,
+		    email,
+		    phone,
+		    companyName,
+		    floor,
+	 		roomNumber,
+	 		balance,
+	  		gids,
+	  		egids,
+	  		vaPerm,
+		  	adminType,
+		  	vegids,
+		    companyProfile,
+		    meetingPoint
+		) VALUES
+		<foreach collection="list" item="salist" index="index"  separator="," > 
+	        (#{salist.userid},#{salist.email},#{salist.phone},#{salist.companyName},
+	        #{salist.floor},#{salist.roomNumber},#{salist.balance},#{salist.gids},
+	        #{salist.egids},#{salist.vaPerm},#{salist.adminType},#{salist.vegids},
+	        #{salist.companyProfile,jdbcType=VARCHAR},#{salist.meetingPoint,jdbcType=VARCHAR})
+	    </foreach> 
+    </insert>
+    
+     <insert id="updateSubAccount" parameterType="SubAccount">
+       UPDATE qcv_sub_account SET  
+       		logo = #{logo,jdbcType=VARCHAR},
+       		email = #{email,jdbcType=VARCHAR},
+       		phone = #{phone,jdbcType=VARCHAR},
+       		companyName= #{companyName,jdbcType=VARCHAR},
+       		floor=#{floor,jdbcType=VARCHAR},
+			roomNumber=#{roomNumber,jdbcType=VARCHAR},
+			balance= #{balance,jdbcType=DECIMAL},
+			egids=#{egids,jdbcType=VARCHAR},
+			gids=#{gids,jdbcType=VARCHAR},
+			vaPerm=#{vaPerm,jdbcType=INTEGER},
+			adminType=#{adminType,jdbcType=INTEGER},
+			subAccountiId=#{subAccountiId,jdbcType=INTEGER},
+			vegids = #{vegids,jdbcType=VARCHAR},
+			companyProfile = #{companyProfile,jdbcType=VARCHAR},
+			meetingPoint = #{meetingPoint,jdbcType=VARCHAR}
+         WHERE id = #{id}
+    </insert>
+    
+    <insert id="updateSubAccountPwd" parameterType="SubAccount">
+       UPDATE qcv_sub_account SET  
+			password=#{password,jdbcType=VARCHAR}
+         WHERE id = #{id}
+    </insert>
+    
+     <insert id="updateSARefreshDate" parameterType="SubAccount">
+       UPDATE qcv_sub_account SET  
+       		refreshDate= #{refreshDate}
+         WHERE id = #{id}
+     </insert>
+     
+     <insert id="updateSABalance" parameterType="SubAccount">
+       UPDATE qcv_sub_account SET  
+       		balance= #{balance,jdbcType=DECIMAL}
+         WHERE id = #{id}
+     </insert>
+     
+     <insert id="updateSType" parameterType="SubAccount">
+       UPDATE qcv_sub_account SET  
+       		sType= #{sType}
+         WHERE id = #{id} and userid=#{userid} 
+     </insert>
+     
+      <insert id="updateIsUse" parameterType="SubAccount">
+       UPDATE qcv_sub_account SET  
+       		 isUse=#{isUse}
+         WHERE id = #{id} and userid=#{userid} 
+     </insert>
+    
+       <delete id="delSubAccount" parameterType="SubAccount">
+        DELETE FROM qcv_sub_account WHERE id = #{id} 
+      </delete>
+      
+      <delete id="batchDelSubAccount" parameterType="ReqSubAccount">
+        DELETE FROM qcv_sub_account WHERE id in ($ids) and userid=#{userid} 
+      </delete>
+
+	<select id="getSubAccountByUseridPage" parameterType="ReqSubAccount" resultType="SubAccount">
+		SELECT
+		<include refid="select_clause"/>,fristPinyin(companyName) as cname
+		FROM
+		qcv_sub_account a where a.userid=#{userid} 
+		<if test='companyName != null and companyName != "" and  companyName != "null"'>
+               and a.companyName like "%"#{companyName}"%"   
+         </if>    
+         
+         <if test='gids != null and gids != "" and  gids != "null"'>
+			 and CONCAT(',',a.gids, ',') REGEXP concat(',(',replace(#{gids},',','|'),'),')>0
+         </if>
+         
+         <if test='isUse == "0"'>
+            and  a.isUse=1
+         </if>
+         
+         
+		  ORDER BY cname,CONVERT(companyName USING gbk)  ASC
+	</select>
+
+	<update id="batchUpdateSubAccountLogo" parameterType="java.util.List">
+		<foreach collection="list" item="sblist" index="index"  open="" close=""  separator=";">
+			update qcv_sub_account set logo = #{sblist.logo} where companyName = #{sblist.companyName} and userid = #{sblist.userid}
+		</foreach>
+	</update>
+	
+</mapper>

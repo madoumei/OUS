@@ -1,0 +1,66 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.client.dao.RenewsDao">
+    <sql id="select_clause">
+		a.rid,
+		a.nid,
+		a.empid,
+		a.empPhone,
+		a.content,
+		a.rdate,
+		a.status,
+		p.pcompany,
+		p.nickname,
+		p.pname,
+		p.avatar
+    </sql>
+    
+    
+       <insert id="addRenews" useGeneratedKeys="true" keyProperty="rid"  parameterType="Renews">
+		INSERT INTO qcv_renews (
+			nid,
+			empid,
+			empPhone,
+			content,
+			rdate
+		) VALUES (
+			#{nid,jdbcType=INTEGER},
+			#{empid,jdbcType=INTEGER},
+			#{empPhone,jdbcType=VARCHAR},
+			#{content,jdbcType=VARCHAR},
+			#{rdate}
+		)
+    </insert>
+    
+     <select id="getRenews"  resultType="Renews">
+        SELECT 
+         <include refid="select_clause"/>
+        FROM  
+        	qcv_renews a  ,qcv_visit_personal p where a.empPhone=p.pmobile
+      </select>
+      
+      <select id="getRenewsByNid" parameterType="Renews" resultType="Renews">
+        SELECT 
+         <include refid="select_clause"/>
+        FROM  
+        	qcv_renews a ,qcv_visit_personal p where a.empPhone=p.pmobile and a.nid=#{nid} order by rid asc
+      </select>
+      
+      <select id="getRenewsByPhone" parameterType="Renews"  resultType="Renews">
+        SELECT 
+         <include refid="select_clause"/>
+        FROM  
+        	qcv_renews a ,qcv_visit_personal p where a.empPhone=p.pmobile and a.empPhone=#{empPhone} and status=1 order by rid desc
+      </select>
+      
+      <insert id="updateRenewsStatus"  parameterType="Renews">
+        update qcv_renews set 
+          status=#{status}
+           where rid = #{rid}
+      </insert>
+      
+     <delete id="delRenews" parameterType="Integer">
+        DELETE FROM qcv_renews WHERE rid = #{rid}
+     </delete>
+      
+      
+</mapper>

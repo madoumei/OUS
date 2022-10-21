@@ -1,0 +1,135 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.client.dao.EqptMonitorDao">
+    <sql id="select_clause">
+		a.uid,
+		a.userid,
+		a.deviceName,
+		a.devicePlace,
+		a.eType,
+		a.lastOnline,
+		a.ipAdd,
+		a.extendInfo,
+		a.sysVer,
+		a.appVer,
+		a.logDate
+    </sql>
+    
+    
+       <insert id="addEqptMonitor" keyProperty="uid"  parameterType="EqptMonitor">
+		INSERT INTO qcv_eqpt_monitor (
+			uid,
+			userid,
+			deviceName,
+			devicePlace,
+			eType,
+			lastOnline,
+			ipAdd,
+			extendInfo,
+			sysVer,
+			appVer
+		) VALUES (
+			#{uid,jdbcType=VARCHAR},
+			#{userid,jdbcType=INTEGER},
+			#{deviceName,jdbcType=VARCHAR},
+			#{devicePlace,jdbcType=VARCHAR},
+			#{eType,jdbcType=INTEGER},
+			Now(),
+			#{ipAdd,jdbcType=VARCHAR},
+			#{extendInfo,jdbcType=VARCHAR},
+			#{sysVer,jdbcType=VARCHAR},
+			#{appVer,jdbcType=VARCHAR}
+		)
+    </insert>
+    
+      <select id="getEqptMonitor"  parameterType="ReqEM" resultType="EqptMonitor">
+        SELECT 
+         <include refid="select_clause"/>
+        FROM  
+        	qcv_eqpt_monitor a where a.userid= #{userid}
+        	<if test='deviceName != null and deviceName != "" and  deviceName != "null"'>
+              and a.deviceName like "%"#{deviceName}"%"
+             </if>
+             <if test='eType != null and eType != "" and  eType != "null"'>
+              and a.eType in (${eType})
+             </if>
+      </select>
+      
+      <update id="updateEqptMonitor"  parameterType="EqptMonitor">
+        update qcv_eqpt_monitor  
+		<set>
+			<if test='deviceName != null'>
+				deviceName=#{deviceName},
+			</if>
+			<if test='devicePlace != null'>
+				devicePlace=#{devicePlace},
+			</if>
+			<if test='ipAdd != null and ipAdd != "" and ipAdd !="null"'>
+				ipAdd=#{ipAdd},
+			</if>
+			<if test='extendInfo != null and extendInfo != "" and extendInfo !="null"'>
+				extendInfo=#{extendInfo},
+			</if>
+			<if test='appVer != null and appVer != "" and appVer !="null"'>
+				appVer=#{appVer},
+			</if>
+			<if test='sysVer != null and sysVer != "" and sysVer !="null"'>
+				sysVer=#{sysVer},
+			</if>
+		</set>
+           where uid = #{uid} and userid= #{userid}
+      </update>
+      
+      
+      <update id="updateHeartbeat" parameterType="String">
+           update qcv_eqpt_monitor 
+            <set>
+				lastOnline=Now()
+			</set>
+           where uid = #{uid}
+      </update>
+      
+       <update id="updateLogDate" parameterType="String">
+           update qcv_eqpt_monitor 
+            <set>
+				logDate=Now()
+			</set>
+           where uid = #{uid}
+      </update>
+      
+     <delete id="delEqptMonitor" parameterType="EqptMonitor">
+        DELETE FROM qcv_eqpt_monitor where uid = #{uid} and userid= #{userid}
+     </delete>
+
+	<insert id="addEqptMonitorErrorLog" parameterType="EqptMonitorLog">
+		INSERT INTO qcv_eqpt_monitor_log (
+			uid,
+			userid,
+			errorName,
+			errorInFo,
+			time
+		) VALUES (
+			#{uid,jdbcType=VARCHAR},
+			#{userid,jdbcType=INTEGER},
+			#{errorName,jdbcType=VARCHAR},
+			#{errorInFo,jdbcType=VARCHAR},
+			now()
+		)
+	</insert>
+
+	<select id="searchEqptMonitorErrorLogByCondition" parameterType="com.client.bean.ReqEqptMonitorLog" resultType="EqptMonitorLog">
+		select a.uid,a.userid,a.errorName,a.errorInFo,a.time
+		from qcv_eqpt_monitor_log a  where userid = #{userid}
+		<if test='uid != null and uid != "" and uid !="null"'>
+			and uid = #{uid}
+		</if>
+		<if test='startDate != null and startDate != "" and startDate !="null"'>
+			and DATE_FORMAT(time, '%Y-%m-%d') &gt;= #{startDate}
+		</if>
+		<if test='endDate != null and endDate != "" and endDate !="null"'>
+			and DATE_FORMAT(time, '%Y-%m-%d') &lt;= #{endDate}
+		</if>
+		order by time desc
+	</select>
+      
+      
+</mapper>

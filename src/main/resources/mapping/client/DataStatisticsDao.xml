@@ -1,0 +1,169 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.client.dao.DataStatisticsDao">
+    <sql id="select_clause">
+		a.userid,
+		a.weixin,
+		a.dingding,
+		a.rtx,
+		a.email,
+		a.ivr
+    </sql>
+    
+    
+       <insert id="addDataStatistics"  parameterType="DataStatistics">
+		INSERT INTO qcv_data_statistics (
+		    userid
+		) VALUES (
+			#{userid,jdbcType=INTEGER}
+		)
+    </insert>
+    
+     <select id="getDataStatisticsByUserid"  resultType="DataStatistics">
+        SELECT 
+         <include refid="select_clause"/>
+        FROM  
+        	qcv_data_statistics a where a.userid=#{userid}
+      </select>
+   
+      
+       <select id="getSumDataStatistics"  resultType="DataStatistics">
+        SELECT sum(weixin) as weixin,sum(dingding) as dingding,sum(rtx) as rtx,sum(email) as email,sum(ivr) as ivr
+         FROM  
+        	qcv_data_statistics a
+       </select>
+       
+        <select id="getSmsCount"  resultType="Integer">
+         SELECT SUM(smsCount+wxSmsCount+appSmsCount) as s FROM `qcv_user_extend`
+       </select>
+       
+       <select id="getEmpCount"  resultType="Integer">
+        SELECT count(1)  
+         FROM  
+        	qcv_employee
+       </select>
+       
+       <select id="getUserCount"  resultType="Integer">
+        SELECT count(1)  
+         FROM  
+        	qcv_users
+       </select>
+       
+        <select id="getCompanyCount"  resultType="Integer">
+         SELECT SUM(t) FROM 
+         (SELECT COUNT(1) AS t FROM `qcv_users` 
+           UNION ALL 
+           SELECT COUNT(1) AS t FROM`qcv_sub_account`) a
+       </select>
+       
+       <select id="getVisitorCount"  resultType="Integer">
+        SELECT SUM(t) FROM 
+         (SELECT COUNT(1) AS t FROM `qcv_appointment` 
+           UNION ALL 
+           SELECT COUNT(1) AS t FROM`qcv_visitor`) a
+       </select>
+       
+        <select id="getSevenDayVisitorCount"  resultType="Integer">
+        SELECT SUM(t) FROM (
+          SELECT COUNT(1) AS t FROM `qcv_appointment` 
+            where date_sub(curdate(), INTERVAL 7 DAY) &lt;= date(visitdate) 
+            UNION ALL 
+          SELECT COUNT(1) AS t FROM `qcv_visitor`
+            where date_sub(curdate(), INTERVAL 7 DAY) &lt;= date(visitdate) 
+           ) a
+       </select>
+       
+        <select id="getThirtyDayVisitorCount"  resultType="Integer">
+          SELECT SUM(t) FROM 
+         (SELECT COUNT(1) AS t FROM `qcv_appointment` 
+           where date_sub(curdate(), INTERVAL 30 DAY) &lt;= date(visitdate) 
+           UNION ALL 
+          SELECT COUNT(1) AS t FROM `qcv_visitor`
+            where date_sub(curdate(), INTERVAL 30 DAY) &lt;= date(visitdate) 
+            ) a
+       </select>
+      
+      <insert id="updateWeiXinData"  parameterType="Integer">
+        update  qcv_data_statistics set 
+          weixin=weixin+1 
+          where userid=#{userid} 
+      </insert>
+      
+      <insert id="updateDingDingData"  parameterType="Integer">
+        update  qcv_data_statistics set 
+          dingding=dingding+1 
+          where userid=#{userid} 
+      </insert>
+      
+      <insert id="updateRtxData"  parameterType="Integer">
+        update  qcv_data_statistics set 
+          rtx=rtx+1 
+          where userid=#{userid} 
+      </insert>
+      
+      <insert id="updateEmailData"  parameterType="Integer">
+        update  qcv_data_statistics set 
+          email=email+1 
+          where userid=#{userid} 
+      </insert>
+      
+      <insert id="updateIvrData"  parameterType="Integer">
+        update  qcv_data_statistics set 
+          ivr=ivr+1 
+          where userid=#{userid} 
+      </insert>
+      
+      
+       <select id="getDaysVisitorCount"  resultType="VisitStatistics">
+         SELECT DATE_FORMAT(t,'%Y-%m-%d') as days ,COUNT(t) as vcount FROM (
+          SELECT visitdate AS t FROM `qcv_appointment` 
+            WHERE   DATE_FORMAT(visitdate, '%Y-%m-%d')  &gt;= #{startDate} 
+             and DATE_FORMAT(visitdate, '%Y-%m-%d')  &lt;= #{endDate} 
+            UNION ALL 
+          SELECT visitdate AS t FROM `qcv_visitor`
+            WHERE DATE_FORMAT(visitdate, '%Y-%m-%d')  &gt;= #{startDate} and
+              DATE_FORMAT(visitdate, '%Y-%m-%d')  &lt;= #{endDate} ) a GROUP BY days
+       </select>
+       
+       
+       <select id="getSupAccVCount"  resultType="VisitStatistics">
+        SELECT DATE_FORMAT(t,'%Y-%m-%d') as days ,COUNT(t) as vcount FROM (
+          SELECT visitdate AS t FROM `qcv_appointment` 
+            WHERE   DATE_FORMAT(visitdate, '%Y-%m-%d')  &gt;= #{startDate} 
+             and DATE_FORMAT(visitdate, '%Y-%m-%d')  &lt;= #{endDate}  and userid in ${userids}
+            UNION ALL 
+          SELECT visitdate AS t FROM `qcv_visitor`
+            WHERE DATE_FORMAT(visitdate, '%Y-%m-%d')  &gt;= #{startDate} and
+              DATE_FORMAT(visitdate, '%Y-%m-%d')  &lt;= #{endDate}  and userid in ${userids} ) a GROUP BY days
+      </select>
+      
+       <select id="getSupAccVCountByUserid"  resultType="VisitStatistics">
+        SELECT DATE_FORMAT(t,'%Y-%m-%d') as days ,COUNT(t) as vcount FROM (
+          SELECT visitdate AS t FROM `qcv_appointment` 
+            WHERE   DATE_FORMAT(visitdate, '%Y-%m-%d')  &gt;= #{startDate} 
+             and DATE_FORMAT(visitdate, '%Y-%m-%d')  &lt;= #{endDate}  and userid = #{userid}
+            UNION ALL 
+          SELECT visitdate AS t FROM `qcv_visitor`
+            WHERE DATE_FORMAT(visitdate, '%Y-%m-%d')  &gt;= #{startDate} and
+              DATE_FORMAT(visitdate, '%Y-%m-%d')  &lt;= #{endDate}  and userid = #{userid} ) a GROUP BY days
+      </select>
+      
+       <select id="getAllSupAccVCount"  resultType="Integer">
+        SELECT COUNT(t) as vcount FROM (
+          SELECT visitdate AS t FROM `qcv_appointment` 
+            WHERE  userid in ${userids}
+            UNION ALL 
+          SELECT visitdate AS t FROM `qcv_visitor`
+            WHERE userid in ${userids} ) a 
+      </select>
+      
+      
+	 <select id="getAllSupAccVCountByUserid"  resultType="VisitStatistics">
+        SELECT userid,COUNT(t) as vcount FROM (
+          SELECT userid,visitdate AS t FROM `qcv_appointment` 
+            WHERE  userid in ${userids}
+            UNION ALL 
+          SELECT userid,visitdate AS t FROM `qcv_visitor`
+            WHERE  userid in ${userids} ) a  group by userid
+      </select>
+      
+</mapper>

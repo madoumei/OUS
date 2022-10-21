@@ -1,0 +1,139 @@
+spring:
+  application:
+    name: qcvisit
+  main:
+    allow-circular-references: true
+  mvc:
+    pathmatch:
+      matching-strategy: ANT_PATH_MATCHER
+
+  # 数据源配置
+  datasource:
+    default:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      jdbc-url: jdbc:mysql://192.168.1.123:57006/qcvisit?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&allowMultiQueries=true
+      username: root
+      password: rainbow345324
+    camunda:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      jdbc-url: jdbc:mysql://192.168.1.123:57006/camunda?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
+      username: root
+      password: rainbow345324
+    postgis:
+      driver-class-name: org.postgresql.Driver
+      jdbc-url: jdbc:postgresql://47.103.56.123:55432/postgres
+      username: postgres
+      password: giraffe
+
+  # redis缓存配置
+  redis:
+    host: 192.168.1.123
+    port: 57379
+    password: laifangtongcv
+    jedis:
+      pool:
+        max-active: 8
+        max-wait: -1
+        max-idle: 8
+        min-idle: 0
+        time-between-eviction-runs: 60000
+    connect-timeout: 30000
+    database: 15
+
+  # activeMQ消息配置
+  activemq:
+    broker-url: failover:(tcp://47.102.220.201:50016?wireFormat.maxInactivityDuration=0)?maxReconnectDelay=10000
+    pool:
+      max-connections: 5
+      max-sessions-per-connection: 200
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 100MB
+
+#  # 热部署配置
+#  devtools:
+#    restart:
+#      enabled: true
+#      additional-paths: src/main/java
+
+# 服务端
+server:
+  port: 8080
+  servlet:
+    encoding:
+      charset: UTF-8
+    context-path: /qcvisit
+
+
+
+# mybatis-plus 配置
+mybatis-plus:
+  mapper-locations: classpath:mapping/**/*.xml
+  type-aliases-package: com.web.bean;com.client.bean
+  config-location: classpath:mybatis-config.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+# Logger Config
+logging:
+  level:
+    com: debug
+
+# 项目的一些基础配置
+qcvisit:
+  baseUrl: https://dev.coolvisit.top/
+  # 开启接口Token认证
+  Authorization: true
+#  Authorization: false
+  version: V4.0.0
+  mariadb:
+    #    数据库字段是否需要加密，默认不加密
+    encrypt: false
+
+
+knife4j:
+  enable: true
+  documents:
+    -
+      group: 3.x.0版本
+      name: 另外文档分组请看这里
+      locations: classpath:markdown/*
+    -
+      group: 3.默认接口
+      name: 我是另外一个分组的文档
+      locations: classpath:markdown/*
+  setting:
+    language: zh-CN
+    enableSwaggerModels: true
+    enableDocumentManage: true
+    swaggerModelName: 实体类列表
+    enableVersion: true
+    enableReloadCacheParameter: false
+    enableAfterScript: true
+    enableFilterMultipartApiMethodType: POST
+    enableFilterMultipartApis: true
+    enableRequestCache: true
+    enableHost: false
+    enableHostText: 192.168.0.193:8000
+    enableHomeCustom: true
+    homeCustomLocation: classpath:markdown/home.md
+    enableSearch: false
+    enableFooter: true
+    enableFooterCustom: true
+    footerCustomContent: Apache License 2.0 | Copyright 南京访客乐网络科技有限公司
+    enableDynamicParameter: false
+    enableDebug: true
+    enableOpenApi: false
+    enableGroup: true
+  cors: false
+  #生产环境屏蔽
+  production: false
+  basic:
+    #打开登录
+    enable: false
+    username: coolvisit
+    password: 654321
+
+
+

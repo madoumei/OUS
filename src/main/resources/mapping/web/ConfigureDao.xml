@@ -1,0 +1,70 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.dao.ConfigureDao">
+    <sql id="select_clause">
+	  a.id,
+	  a.userid,
+	  a.desc,
+	  a.name,
+	  a.value,
+	  a.status
+    </sql>
+    
+    <sql id="select_clause2">
+	  a.id,
+	  a.desc,
+	  a.name,
+	  a.value,
+	  a.status
+    </sql>
+    
+     <select id="getConfigure"  resultType="Configures">
+        SELECT
+            <include refid="select_clause"/>
+        FROM
+            qcv_configure a where  a.userid=#{usreid} and a.name=#{name}
+      </select>
+      
+      <select id="getDefaultConfigure"  resultType="Configures">
+        SELECT
+            <include refid="select_clause2"/>
+        FROM
+            qcv_default_configure a where a.name=#{name}
+      </select>
+    
+     <insert id="addConfigure" useGeneratedKeys="true" keyProperty="id" parameterType="Configures">
+		INSERT INTO qcv_configure (
+			userid,
+		    `desc`,
+        	`name`,
+        	`value`,
+        	`status`
+		) VALUES (
+			#{userid,jdbcType=INTEGER},
+			#{desc,jdbcType=VARCHAR},
+			#{name,jdbcType=VARCHAR},
+			#{value,jdbcType=VARCHAR},
+			#{status,jdbcType=INTEGER}
+		)
+    </insert>
+    
+       <insert id="updateConfigure" parameterType="Configures">
+       UPDATE qcv_configure SET  
+       		`desc` = #{desc,jdbcType=VARCHAR},
+       		`name`= #{name,jdbcType=VARCHAR},
+       		`value`= #{value,jdbcType=VARCHAR}, 
+			`status`=#{status,jdbcType=INTEGER}
+         WHERE id = #{id}
+    </insert>
+    
+    
+       <delete id="delConfigure" parameterType="Integer">
+        DELETE FROM qcv_configure WHERE id = #{id} and status=0
+    </delete>
+    
+
+
+
+
+
+
+</mapper>

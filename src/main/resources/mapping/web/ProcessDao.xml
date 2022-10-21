@@ -1,0 +1,223 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.dao.ProcessDao">
+    <sql id="select_clause">
+	  a.aid,
+	  a.userid,
+	  a.aName,
+	  a.address
+    </sql>    
+    
+     <sql id="select_clause2">
+	  a.rid,
+	  a.aid,
+	  a.role,
+	  a.level,
+	  a.roleName,
+	  a.rType
+    </sql> 
+    
+    <sql id="select_clause3">
+	  a.rid,
+	  a.vid,
+	  a.aid,
+	  a.userid,
+	  a.subEmpId,
+	  a.subEmpName,
+	  a.rvwEmpId,
+	  a.rvwEmpName,
+	  a.submitTime,
+	  a.level,
+	  a.status,
+	  a.remark,
+	  a.pType
+    </sql>  
+   
+    
+    <insert id="addProcessArea" useGeneratedKeys="true" keyProperty="aid" parameterType="ProcessArea">
+		INSERT INTO qcv_process_area (
+		   userid,
+		   aName,
+		   address
+		) VALUES (
+			#{userid,jdbcType=INTEGER},
+			#{aName,jdbcType=VARCHAR},
+			#{address,jdbcType=VARCHAR} 
+		)
+    </insert>
+    
+        
+     <insert id="updateProcessArea" parameterType="ProcessArea">
+       UPDATE qcv_process_area SET  
+       		aName = #{aName,jdbcType=VARCHAR},
+       		address= #{address,jdbcType=VARCHAR}
+         WHERE aid = #{aid} and userid = #{userid}
+    </insert>
+    
+      
+     <delete id="deleteProcessArea" parameterType="ProcessArea">
+        DELETE FROM qcv_process_area  WHERE aid = #{aid} and userid=#{userid}
+     </delete>  
+     
+      <select id="getProcessArea" parameterType="ProcessArea" resultType="ProcessArea">
+        SELECT
+           <include refid="select_clause"/>
+        FROM
+            qcv_process_area a WHERE  a.userid=#{userid} order by a.aid desc
+      </select>
+      
+      <select id="getProcessAreaByName" parameterType="ProcessArea" resultType="ProcessArea">
+        SELECT
+           <include refid="select_clause"/>
+        FROM
+            qcv_process_area a WHERE  a.aName=#{aName} and a.userid=#{userid}
+      </select>
+     
+     
+    <insert id="addProcessRule" useGeneratedKeys="true"  parameterType="ProcessRule">
+		INSERT INTO qcv_process_rule (
+		   aid,
+		   role,
+		   level,
+		   roleName,
+		   rType
+		) VALUES  
+	    <foreach collection="list" item="rlist" index="index"  separator="," > 
+	        (#{rlist.aid},#{rlist.role},#{rlist.level},#{rlist.roleName},#{rlist.rType}) 
+	    </foreach> 
+    </insert>
+    
+     <delete id="deleteProcessRule" parameterType="ProcessRule">
+        DELETE FROM qcv_process_rule  WHERE aid = #{aid}
+     </delete>  
+     
+     <select id="getProcessRule" parameterType="ProcessRule" resultType="ProcessRule">
+        SELECT
+           <include refid="select_clause2"/>
+        FROM
+            qcv_process_rule a WHERE  a.aid=#{aid} 
+            
+                 
+             <if test='rType != "-1"'>
+              and a.rType=#{rType} 
+             </if>
+            
+             order by a.level asc
+     </select>
+     
+       <select id="getProcessRuleByRole" parameterType="Integer" resultType="ProcessRule">
+        SELECT
+           <include refid="select_clause2"/>
+        FROM
+            qcv_process_rule a WHERE  a.role=#{role}
+     </select>
+     
+     <select id="getCurrentProcess" parameterType="ProcessRule" resultType="ProcessRule">
+        SELECT
+           <include refid="select_clause2"/>
+        FROM
+            qcv_process_rule a WHERE  a.aid=#{aid} and a.level=#{level} and a.rType=#{rType} 
+     </select>
+     
+      <insert id="addProcessRecord" useGeneratedKeys="true" keyProperty="rid" parameterType="ProcessRecord">
+		INSERT INTO qcv_process_records(
+			  vid,
+			  aid,
+			  userid,
+			  subEmpId,
+			  subEmpName,
+			  rvwEmpId,
+			  rvwEmpName,
+			  submitTime,
+			  level,
+			  remark,
+	  		  pType
+		) VALUES (
+			  #{vid,jdbcType=VARCHAR},
+			  #{aid,jdbcType=INTEGER},
+			  #{userid,jdbcType=INTEGER},
+			  #{subEmpId,jdbcType=INTEGER},
+			  #{subEmpName,jdbcType=VARCHAR},
+			  #{rvwEmpId,jdbcType=INTEGER},
+			  #{rvwEmpName,jdbcType=VARCHAR},
+			  Now(),
+			  #{level,jdbcType=INTEGER},
+			  #{remark,jdbcType=VARCHAR},
+			  #{pType,jdbcType=INTEGER}
+		)
+    </insert>
+    
+     <insert id="updateProcessRecord" parameterType="ProcessRecord">
+       UPDATE qcv_process_records SET  
+       		status = #{status},
+       		remark = #{remark,jdbcType=VARCHAR}
+         WHERE rid = #{rid} and vid=#{vid}
+    </insert>
+    
+     <insert id="cancelProcess" parameterType="ProcessRecord">
+       UPDATE qcv_process_records SET  
+       		status = 3
+         WHERE  status=0 and vid=#{vid} and pType=#{pType}
+    </insert>
+    
+    
+    <select id="getProcessRecord" parameterType="ProcessRecord" resultType="ProcessRecord">
+        SELECT
+           <include refid="select_clause3"/>
+        FROM
+            qcv_process_records a WHERE  a.vid=#{vid}  and a.pType=#{pType} order by a.level asc
+     </select>
+     
+      <select id="getProcessRecordByRid" parameterType="ProcessRecord" resultType="ProcessRecord">
+        SELECT
+           <include refid="select_clause3"/>
+        FROM
+            qcv_process_records a WHERE  a.rid=#{rid} 
+     </select>
+     
+       <select id="getNoApproveRecords" parameterType="ReqProcess" resultType="ProcessRecord">
+        SELECT
+           <include refid="select_clause3"/>
+        FROM
+            qcv_process_records a WHERE  a.rvwEmpId=#{rvwEmpId} and a.status=0 order by a.submitTime asc
+     </select>
+     
+     <select id="getProcessRecordBySubName" parameterType="ProcessRecord" resultType="ProcessRecord">
+        SELECT
+           <include refid="select_clause3"/>
+           FROM 
+            qcv_process_records a WHERE a.vid IN( SELECT vid FROM `qcv_process_records`
+             WHERE subEmpName LIKE "%"#{subEmpName}"%") AND a.rvwEmpId=#{rvwEmpId}  
+             
+             <if test='status != "0"'>
+              and a.status!=0 
+             </if>
+             
+             <if test='status == "0"'>
+              and a.status=0 
+             </if>
+             
+             order by a.submitTime asc
+     </select>
+     
+       <select id="getFirstSubmitRecords" parameterType="ReqProcess" resultType="ProcessRecord">
+        SELECT
+           <include refid="select_clause3"/>
+        FROM
+            qcv_process_records a WHERE  a.vid=#{vid} and a.pType=#{pType} and a.aid=0
+     </select>
+     
+        <select id="getApprovedRecords" parameterType="ReqProcess" resultType="ProcessRecord">
+        SELECT
+           <include refid="select_clause3"/>
+        FROM
+            qcv_process_records a WHERE  a.rvwEmpId=#{rvwEmpId} and a.status!=0 order by a.submitTime desc
+     </select>
+     
+       <select id="getFirstSubRecordsByEmpid" parameterType="ReqProcess" resultType="ProcessRecord">
+        SELECT
+           <include refid="select_clause3"/>
+        FROM
+            qcv_process_records a WHERE  a.aid=0 and  a.rvwEmpId=#{rvwEmpId} order by a.submitTime desc
+     </select>
+    
+</mapper>

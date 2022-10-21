@@ -1,0 +1,104 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.client.dao.ExtendVisitorDao">
+    <sql id="select_clause">
+		a.userid,
+		a.displayName,
+	 	a.fieldName,
+		a.inputType,
+	 	a.inputValue,
+	 	a.inputOrder,
+	 	a.required,
+	 	a.placeholder,
+	 	a.isDisplay,
+	 	a.eType
+    </sql>
+    
+    
+       <insert id="addExtendVisitor"  parameterType="ExtendVisitor">
+		INSERT INTO qcv_visitor_extend (
+		    userid,
+        	displayName,
+        	fieldName,
+        	inputType,
+        	inputValue,
+        	inputOrder,
+        	required,
+        	placeholder,
+	 		isDisplay,
+	 		eType
+		) VALUES (
+			#{userid,jdbcType=INTEGER},
+			#{displayName,jdbcType=VARCHAR},
+			#{fieldName,jdbcType=VARCHAR},
+			#{inputType,jdbcType=VARCHAR},
+			#{inputValue,jdbcType=VARCHAR},
+			#{inputOrder,jdbcType=INTEGER},
+			#{required,jdbcType=INTEGER},
+			#{placeholder,jdbcType=VARCHAR},
+			#{isDisplay,jdbcType=INTEGER},
+			#{eType,jdbcType=VARCHAR}
+		)
+    </insert>
+    
+    	<insert id="updateExtendVisitor" parameterType="ExtendVisitor">
+	        UPDATE qcv_visitor_extend SET  
+	       		eType= #{eType} 
+	        WHERE eType = #{oldeType} and userid=#{userid}
+        </insert>
+    
+       <select id="getBaseExtendVisitor"  resultType="ExtendVisitor">
+        SELECT 
+         <include refid="select_clause"/>
+        FROM  
+        	qcv_visitor_extend a where a.userid=#{userid} and eType is null order by `inputOrder` asc
+      </select>
+      
+       <select id="getAllExtendVisitor"  resultType="ExtendVisitor">
+        SELECT 
+         <include refid="select_clause"/>
+        FROM  
+        	qcv_visitor_extend a where a.userid=#{userid}  order by `inputOrder` asc
+      </select>
+      
+      <select id="getTeamExtendVisitor"  resultType="ExtendVisitor">
+        SELECT 
+         <include refid="select_clause"/>
+        FROM  
+        	qcv_visitor_extend a where a.userid=#{userid} and placeholder=1 and eType is null order by `inputOrder` asc
+      </select>
+      
+        <select id="getExtendVisitorByType"  resultType="ExtendVisitor">
+        SELECT 
+         <include refid="select_clause"/>
+        FROM  
+        	qcv_visitor_extend a where a.userid=#{userid}  and eType=#{eType} and eType is not null order by `inputOrder` asc
+      </select>
+      
+      <select id="getExtendTypeList"  resultType="String">
+        SELECT 
+         	a.eType 
+        FROM  
+        	qcv_visitor_extend a where a.userid=#{userid} and a.eType is not null group by a.eType 
+      </select>
+      
+      <select id="getVisitType"  resultType="ExtendVisitor">
+        SELECT 
+         <include refid="select_clause"/>
+        FROM  
+        	qcv_visitor_extend a where a.fieldName='visitType' and a.userid=#{userid} and a.eType=#{eType}
+      </select>
+      
+     <delete id="delExtendVisitor" parameterType="Integer">
+        DELETE FROM qcv_visitor_extend WHERE userid = #{userid} and eType is null
+     </delete>
+     
+     <delete id="delTeamExtendVisitor" parameterType="Integer">
+        DELETE FROM qcv_visitor_extend WHERE userid = #{userid} and placeholder=1  and eType is null
+     </delete>
+     
+     <delete id="delExtendVisitorByType" parameterType="ExtendVisitor">
+        DELETE FROM qcv_visitor_extend WHERE userid = #{userid} and eType=#{eType} and eType is not null
+     </delete>
+      
+      
+</mapper>

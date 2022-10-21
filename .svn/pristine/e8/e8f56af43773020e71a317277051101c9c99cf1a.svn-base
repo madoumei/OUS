@@ -1,0 +1,141 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.client.dao.NewsDao">
+    <sql id="select_clause">
+		a.nid,
+		a.title,
+		a.content,
+		a.picture,
+		a.ndate,
+		a.rdate,
+		a.empid,
+		a.empPhone,
+		a.brcount,
+		a.recount,
+		a.cid,
+		a.status,
+		a.userid,
+		p.pcompany,
+		p.nickname,
+		p.pname,
+		p.avatar
+    </sql>
+    
+    <sql id="select_clause2">
+		a.nid,
+		a.title,
+		a.content,
+		a.picture,
+		a.ndate,
+		a.rdate,
+		a.empid,
+		a.empPhone,
+		a.brcount,
+		a.recount,
+		a.cid,
+		a.status,
+		a.userid
+    </sql>
+    
+       <insert id="addNews" useGeneratedKeys="true" keyProperty="nid"  parameterType="News">
+		INSERT INTO qcv_news (
+			title,
+			content,
+			picture,
+			ndate,
+			rdate,
+			empid,
+			empPhone,
+			brcount,
+			recount,
+			cid,
+			userid
+		) VALUES (
+			#{title,jdbcType=VARCHAR},
+			#{content,jdbcType=VARCHAR},
+			#{picture,jdbcType=VARCHAR},
+			#{ndate},
+			#{rdate},
+			#{empid,jdbcType=INTEGER},
+			#{empPhone,jdbcType=VARCHAR},
+			#{brcount,jdbcType=INTEGER},
+			#{recount,jdbcType=INTEGER},
+			#{cid,jdbcType=INTEGER},
+			#{userid,jdbcType=INTEGER}
+		)
+    </insert>
+    
+    <insert id="updateNews"  parameterType="News">
+        update qcv_news set 
+           content=#{content},
+           picture=#{picture},
+           ndate=#{ndate}
+           where nid = #{nid}
+      </insert>
+    
+    
+     <select id="getAllNews"  resultType="News" >
+        SELECT 
+         <include refid="select_clause"/>
+        FROM  
+        	qcv_news a,qcv_visit_personal p where a.empPhone=p.pmobile and a.userid=#{userid}  and a.status in (1,2) and cid!=0 order by rdate desc
+      </select>
+      
+      <select id="getPropertyNews"  resultType="News" >
+        SELECT 
+         <include refid="select_clause2"/>
+        FROM  
+        	qcv_news a where a.status=1 and cid=0 and a.userid=#{userid} order by ndate desc
+      </select>
+      
+       <select id="getHotNews"  resultType="News" >
+        SELECT 
+         <include refid="select_clause"/>
+        FROM  
+        	qcv_news a,qcv_visit_personal p where a.empPhone=p.pmobile and a.status=1 and a.userid=#{userid}  and
+        	  DATE_SUB(NOW(), INTERVAL 7 DAY) &lt;= DATE(ndate) order by recount desc
+      </select>
+      
+      <select id="getNews"  resultType="News">
+        SELECT 
+         <include refid="select_clause"/>
+        FROM  
+        	qcv_news a,qcv_visit_personal p where a.empPhone=p.pmobile and a.nid=#{nid}
+      </select>
+      
+      <select id="getNewsByCid"  resultType="News" parameterType="News">
+        SELECT 
+         <include refid="select_clause"/>
+        FROM  
+        	qcv_news a ,qcv_visit_personal p where a.empPhone=p.pmobile  and a.userid=#{userid}  and a.cid=#{cid} and a.status in (1,2) order by rdate desc
+      </select>
+      
+      <select id="getNewsByPhone"  resultType="News" parameterType="News">
+        SELECT 
+         <include refid="select_clause"/>
+        FROM  
+        	qcv_news a ,qcv_visit_personal p where a.empPhone=p.pmobile and a.empPhone=#{empPhone} and a.status=1   order by rdate desc
+      </select>
+      
+     <delete id="delNews" parameterType="News">
+        DELETE FROM qcv_news WHERE nid = #{nid}
+     </delete>
+     
+      <insert id="updateNewsStatus"  parameterType="News">
+        update qcv_news set 
+          status=#{status}
+           where nid = #{nid}
+      </insert>
+      
+      <insert id="updateBrcount"  parameterType="News">
+        update qcv_news set 
+          brcount=brcount+1
+           where nid = #{nid}
+      </insert>
+      
+       <insert id="updateRecount" parameterType="News">
+        update qcv_news set 
+          recount=recount+1,
+          rdate=#{rdate}
+           where nid = #{nid}
+      </insert>
+</mapper>

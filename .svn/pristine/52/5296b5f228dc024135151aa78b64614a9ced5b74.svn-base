@@ -1,0 +1,128 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.dao.BlacklistDao">
+    <sql id="select_clause">
+        a
+        .
+        bid
+        ,
+    	a.userid,
+		a.name,
+		a.phone,
+		a.credentialNo,
+		a.sids,
+		a.gids,
+		a.sname,
+		a.gname,
+		a.remark
+    </sql>
+
+
+    <insert id="addBlacklist" parameterType="Blacklist">
+        INSERT INTO qcv_blacklist (bid,
+                                   userid,
+                                   name,
+                                   phone,
+                                   credentialNo,
+                                   sids,
+                                   gids,
+                                   sname,
+                                   gname,
+                                   remark)
+        VALUES (#{bid,jdbcType=VARCHAR},
+                #{userid,jdbcType=INTEGER},
+                #{name,jdbcType=VARCHAR},
+                #{phone,jdbcType=VARCHAR},
+                #{credentialNo,jdbcType=VARCHAR},
+                #{sids,jdbcType=VARCHAR},
+                #{gids,jdbcType=VARCHAR},
+                #{sname,jdbcType=VARCHAR},
+                #{gname,jdbcType=VARCHAR},
+                #{remark,jdbcType=VARCHAR})
+    </insert>
+
+
+    <select id="getBlacklist" parameterType="ReqBlacklist" resultType="Blacklist">
+        SELECT
+        <include refid="select_clause"/>
+        FROM
+        qcv_blacklist a where a.userid=#{userid}
+        <if test='condition != null and condition != "" and  condition != "null"'>
+            and (
+            a.name like "%"#{condition}"%"
+            or a.phone like "%"#{condition}"%"
+            or a.credentialNo like "%"#{condition}"%"
+            or a.sname like "%"#{condition}"%"
+            or a.gname like "%"#{condition}"%"
+            )
+        </if>
+
+        <if test='sids == "sa"'>
+            and sids!='' and sids is not null
+        </if>
+
+        <if test='sids == "st"'>
+            and (sids='' or sids is null)
+        </if>
+        order by bid desc
+    </select>
+
+    <select id="getBlacklistBybids" parameterType="ReqBlacklist" resultType="Blacklist">
+        SELECT
+        <include refid="select_clause"/>
+        FROM
+        qcv_blacklist a where a.userid=#{userid} AND a.bid in
+        <foreach collection="bids" item="bid" index="index" open="(" separator="," close=")">
+            #{bid}
+        </foreach>
+    </select>
+
+    <select id="checkBlacklist" parameterType="Blacklist" resultType="Blacklist">
+        SELECT
+        <include refid="select_clause"/>
+        FROM
+        qcv_blacklist a where userid=#{userid}
+
+        <choose>
+            <when test='phone != null and phone != "" and  phone != "null"
+            and credentialNo != null and credentialNo != "" and  credentialNo != "null"'>
+                and (a.phone= #{phone} or a.credentialNo= #{credentialNo})
+            </when>
+            <otherwise>
+                <if test='phone != null and phone != "" and  phone != "null"'>
+                    and a.phone= #{phone}
+                </if>
+
+                <if test='credentialNo != null and credentialNo != "" and  credentialNo != "null"'>
+                    and a.credentialNo= #{credentialNo}
+                </if>
+            </otherwise>
+        </choose>
+
+        <if test='sids != null and sids != "" and  sids != "null"'>
+            and (FIND_IN_SET(#{sids},a.sids) or sids='')
+        </if>
+    </select>
+
+    <insert id="updateBlacklist" parameterType="Blacklist">
+        UPDATE qcv_blacklist
+        SET name=#{name,jdbcType=VARCHAR},
+            phone=#{phone,jdbcType=VARCHAR},
+            credentialNo=#{credentialNo,jdbcType=VARCHAR},
+            sids=#{sids,jdbcType=VARCHAR},
+            gids=#{gids,jdbcType=VARCHAR},
+            sname=#{sname,jdbcType=VARCHAR},
+            gname=#{gname,jdbcType=VARCHAR},
+            remark=#{remark,jdbcType=VARCHAR}
+        WHERE bid = #{bid}
+          and userid = #{userid}
+    </insert>
+
+    <delete id="delBlacklist">
+        DELETE FROM qcv_blacklist WHERE userid=#{userid} and bid in
+        <foreach collection="bids" index="index" item="bids" open="(" separator="," close=")">
+            #{bids}
+        </foreach>
+    </delete>
+
+
+</mapper>

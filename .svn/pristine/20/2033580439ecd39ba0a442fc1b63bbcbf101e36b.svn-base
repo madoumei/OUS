@@ -1,0 +1,54 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.dao.DaysOffTranslationDao">
+
+	<sql id="select_clause">
+		a.did,
+		a.userid,
+		a.date,
+		a.remark,
+		a.rid
+    </sql>
+
+	<insert id="addDaysOffTranslation"  parameterType="DaysOffTranslation">
+		INSERT INTO qcv_days_translation (
+			did,
+			userid,
+			date,
+			remark,
+			rid
+		) VALUES (
+			#{did,jdbcType=VARCHAR},
+			#{userid,jdbcType=INTEGER},
+			#{date},
+			#{remark,jdbcType=VARCHAR},
+			#{rid,jdbcType=INTEGER}
+		)
+    </insert>
+
+	<delete id="delDaysOffTranslation" parameterType="DaysOffTranslation">
+		DELETE FROM qcv_days_translation WHERE  userid= #{userid}
+		<if test='did != null and did != "" and  did != "null"'>
+			and did=#{did}
+		</if>
+
+		<if test='rid != "0"'>
+			and rid=#{rid}
+		</if>
+
+	</delete>
+
+	<select id="getDaysOffTranslation" parameterType="DaysOffTranslation" resultType="DaysOffTranslation">
+		select
+			<include refid="select_clause"></include>
+		FROM
+		qcv_days_translation a
+		where
+			a.userid= #{userid}
+
+			<if test='rid != "0"'>
+				and rid=#{rid}
+			</if>
+			order by a.date asc
+	</select>
+
+</mapper>

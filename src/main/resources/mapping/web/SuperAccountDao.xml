@@ -1,0 +1,78 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.dao.SuperAccountDao">
+    <sql id="select_clause">
+	  a.id,
+	  a.username,
+	  a.password,
+	  a.company,
+	  a.logo,
+	  a.userid,
+	  a.status
+    </sql>
+    
+      <sql id="select_clause2">
+	  a.id,
+	  a.username,
+	  a.company,
+	  a.logo,
+	  a.userid,
+	  a.status
+    </sql>
+    
+    <select id="getAllSuperAccount"  resultType="SuperAccount">
+        SELECT
+            <include refid="select_clause2"/>
+        FROM
+            qcv_super_user a
+      </select>
+    
+     <select id="getSuperAccount"  resultType="SuperAccount">
+        SELECT
+            <include refid="select_clause"/>
+        FROM
+            qcv_super_user a where  a.username=#{username}
+      </select>
+      
+      
+    <insert id="updateSupAccInfo" parameterType="SuperAccount">
+       UPDATE qcv_super_user SET  
+       		company = #{company},
+       		logo = #{logo}
+         WHERE id = #{id}
+    </insert>
+    
+    <insert id="updateSupAccPassword" parameterType="SuperAccount">
+       UPDATE qcv_super_user SET  
+      		password = #{password}
+         WHERE id = #{id}
+    </insert>
+    
+    <insert id="updateRelatedAccount" parameterType="SuperAccount">
+       UPDATE qcv_super_user SET  
+       		userid = #{userid}
+         WHERE id = #{id}
+    </insert>
+    
+    <insert id="updateSuperAccountStatus" parameterType="SuperAccount">
+       UPDATE qcv_super_user SET  
+       		status = #{status}
+         WHERE id = #{id}
+    </insert>
+    
+     <insert id="addSuperAccount" useGeneratedKeys="true" keyProperty="id" parameterType="SuperAccount">
+		INSERT INTO qcv_super_user (
+			  username,
+			  password,
+			  company,
+			  logo,
+			  userid
+		) VALUES (
+			#{username,jdbcType=VARCHAR},
+			#{password,jdbcType=VARCHAR},
+			#{company,jdbcType=VARCHAR},
+			#{logo,jdbcType=VARCHAR},
+			#{userid,jdbcType=VARCHAR}
+		)
+    </insert>
+    
+</mapper>

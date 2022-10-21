@@ -1,0 +1,295 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.dao.PassRuleDao">
+    <sql id="select_clause">
+		a.rid,
+		a.userid,
+		a.rname,
+		a.startDate,
+		a.endDate,
+		a.mon,
+		a.tues,
+		a.wed,
+		a.thur,
+		a.fri,
+		a.sat,
+		a.sun,
+		a.hol
+    </sql>
+    
+     <sql id="select_clause2">
+		a.rid,
+		a.userid,
+		a.rname,
+		a.startDate,
+		a.endDate,
+		a.mon,
+		a.tues,
+		a.wed,
+		a.thur,
+		a.fri,
+		a.sat,
+		a.sun,
+		a.hol,
+		a.daysOff,
+		h.hid,
+		h.userid,
+		h.hdate,
+		h.remark,
+		h.passFlag
+    </sql>  
+    
+    <sql id="select_clause3">
+		c.cid,
+		c.userid,
+		c.cname,
+		c.ctype,
+		c.conditions,
+		c.explain,
+		c.rid,
+		a.rname,
+		a.startDate,
+		a.endDate,
+		a.mon,
+		a.tues,
+		a.wed,
+		a.thur,
+		a.fri,
+		a.sat,
+		a.sun,
+		a.hol,
+		a.daysOff
+    </sql>
+
+	<sql id="select_clause4">
+		a.rid,
+		a.userid,
+		a.rname,
+		a.startDate,
+		a.endDate,
+		a.mon,
+		a.tues,
+		a.wed,
+		a.thur,
+		a.fri,
+		a.sat,
+		a.sun,
+		a.hol,
+		a.daysOff,
+		d.did,
+		d.userid,
+		d.date,
+		d.remark
+    </sql>
+
+	<resultMap id="PassRuleAndHolidayList" type="com.web.bean.PassRule">
+		<id column="rid" property="rid"/>
+		<result column="userid" property="userid"/>
+		<result column="rname" property="rname"/>
+		<result column="startDate" property="startDate"/>
+		<result column="endDate" property="endDate"/>
+		<result column="mon" property="mon"/>
+		<result column="tues" property="tues"/>
+		<result column="wed" property="wed"/>
+		<result column="thur" property="thur"/>
+		<result column="fri" property="fri"/>
+		<result column="sat" property="sat"/>
+		<result column="sun" property="sun"/>
+		<result column="hol" property="hol"/>
+		<result column="daysOff" property="daysOff"/>
+		<collection property="hList" ofType="com.web.bean.Holiday">
+			<id column="hid" property="hid"/>
+			<result column="hdate" property="hdate"/>
+			<result column="remark" property="remark"/>
+		</collection>
+	</resultMap>
+	
+	 <resultMap id="PassConfigAndPassRule" type="com.web.bean.PassConfig">
+		<id column="cid" property="cid"/>
+		<result column="userid" property="userid"/>
+		<result column="cname" property="cname"/>
+		<result column="ctype" property="ctype"/>
+		<result column="conditions" property="conditions"/>
+		<result column="explain" property="explain"/>
+		<result column="rid" property="rid"/>
+		<association  property="pr" javaType="com.web.bean.PassRule">
+			<result column="rname" property="rname"/>
+			<result column="startDate" property="startDate"/>
+			<result column="endDate" property="endDate"/>
+			<result column="mon" property="mon"/>
+			<result column="tues" property="tues"/>
+			<result column="wed" property="wed"/>
+			<result column="thur" property="thur"/>
+			<result column="fri" property="fri"/>
+			<result column="sat" property="sat"/>
+			<result column="sun" property="sun"/>
+			<result column="hol" property="hol"/>
+			<result column="daysOff" property="daysOff"/>
+		</association>
+	</resultMap>
+
+	<resultMap id="PassRuleByDOTList" type="com.web.bean.PassRule">
+		<id column="rid" property="rid"/>
+		<result column="userid" property="userid"/>
+		<result column="rname" property="rname"/>
+		<result column="startDate" property="startDate"/>
+		<result column="endDate" property="endDate"/>
+		<result column="mon" property="mon"/>
+		<result column="tues" property="tues"/>
+		<result column="wed" property="wed"/>
+		<result column="thur" property="thur"/>
+		<result column="fri" property="fri"/>
+		<result column="sat" property="sat"/>
+		<result column="sun" property="sun"/>
+		<result column="hol" property="hol"/>
+		<result column="daysOff" property="daysOff"/>
+		<collection property="daysOffTranslations" ofType="com.web.bean.DaysOffTranslation">
+			<id column="did" property="did"/>
+			<result column="date" property="date"/>
+			<result column="remark" property="remark"/>
+			<result column="rid" property="rid"/>
+		</collection>
+	</resultMap>
+   
+    
+    <insert id="addPassRule"  useGeneratedKeys="true" keyProperty="rid" parameterType="PassRule">
+		INSERT INTO qcv_passtime_rule (
+			rname,
+			userid,
+			startDate,
+			endDate,
+			mon,
+			tues,
+			wed,
+			thur,
+			fri,
+			sat,
+			sun,
+			hol
+		) VALUES (
+			#{rname,jdbcType=VARCHAR},
+			#{userid},
+			#{startDate},
+			#{endDate},
+			#{mon,jdbcType=VARCHAR},
+			#{tues,jdbcType=VARCHAR},
+			#{wed,jdbcType=VARCHAR},
+			#{thur,jdbcType=VARCHAR},
+			#{fri,jdbcType=VARCHAR},
+			#{sat,jdbcType=VARCHAR},
+			#{sun,jdbcType=VARCHAR},
+			#{hol,jdbcType=VARCHAR}
+		)
+    </insert>
+    
+    <insert id="addPassConfig"  useGeneratedKeys="true" keyProperty="cid" parameterType="PassConfig">
+		INSERT INTO qcv_pass_config (
+			userid,
+			cname,
+			ctype,
+			conditions,
+			`explain`,
+			rid
+		) VALUES (
+			#{userid},
+			#{cname,jdbcType=VARCHAR},
+			#{ctype,jdbcType=VARCHAR},
+			#{conditions,jdbcType=VARCHAR},
+			#{explain,jdbcType=VARCHAR},
+			#{rid}
+		)
+    </insert>
+    
+    
+     <insert id="updatePassRule" parameterType="PassRule">
+       UPDATE qcv_passtime_rule SET  
+       		rname= #{rname},
+			startDate= #{startDate},
+			endDate= #{endDate},
+			mon= #{mon},
+			tues= #{tues},
+			wed= #{wed},
+			thur= #{thur},
+			fri= #{fri},
+			sat= #{sat},
+			sun = #{sun},
+			hol = #{hol},
+			daysOff=#{daysOff}
+         WHERE rid=#{rid}  and  userid=#{userid} 
+    </insert>
+    
+     <insert id="updatePassConfig" parameterType="PassConfig">
+       UPDATE qcv_pass_config SET  
+       		cname= #{cname},
+			ctype= #{ctype},
+			conditions= #{conditions},
+			`explain`= #{explain},
+			rid=#{rid}
+         WHERE cid=#{cid}  and  userid=#{userid} 
+    </insert>
+    
+	 <select id="getPassRuleList" parameterType="PassRule" resultMap="PassRuleAndHolidayList">
+        SELECT
+           <include refid="select_clause2"/>
+        FROM
+            qcv_passtime_rule a LEFT JOIN qcv_holiday_bill h ON a.rid = h.rid WHERE a.userid=#{userid} 
+              <if test='rid != "0"'>
+             	  and a.rid=#{rid}
+              </if>
+      </select>
+      
+     <select id="getPassConfig" parameterType="PassConfig" resultMap="PassConfigAndPassRule">
+        SELECT
+           <include refid="select_clause3"/>
+        FROM
+            qcv_pass_config c  left join qcv_passtime_rule a on  c.rid = a.rid where  c.userid=#{userid} 
+            <if test='ctype != null and ctype != "" and  ctype != "null"'>
+            and FIND_IN_SET(#{ctype},c.ctype)
+        </if>
+      </select>
+
+	<select id="getPassConfigByCid" parameterType="PassConfig" resultMap="PassConfigAndPassRule">
+		SELECT
+		<include refid="select_clause3"/>
+		FROM
+		qcv_pass_config c  left join qcv_passtime_rule a on  c.rid = a.rid where  c.userid=#{userid} and c.cid = #{cid}
+	</select>
+      
+      <select id="getPassRule" parameterType="PassRule" resultType="PassRule">
+        SELECT
+           <include refid="select_clause"/>
+        FROM
+            qcv_passtime_rule a WHERE a.userid=#{userid}
+		  <if test='rid != "0"'>
+			  and a.rid=#{rid}
+		  </if>
+      </select>
+      
+     <delete id="deletePassConfig" parameterType="PassConfig">
+        DELETE FROM qcv_pass_config WHERE cid=#{cid}  and  userid=#{userid} 
+     </delete>  
+      
+     <delete id="deletePassRule" parameterType="PassRule">
+        DELETE FROM qcv_passtime_rule WHERE rid=#{rid}  and  userid=#{userid} 
+     </delete>
+
+	<select id="getPassRuleListByDaysOffTranslation" parameterType="PassRule" resultMap="PassRuleByDOTList">
+		SELECT
+		<include refid="select_clause4"/>
+		FROM
+		qcv_passtime_rule a LEFT JOIN qcv_days_translation d ON a.rid = d.rid  WHERE a.userid=#{userid}
+		<if test='rid != "0"'>
+			and a.rid=#{rid}
+		</if>
+	</select>
+	<select id="getPassRuleByRname" resultType="com.web.bean.PassRule" parameterType="com.web.bean.PassRule">
+		SELECT
+		<include refid="select_clause"/>
+		FROM
+		qcv_passtime_rule a WHERE a.userid=#{userid}
+		<if test='rname != "" and rname!=null and rname!="null"'>
+			and a.rname=#{rname}
+		</if>
+	</select>
+
+
+</mapper>

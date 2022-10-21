@@ -1,0 +1,202 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.dao.MeetingDao">
+	<sql id="select_clause">
+		 a.mid,
+		 a.empid,
+	     a.name,
+	     a.phone,
+	     a.email,
+       	 a.userid,
+       	 a.subject,
+       	 a.mdate,
+       	 a.sponsor,
+       	 a.remark,
+       	 a.status,
+       	 a.inviteContent,
+	 	 a.address,
+	 	 a.longitude,
+	 	 a.latitude,
+	 	 a.companyProfile,
+	 	 a.traffic,
+		 a.startTime,
+		 a.endTime,
+		 a.deadlineTime,
+		 a.mrid
+    </sql>
+
+
+    <insert id="addMeeting"  useGeneratedKeys="true" keyProperty="mid" parameterType="com.web.bean.VO.MeetingVO">
+		INSERT INTO qcv_meeting (
+		    empid,
+		    name,
+	    	phone,
+	    	email,
+        	userid,
+        	subject,
+        	mdate,
+        	sponsor,
+        	remark,
+        	inviteContent,
+	 		address,
+	 	 	longitude,
+	 	 	latitude,
+	 	 	companyProfile,
+	 	 	traffic,
+			startTime,
+		    endTime,
+		    status,
+			deadlineTime,
+			mrid
+		) VALUES (
+			#{empid},
+			#{name},
+			#{phone},
+			#{email},
+			#{userid},
+			#{subject},
+      		#{mdate},
+			#{sponsor},
+			#{remark},
+			#{inviteContent},
+			#{address},
+			#{longitude},
+			#{latitude},
+			#{companyProfile},
+			#{traffic},
+			#{startTime},
+			#{endTime},
+			#{status},
+			#{deadlineTime},
+			#{mrid}
+		)
+    </insert>
+
+    <select id="getMeetingById" parameterType="Integer" resultType="Meeting">
+        SELECT
+          <include refid="select_clause"/>
+        FROM
+            qcv_meeting a WHERE a.mid=#{mid} 
+      </select>
+    
+	 <select id="getMeetingByUserid"  resultType="Meeting">
+        SELECT
+          <include refid="select_clause"/>
+        FROM
+            qcv_meeting a WHERE a.userid=#{userid}  order by mid desc
+      </select>
+      
+	 <select id="getMeetingByPhone"  resultType="Meeting">
+        SELECT
+            <include refid="select_clause"/>
+        FROM
+            qcv_meeting a WHERE a.phone=#{phone} and a.userid=#{userid}  order by mid desc
+      </select>
+	<!--根据会议名查询会议-->
+    <select id="getMeetingBySubject" resultType="com.web.bean.Meeting">
+		SELECT
+		<include refid="select_clause"/>
+		FROM
+		qcv_meeting a WHERE a.subject = #{subject}
+	</select>
+	<!--根据会议名和时间查询会议-->
+	<select id="slectMeetingBySubjectAndTime" resultType="com.web.bean.Meeting">
+		SELECT
+			<include refid="select_clause"/>
+		FROM
+			qcv_meeting a WHERE 1=1
+		<if test='subject !=null and subject != "null" and subject != ""'>
+			AND a.subject like CONCAT('%',#{subject},'%')
+		</if>
+		<if test='startTime !=null and startTime != "" and startTime != "null" and endTime !=null and endTime != "" and endTime != "null"'>
+			AND (
+			(a.startTime >= #{startTime} AND a.startTime &lt;= #{endTime})
+			or
+			((a.startTime &lt;=#{startTime} and a.endTime >= #{startTime}) and (a.startTime &lt;= #{endTime} and a.endTime >= #{endTime}))
+			or
+			((a.startTime &lt;= #{startTime} and a.endTime >= #{startTime}) and a.endTime &lt;= #{endTime})
+			or
+			(a.startTime >= #{startTime} and a.endTime &lt;= #{endTime})
+			)
+		</if>
+
+		<if test='roomStartTime !=null and roomStartTime != "" and roomStartTime != "null" and roomEndTime !=null and roomEndTime != "" and roomEndTime != "null"'>
+			AND (
+			(a.startTime >= #{roomStartTime} AND a.startTime &lt;= #{roomEndTime})
+			or
+			((a.startTime &lt;=#{roomStartTime} and a.endTime >= #{roomStartTime}) and (a.startTime &lt;= #{roomEndTime} and a.endTime >= #{roomEndTime}))
+			or
+			((a.startTime &lt;= #{roomStartTime} and a.endTime >= #{roomStartTime}) and a.endTime &lt;= #{roomEndTime})
+			or
+			(a.startTime >= #{roomStartTime} and a.endTime &lt;= #{roomEndTime})
+			)
+		</if>
+		<if test="mrid!=0">
+			AND
+			mrid = #{mrid}
+		</if>
+		and userid = #{userid}
+	</select>
+
+	<insert id="updateMeetingStatus" parameterType="Meeting">
+       UPDATE qcv_meeting SET      		
+       		status=#{status} 
+         WHERE mid=#{mid} 
+    </insert>
+    
+    <update id="updateMeeting" parameterType="com.web.bean.VO.MeetingVO">
+       UPDATE qcv_meeting
+           <trim prefix="set" suffixOverrides=",">
+           		<if test="subject!=null and subject!='null' and subject!=''">
+					subject= #{subject},
+				</if>
+				<if test="mdate!=null and mdate!='null' and mdate!=''">
+					mdate= #{mdate},
+				</if>
+        		<if test="sponsor!=null and sponsor!='null' and sponsor!=''">
+					sponsor= #{sponsor},
+				</if>
+        		<if test="remark!=null and remark!='null' and remark!=''">
+					remark = #{remark},
+				</if>
+        		<if test="inviteContent!=null and inviteContent!='null' and inviteContent!=''">
+					inviteContent=#{inviteContent},
+				</if>
+        		<if test="address!=null and address!='null' and address!=''">
+					address=#{address},
+				</if>
+				<if test="longitude!=null and longitude!='null' and longitude!=''">
+					longitude=#{longitude},
+				</if>
+				<if test="latitude!=null and latitude!='null' and latitude!=''">
+					latitude=#{latitude},
+				</if>
+				<if test="companyProfile!=null and companyProfile!='null' and companyProfile!=''">
+					companyProfile=#{companyProfile},
+				</if>
+				<if test="traffic!=null and traffic!='null' and traffic!=''">
+					traffic=#{traffic},
+				</if>
+       			<if test="status!=null">
+					status=#{status},
+				</if>
+           		<if test="startTime!=null and startTime!='null' and startTime!=''">
+					startTime=#{startTime},
+				</if>
+       			<if test="endTime!=null and endTime!='null' and endTime!=''">
+					endTime=#{endTime},
+				</if>
+			   <if test="deadlineTime!=null and deadlineTime!='null' and deadlineTime!=''">
+				   deadlineTime=#{deadlineTime},
+			   </if>
+        		<if test="mrid!=0">
+					mrid=#{mrid},
+				</if>
+		   </trim>
+         WHERE mid=#{mid} and userid=#{userid}
+    </update>
+      
+     <delete id="deleteMeeting" parameterType="Meeting">
+        DELETE FROM qcv_meeting WHERE  mid=#{mid} 
+     </delete>  
+    
+</mapper>

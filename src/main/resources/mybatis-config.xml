@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <settings>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <setting name="logImpl" value="LOG4J"/>
+<!--        <setting name="logImpl" value="org.apache.ibatis.logging.stdout.StdOutImpl"/>-->
+    </settings>
+
+    <typeAliases>
+        <typeAlias alias="UserInfo" type="com.web.bean.UserInfo"/>
+        <typeAlias alias="Employee" type="com.web.bean.Employee"/>
+        <typeAlias alias="Configures" type="com.web.bean.Configures"/>
+        <typeAlias alias="NotifyConf" type="com.web.bean.NotifyConf"/>
+        <typeAlias alias="Address" type="com.web.bean.Address"/>
+        <typeAlias alias="SendRecord" type="com.web.bean.SendRecord"/>
+        <typeAlias alias="TokenManage" type="com.web.bean.TokenManage"/>
+        <typeAlias alias="Operator" type="com.web.bean.Operator"/>
+        <typeAlias alias="Appointment" type="com.web.bean.Appointment"/>
+        <typeAlias alias="Emptemplate" type="com.web.bean.Emptemplate"/>
+        <typeAlias alias="Usertemplate" type="com.web.bean.Usertemplate"/>
+        <typeAlias alias="SubAccountTemplate" type="com.web.bean.SubAccountTemplate"/>
+        <typeAlias alias="SubAccount" type="com.web.bean.SubAccount"/>
+        <typeAlias alias="ReqSubAccount" type="com.web.bean.ReqSubAccount"/>
+        <typeAlias alias="SuperAccount" type="com.web.bean.SuperAccount"/>
+        <typeAlias alias="IDCard" type="com.web.bean.IDCard"/>
+        <typeAlias alias="Person" type="com.web.bean.Person"/>
+        <typeAlias alias="Manager" type="com.web.bean.Manager"/>
+        <typeAlias alias="Meeting" type="com.web.bean.Meeting"/>
+        <typeAlias alias="CompanyInfo" type="com.web.bean.CompanyInfo"/>
+        <typeAlias alias="Community" type="com.web.bean.Community"/>
+        <typeAlias alias="Department" type="com.web.bean.Department"/>
+        <typeAlias alias="MeetingRoom" type="com.web.bean.MeetingRoom"/>
+        <typeAlias alias="Blacklist" type="com.web.bean.Blacklist"/>
+        <typeAlias alias="ReqBlacklist" type="com.web.bean.ReqBlacklist"/>
+        <typeAlias alias="ResidentProject" type="com.web.bean.ResidentProject"/>
+        <typeAlias alias="ResidentVisitor" type="com.web.bean.ResidentVisitor"/>
+        <typeAlias alias="Role" type="com.web.bean.Role"/>
+        <typeAlias alias="ProcessArea" type="com.web.bean.ProcessArea"/>
+        <typeAlias alias="ProcessRule" type="com.web.bean.ProcessRule"/>
+        <typeAlias alias="ProcessRecord" type="com.web.bean.ProcessRecord"/>
+        <typeAlias alias="ReqProcess" type="com.web.bean.ReqProcess"/>
+        <typeAlias alias="RequestEmp" type="com.web.bean.RequestEmp"/>
+        <typeAlias alias="ReqUserInfo" type="com.web.bean.ReqUserInfo"/>
+        <typeAlias alias="EmpVisitProxy" type="com.web.bean.EmpVisitProxy"/>
+        <typeAlias alias="VisitorType" type="com.web.bean.VisitorType"/>
+        <typeAlias alias="Holiday" type="com.web.bean.Holiday"/>
+        <typeAlias alias="ReqHd" type="com.web.bean.ReqHd"/>
+        <typeAlias alias="AccessControl" type="com.web.bean.AccessControl"/>
+        <typeAlias alias="ReqAC" type="com.web.bean.ReqAC"/>
+        <typeAlias alias="OperateLog" type="com.web.bean.OperateLog"/>
+        <typeAlias alias="ReqOperateLog" type="com.web.bean.ReqOperateLog"/>
+        <typeAlias alias="RvReport" type="com.web.bean.RvReport"/>
+        <typeAlias alias="Permission" type="com.web.bean.Permission"/>
+        <typeAlias alias="PassRule" type="com.web.bean.PassRule"/>
+        <typeAlias alias="PassConfig" type="com.web.bean.PassConfig"/>
+        <typeAlias alias="VisitorChart" type="com.web.bean.VisitorChart"/>
+        <typeAlias alias="HoneywellLft" type="com.web.bean.HoneywellLft"/>
+        <typeAlias alias="DaysOffTranslation" type="com.web.bean.DaysOffTranslation"/>
+
+
+        <typeAlias alias="Visitor" type="com.client.bean.Visitor"/>
+        <typeAlias alias="RespVisitor" type="com.client.bean.RespVisitor"/>
+        <typeAlias alias="RequestVisit" type="com.client.bean.RequestVisit"/>
+        <typeAlias alias="DataStatistics" type="com.client.bean.DataStatistics"/>
+        <typeAlias alias="VisitStatistics" type="com.client.bean.VisitStatistics"/>
+        <typeAlias alias="ExtendVisitor" type="com.client.bean.ExtendVisitor"/>
+        <typeAlias alias="News" type="com.client.bean.News"/>
+        <typeAlias alias="Renews" type="com.client.bean.Renews"/>
+        <typeAlias alias="NewsCategory" type="com.client.bean.NewsCategory"/>
+        <typeAlias alias="Equipment" type="com.client.bean.Equipment"/>
+        <typeAlias alias="EqptMonitorLog" type="com.client.bean.EqptMonitorLog"/>
+        <typeAlias alias="EquipmentGroup" type="com.client.bean.EquipmentGroup"/>
+        <typeAlias alias="EquipmentPersonGroup" type="com.client.bean.EquipmentPersonGroup"/>
+        <typeAlias alias="EGRelation" type="com.client.bean.EGRelation"/>
+        <typeAlias alias="Opendoor" type="com.client.bean.Opendoor"/>
+        <typeAlias alias="OpendoorInfo" type="com.client.bean.OpendoorInfo"/>
+        <typeAlias alias="ReqODI" type="com.client.bean.ReqODI"/>
+        <typeAlias alias="Banner" type="com.client.bean.Banner"/>
+        <typeAlias alias="TbGoods" type="com.client.bean.TbGoods"/>
+        <typeAlias alias="ReqMrRecords" type="com.client.bean.ReqMrRecords"/>
+        <typeAlias alias="MrRecords" type="com.client.bean.MrRecords"/>
+        <typeAlias alias="EqCardInfo" type="com.client.bean.EqCardInfo"/>
+        <typeAlias alias="Questionnaire" type="com.client.bean.Questionnaire"/>
+        <typeAlias alias="QuestionnaireDetail" type="com.client.bean.QuestionnaireDetail"/>
+        <typeAlias alias="ReqQuestion" type="com.client.bean.ReqQuestion"/>
+        <typeAlias alias="ReqQuestionDetail" type="com.client.bean.ReqQuestionDetail"/>
+        <typeAlias alias="VisitorAnswer" type="com.client.bean.VisitorAnswer"/>
+        <typeAlias alias="Training" type="com.client.bean.Training"/>
+        <typeAlias alias="Logistics" type="com.client.bean.Logistics"/>
+        <typeAlias alias="ReqLogistics" type="com.client.bean.ReqLogistics"/>
+        <typeAlias alias="ReqVR" type="com.client.bean.ReqVR"/>
+        <typeAlias alias="VehicleRecord" type="com.client.bean.VehicleRecord"/>
+        <typeAlias alias="InterimCard" type="com.client.bean.InterimCard"/>
+        <typeAlias alias="ReqInterimCard" type="com.client.bean.ReqInterimCard"/>
+        <typeAlias alias="Gate" type="com.client.bean.Gate"/>
+        <typeAlias alias="EqptMonitor" type="com.client.bean.EqptMonitor"/>
+        <typeAlias alias="ReqEM" type="com.client.bean.ReqEM"/>
+        <typeAlias alias="VisitorRecord" type="com.client.bean.VisitorRecord"/>
+        <typeAlias alias="ReqVisitorRecord" type="com.client.bean.ReqVisitorRecord"/>
+        <typeAlias alias="SatisfactionQuestionnaire" type="com.client.bean.SatisfactionQuestionnaire"/>
+        <typeAlias alias="Satisfaction" type="com.client.bean.Satisfaction"/>
+        <typeAlias alias="MsgTemplate" type="com.web.bean.MsgTemplate"/>
+        <typeAlias alias="EquipmentGroupResp" type="com.client.bean.EquipmentGroupResp"/>
+
+
+<!--        postgis 数据库-->
+        <typeAlias alias="Track" type="com.client.bean.Track"/>
+        <typeAlias alias="Track" type="com.client.bean.Geofence"/>
+    </typeAliases>
+
+    <plugins>
+        <plugin interceptor="com.config.qicool.common.persistence.interceptor.PaginationInterceptor"/>
+    </plugins>
+
+</configuration>

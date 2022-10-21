@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>邀请函</title>
+	<link href="http://yhtz.coolvisit.top/assets/img/favicon.png" rel="icon">
+	<link rel="stylesheet" type="text/css" media="all" href="http://yhtz.coolvisit.top/assets/css/invitaion1.css" />
+	<script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=feFZOo3dDQ6v4aeguiW6jGFV&s=1"></script>
+	<script type="text/javascript" src="http://yhtz.coolvisit.top/assets/js/jquery-2.1.3.min.js"></script>
+	<script type="text/javascript" src="http://yhtz.coolvisit.top/assets/js/common/qc_common.js"></script>
+	<script type="text/javascript" src="http://yhtz.coolvisit.top/assets/js/exif.js"></script>
+	<script type="text/javascript">
+		var appointmentStatus = $status;
+		var appid=$id;
+		var exam=$exam;
+		var strqrcode="$qrcode";
+		function setFixedButtonGroup() {
+			var fixedButtongGroup = document.getElementById("fixed-buttonGroup");
+			var blueGradients = document.getElementById("blueGradients");
+			var AnswerGradients = document.getElementById("AnswerGradients");
+			var safe = document.getElementById("safe");
+			
+			switch (appointmentStatus) {
+				case 0:			
+					fixedButtongGroup.style.display = "block";
+					break;
+				case 2:
+					fixedButtongGroup.style.display = "block";
+					break;
+				case 3:
+					fixedButtongGroup.style.display = "block";
+					blueGradients.style.display = "none";
+					AnswerGradients.style.display = "block";
+					safe.style.display = "none";
+					break;
+				default:
+			}
+		}
+	</script>
+	
+	<script type="text/javascript" src="http://yhtz.coolvisit.top/assets/js/qc_invitation1.js"></script>
+	<script type="text/javascript" src="http://yhtz.coolvisit.top/assets/js/qrcode.js"></script>
+	<script type="text/javascript" src="http://yhtz.coolvisit.top/assets/js/sha1.js"></script>
+</head>
+<body onload="setFixedButtonGroup()">
+	<div class="container">
+		<div id="fixed-buttonGroup" style="display: none;">
+			<button id="blueGradients">Accept</button>
+			<a id="AnswerGradientsurl"><button id="AnswerGradients">Start the exam</button></a>
+			<button  id="redGradients">Reject</button>
+		</div>
+		<header class="header">
+			<img src="http://yhtz.coolvisit.top/assets/img/v1/intop2.jpg" alt=""></header>
+		<section class="s1"  id="header">
+			<div class="con1">
+			<p>$inviteContent</p>
+			</div>
+			<div style="width: 80%; margin:0 auto;">
+				<img src="http://yhtz.coolvisit.top/assets/img/v1/clock2.png" alt="" style="margin-top: 1em;">
+				<span style="position: absolute; margin: 1em; font-size: 0.9em;" class="timecon">$appointmentDate</span>
+		  </div>
+		</section>
+		
+		#if($remark&&$remark!="")	
+		<section class="s2" style="margin-top: 3em;">
+			<h2>REMARK</h2>
+			<p>$remark</p>
+		</section>
+		#end
+		
+		#if($status!="4"&&$scaner=="1")	
+		<section class="s2" style="margin-top: 3em;">
+			<div class="descsection codescanner">
+				<h2 style="">EXCLUSIVE SCAN CODE QUICK REGISTRATION</h2>
+				<p class="compro" style="text-align: center">
+					The QR code below is your registered unique QR code，
+					<br>
+					Long press to save to phone album
+					<br>1 second complete registration，Quick pass</p>
+				<div class="codewrap" id="codewrap"></div>
+			</div>
+		</section>
+		 #end
+		<section class="s2" style="margin-top: 3em;">
+			#if($visitType=="会议")
+				<h2>CONFERENCE ADDRESS</h2>
+			#else
+				<h2>COMPANY ADDRESS</h2>
+			#end
+			<p>$address</p>
+		    <div class="mapwrap" id="mapwrap">
+				<div class="mapcon">
+					<div class="map" id="map" ></div>
+				</div>
+			</div>
+		</section>
+		#if($traffic&&$traffic!="")
+		<section class="s3">
+			<h2>PARKING INFORMATION</h2>
+			<p class="compro">$traffic</p>
+		</section>
+		#end
+		
+		<section class="s3">
+			#if($companyProfile&&$companyProfile!="")
+			<h2>COMPANY PROFILE</h2>
+			<p class="compro">
+				$companyProfile
+			</p>
+			#end
+			
+			#if($status!="1"&&$status!="4"&&$face==1)
+			<div id="add_person" class="s3 descsection" style="padding-top: 1em;background-color: #F2F5F6; width:80%; margin: 0 auto; margin-top: 3em;" align="center">
+				<h2 style="">OPEN FACE RECOGNITION</h2>
+				<p class="compro" style="text-align: center">Please click on the photo area below to upload a clear front face photo. After confirming sending, you can experience brushing and opening the door.</p>
+				<img id="img_head" src="http://yhtz.coolvisit.top/assets/img/table.png" style="margin-top: 3em; width: 15em; height: auto;" onclick="upload_click()">
+				<br/>
+				<p>UPLOAD PROGRESS</p>
+				<img class="s3" src="http://yhtz.coolvisit.top/assets/img/bplane.png" style="margin-left: 1em;margin-top: 1em;" onclick="send()">
+				<form role="form" id="upload_form" enctype="multipart/form-data" method="post">
+					<input id='upload_image' type="file" accept="image/*;capture=camera" onchange="upload_change()" style="visibility:hidden;  padding-bottom: 5em;">
+				</form>
+			</div>
+			#end
+		</section>
+		<section class="s3" style="margin-top: 3em;">
+			#if($secureProtocol&&$secureProtocol!="")
+			<h2>SECURITY PROTOCOL</h2>
+			<p class="secureproto"  style="text-align: justify;">
+				$secureProtocol
+			</p>
+			<p class="securechoice" id="safe"><input type="checkbox" id="securechoice" />Agreed to the security agreement</p>
+			#end
+			</section>
+		<footer class="footer" style="margin-top: 3em;">
+			<img src="http://yhtz.coolvisit.top/assets/img/v1/infooter2.jpg" alt=""></footer>
+
+	</div>
+		#if($exam==1)
+		<div id="overlaytwo" class="overlaytwo">
+		<div class="suspension" style="">
+			<img id="img_1" src="http://yhtz.coolvisit.top/assets/img/a.png" />
+			<div style="margin-top: 15px;">
+				<p style="font-size: 17px;font-weight: bold;">接受成功</p>
+				<img  style="margin-top: 5px;"  src="http://yhtz.coolvisit.top/assets/img/b.png"/>
+				<p style="font-size: 10px;margin-top: 0;" id="suspensionP">根据公司规定，所有访客在访问前必须完成考试。</p>
+				<p style="font-size: 14px;margin-top: 0;">请点击"参加考试"进行答题考试</p>
+				<a id="suspensionA" href="">参加考试</a>
+			</div>
+		</div>
+	</div>
+	#end
+	<p class="pdetail">网页由来访通智能访客管理系统提供<a href="http://www.coolvisit.com/">www.coolvisit.com/</a></p>
+	<script type = "text/javascript">
+		function addMoveControl(map) {
+			var top_right_navigation = new BMap.NavigationControl({
+					anchor : BMAP_ANCHOR_BOTTOM_RIGHT,
+					type : BMAP_NAVIGATION_CONTROL_ZOOM
+				});
+			map.addControl(top_right_navigation);
+		}
+
+		function addLocalControl(map) {
+			var geolocationControl = new BMap.GeolocationControl({
+					anchor : BMAP_ANCHOR_TOP_RIGHT
+				});
+			geolocationControl.addEventListener("locationSuccess", function (e) {
+				var address = '';
+				address += e.addressComponent.province;
+				address += e.addressComponent.city;
+				address += e.addressComponent.district;
+				address += e.addressComponent.street;
+				address += e.addressComponent.streetNumber;
+				console.log("当前定位地址为：" + address);
+			});
+			geolocationControl.addEventListener("locationError", function (e) {
+				alert(e.message);
+			});
+			map.addControl(geolocationControl);
+		}
+
+		function createMap(city, dom, type, lon, lat) {
+			var localCity = city;
+			var map = new BMap.Map(dom);
+			if (type == 0) {
+				map.centerAndZoom(localCity, 12);
+				map.addEventListener('load', function () {
+					var point = new BMap.Point(map.getCenter().lng, map.getCenter().lat);
+					window.setTimeout(function () {
+						map.panTo(point);
+					}, 2000);
+				});
+			} else if (type == 1) {
+				var point = new BMap.Point(lon, lat);
+				map.centerAndZoom(localCity, 15);
+				map.addEventListener('load', function () {
+					window.setTimeout(function () {
+						map.panTo(point);
+					}, 2000);
+				});
+				var marker = new BMap.Marker(new BMap.Point(lon, lat)); // 创建标注
+				map.addOverlay(marker); // 将标注添加到地图中
+				marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+			}
+
+		}
+		createMap("南京","map",1,$longitude,$latitude);
+		var alink = document.createElement("a");
+		var str = "$address";
+		var href = "http://api.map.baidu.com/geocoder?address="+str+"&output=html";
+		alink.setAttribute("class","gohere");
+		alink.setAttribute("id","gohere");
+		alink.setAttribute("href", href);
+		alink.innerHTML = "Go here->";
+		var map_obj = document.getElementById("mapwrap");
+		map_obj.appendChild(alink);
+	</script>
+</body>
+</html>

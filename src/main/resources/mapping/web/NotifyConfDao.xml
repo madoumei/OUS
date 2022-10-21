@@ -1,0 +1,47 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.dao.NotifyConfDao">
+    <sql id="select_clause">
+	  a.openid,
+	  a.rtx,
+	  a.email,
+	  a.weixin,
+	  a.sms
+    </sql>
+    
+     <select id="getNotifyConf" parameterType="String" resultType="NotifyConf">
+        SELECT
+            <include refid="select_clause"/>
+        FROM
+            qcv_notify_conf a where  a.openid=#{openid,jdbcType=VARCHAR}
+      </select>
+      
+     <insert id="addNotifyConf"  parameterType="NotifyConf">
+		INSERT INTO qcv_notify_conf (
+			  openid,
+			  rtx,
+			  email,
+			  weixin,
+			  sms
+		) VALUES (
+			#{openid,jdbcType=VARCHAR},
+			#{rtx,jdbcType=INTEGER},
+			#{email,jdbcType=INTEGER},
+			#{weixin,jdbcType=INTEGER},
+			#{sms,jdbcType=INTEGER}
+		)
+    </insert>
+    
+    <insert id="NotifyConfigure" parameterType="NotifyConf">
+       UPDATE qcv_notify_conf SET  
+        	 rtx = #{rtx},
+        	 email= #{email},
+        	 weixin=#{weixin},
+        	 sms=#{sms}
+         WHERE openid=#{openid}
+    </insert>
+    
+    <delete id="delNotifyConf" parameterType="String">
+        DELETE FROM qcv_notify_conf WHERE openid=#{openid}
+    </delete>
+    
+</mapper>

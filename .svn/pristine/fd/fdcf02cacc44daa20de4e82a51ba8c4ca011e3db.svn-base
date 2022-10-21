@@ -1,0 +1,112 @@
+<html>
+<head>
+<title>欢迎邮件更新</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body bgcolor="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+<!-- Save for Web Slices (欢迎邮件更新.psd) -->
+ <table width="702" height="2800" id="__01" border="0" cellspacing="0" cellpadding="0">
+        <tbody>
+            <tr>
+                <td>
+                    <table bgcolor="#f5f5f5" border="0" cellspacing="0" cellpadding="0">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <img width="351" height="70" alt="" src="https://www.coolvisit.com/console/assets/welcome/html/images/index_01.jpg">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <td>
+                        <table bgcolor="#f5f5f5" border="0" cellspacing="0" cellpadding="0">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <a href="https://www.coolvisit.com/console/assets/welcome/html/welcome.html">
+                                            <img width="351" height="70" alt="" src="https://www.coolvisit.com/console/assets/welcome/html/images/index_02.jpg">
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <img width="702" height="2011" alt="" src="https://www.coolvisit.com/console/assets/welcome/html/images/index_03.jpg">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <a href="https://www.coolvisit.com/signin.html">
+                            <img width="702" height="101" alt="" src="https://www.coolvisit.com/console/assets/welcome/html/images/index_04.jpg">
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <img width="702" alt="" src="https://www.coolvisit.com/console/assets/welcome/html/images/index_05.jpg">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table width="702" style="padding-left: 30px; margin-top: 10px;" bgcolor="#fafafa">
+            <tbody>
+                <tr>
+                    <td>
+                        <span style="font-size: 12px;">
+                            我们的努力，希望得到您的关注。
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span style="font-size: 12px;">
+                            如果您对我们的产品很感兴趣，欢迎与我们联系
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a style="text-decoration: none; font-size: 12px; color: #27A9E5;" target="_top">
+                            Mail: coolvisit@163.com
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a style="text-decoration: none; font-size: 12px; color: #27A9E5;" href="tencent://message/?uin=3212889373&amp;Site=qq&amp;Menu=yes" target="_top">
+                            QQ: 3212889373
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span style="font-size: 12px; color: #27A9E5;">
+                            电话: 025-85309686
+                        </span>
+                        <span>
+                        </span>
+                        <span style="font-size: 12px; color: #27A9E5;">
+                            转8006
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <br>
+                        <br>
+                        <a style="float:right; margin-right: 100px; font-size: 12px; text-decoration: none" href="https://www.coolvisit.com/signin.html?from=email&amp;position=account">
+                            想要退订邮件，点击此处
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+<br/>
+<br/>
+<br/>
+<!-- End Save for Web Slices -->
+</body>
+</html>

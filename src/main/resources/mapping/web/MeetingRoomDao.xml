@@ -1,0 +1,88 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.dao.MeetingRoomDao">
+    <sql id="select_clause">
+		a.id,
+		a.userid,
+		a.name,
+		a.address,
+		a.size,
+		a.deviceCode,
+		a.price,
+		a.prematureDays,
+		a.latestTime,
+		a.remark
+    </sql>
+    
+    
+       <insert id="addMeetingRoom" useGeneratedKeys="true" keyProperty="id"  parameterType="MeetingRoom">
+		INSERT INTO qcv_meetingroom (
+			userid,
+			name,
+			address,
+			size,
+			deviceCode,
+			price,
+			prematureDays,
+			latestTime,
+			remark
+		) VALUES (
+			#{userid,jdbcType=INTEGER},
+			#{name,jdbcType=VARCHAR},
+			#{address,jdbcType=VARCHAR},
+			#{size,jdbcType=VARCHAR},
+			#{deviceCode,jdbcType=VARCHAR},
+			#{price,jdbcType=DECIMAL},
+			#{prematureDays,jdbcType=INTEGER},
+			#{latestTime,jdbcType=INTEGER},
+			#{remark,jdbcType=VARCHAR}
+		)
+    </insert>
+   
+      
+      <select id="getMeetingRoomList"  resultType="MeetingRoom">
+        SELECT 
+         <include refid="select_clause"/>
+        FROM  
+        	qcv_meetingroom a where a.userid = #{userid}
+      </select>
+      
+      <select id="getMeetingRoom"  resultType="MeetingRoom">
+        SELECT 
+         <include refid="select_clause"/>
+        FROM  
+        	qcv_meetingroom a where a.id = #{id}
+      </select>
+
+    <select id="getMeetingRoomListByIdIn" resultType="com.web.bean.MeetingRoom">
+		SELECT
+		<include refid="select_clause"/>
+		FROM
+		qcv_meetingroom a where 1=1
+		<if test="mrids!=null and mrids.size()>0">
+		    and a.id
+			not in
+			<foreach collection="list" item="mrids" index="index" open="(" close=")" separator=",">
+				#{mrids}
+			</foreach>
+		</if>
+	</select>
+
+    <insert id="updateMeetingRoom" parameterType="MeetingRoom">
+	       UPDATE qcv_meetingroom SET   
+	       		name=#{name,jdbcType=VARCHAR},
+			 	address=#{address,jdbcType=VARCHAR},
+				size=#{size,jdbcType=VARCHAR},
+			 	deviceCode=#{deviceCode,jdbcType=VARCHAR},
+			 	price=#{price,jdbcType=DECIMAL},
+			 	prematureDays=#{prematureDays,jdbcType=INTEGER},
+			 	latestTime=#{latestTime,jdbcType=INTEGER},
+			 	remark=#{remark,jdbcType=VARCHAR}
+	         WHERE id = #{id} and userid = #{userid}
+	    </insert>
+      
+     <delete id="delMeetingRoom" parameterType="Integer">
+        DELETE FROM qcv_meetingroom WHERE id = #{id}
+     </delete>
+      
+      
+</mapper>

@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpm code="bpm.checkQrcode" name="bpm.checkQrcode" type="process" description="二维码验证">
+  <var name="vt" description="预约记录" dataType="com.client.bean.Visitor" contextVarName="vt" inOutType="return"></var>
+  <var name="app" description="邀请记录" dataType="com.web.bean.Appointment" contextVarName="app" inOutType="return"></var>
+  <var name="eType" description="二维码类型，01=员工，02访客，03供应商" dataType="java.lang.String" contextVarName="eType" inOutType="return"></var>
+  <var name="qrcode" description="二维码" dataType="java.lang.String" contextVarName="qrcode" inOutType="param"></var>
+  <var name="devicenumber" description="扫码设备编码" dataType="java.lang.String" contextVarName="devicenumber" inOutType="param"></var>
+  <var name="employee" description="员工" dataType="com.web.bean.Employee" contextVarName="employee" inOutType="return"></var>
+  <var name="eq" description="扫码设备" dataType="com.client.bean.Equipment" contextVarName="eq" inOutType="return"></var>
+  <var name="userinfo" dataType="com.web.bean.UserInfo" contextVarName="userinfo" inOutType="return"></var>
+  <var name="qrcodeType" description="访客二维码类型，23邀请，25预约，40打印贴纸" dataType="java.lang.String" contextVarName="qrcodeType" inOutType="return"></var>
+  <var name="id" description="二维码中的业务id" dataType="java.lang.String" contextVarName="id" inOutType="param"></var>
+  <var name="isEnter" description="是不是进门" dataType="java.lang.Boolean" contextVarName="isEnter" inOutType="inner"></var>
+  <var name="rv" description="供应商数据" dataType="com.web.bean.ResidentVisitor" contextVarName="rv" inOutType="return"></var>
+  <subBpm id="1649388135318" name="签出" subBpmCode="bpm.autoCheckout" type="process" waitForCompletion="false" waitForTrigger="false" g="760,1375,90,50">
+    <transition to="1651134692893"></transition>
+    <var name="vt" dataType="com.client.bean.Visitor" contextVarName="vt" inOutType="param"></var>
+    <var name="eq" dataType="com.client.bean.Equipment" contextVarName="eq" inOutType="param"></var>
+    <var name="userinfo" dataType="com.web.bean.UserInfo" contextVarName="userinfo" inOutType="param"></var>
+  </subBpm>
+  <decision id="1649394813264" name="门禁方向判断" g="560,1060,90,50">
+    <transition to="1649394691781" priority="1" name="进门" expression="isEnter == true"></transition>
+    <transition to="1649388135318" name="出门"></transition>
+    <action type="spring-bean">
+      <actionHandle bean="equipmentService" clazz="com.client.service.EquipmentService" method="isEnterRouter">
+        <var name="eq" dataType="com.client.bean.Equipment" contextVarName="eq" inOutType="param"></var>
+        <var name="isEnter" dataType="java.lang.Boolean" contextVarName="isEnter" inOutType="return"></var>
+      </actionHandle>
+    </action>
+  </decision>
+  <autoTask id="1649394497238" name="检查供应商有效性" g="975,290,90,50">
+    <transition to="1650438186047"></transition>
+    <action type="spring-bean">
+      <actionHandle bean="residentVisitorService" clazz="com.web.service.ResidentVisitorService" method="checkResidentVisitorTask">
+        <var name="rid" dataType="java.lang.String" contextVarName="qrcode.substring(44)" inOutType="param"></var>
+        <var name="rv" dataType="com.web.bean.ResidentVisitor" contextVarName="rv" inOutType="return"></var>
+      </actionHandle>
+    </action>
+  </autoTask>
+  <autoTask id="1649395348296" name="检查多次进出权限" g="465,1270,90,50">
+    <transition to="1649661262928"></transition>
+    <action type="spring-bean">
+      <actionHandle bean="visitorService" clazz="com.client.service.VisitorService" method="checkTimesTask">
+        <var name="ui" dataType="com.web.bean.UserInfo" contextVarName="userinfo" inOutType="param"></var>
+        <var name="vType" dataType="java.lang.String" contextVarName="vt.getvType()" inOutType="param"></var>
+        <var name="vphone" dataType="java.lang.String" contextVarName="vt.getVphone()" inOutType="param"></var>
+      </actionHandle>
+    </action>
+  </autoTask>
+  <end id="1649380717037" name="结束" g="670,1615,30,30"></end>
+  <decision id="1649381004351" name="二维码类型判断" g="535,80,90,50">
+    <transition to="1649406465725" name="员工二维码" expression="eType.equals(&quot;01&quot;)"></transition>
+    <transition to="1649408541167" name="访客" expression="eType.equals(&quot;02&quot;)"></transition>
+    <transition to="1649394497238" name="供应商" expression="eType.equals(&quot;03&quot;)"></transition>
+    <action type="spring-bean">
+      <actionHandle bean="visitorService" clazz="com.client.service.VisitorService" method="getEType">
+        <var name="qrcode" dataType="java.lang.String" contextVarName="qrcode" inOutType="param"></var>
+        <var name="eType" dataType="java.lang.String" contextVarName="eType" inOutType="return"></var>
+      </actionHandle>
+    </action>
+  </decision>
+  <autoTask id="1649412707361" name="获取预约访客" g="640,285,90,50">
+    <transition to="1649647874189"></transition>
+    <action type="spring-bean">
+      <actionHandle bean="visitorService" clazz="com.client.service.VisitorService" method="checkVisitorPermissionTask">
+        <var name="vid" dataType="java.lang.String" contextVarName="id" inOutType="param"></var>
+        <var name="vt" dataType="com.client.bean.Visitor" contextVarName="vt" inOutType="return"></var>
+      </actionHandle>
+    </action>
+  </autoTask>
+  <autoTask id="1649647874189" name="getUserInfo" g="540,535,90,50">
+    <transition to="1649394662383"></transition>
+    <action type="spring-bean">
+      <actionHandle bean="userService" clazz="com.web.service.UserService" method="getUserInfoByUserId">
+        <var name="userid" dataType="java.lang.Integer" contextVarName="vt.getUserid()" inOutType="param"></var>
+        <var name="userInfo" dataType="com.web.bean.UserInfo" contextVarName="userinfo" inOutType="return"></var>
+      </actionHandle>
+    </action>
+  </autoTask>
+  <autoTask id="1649394691781" name="是否能未签到进门" g="465,1180,90,50">
+    <transition to="1649395348296"></transition>
+    <action type="spring-bean">
+      <actionHandle bean="visitorService" clazz="com.client.service.VisitorService" method="checkSigninStatusTask">
+        <var name="vt" dataType="com.client.bean.Visitor" contextVarName="vt" inOutType="param"></var>
+      </actionHandle>
+    </action>
+  </autoTask>
+  <autoTask id="1649394662383" name="检查访客时间" g="545,650,90,50">
+    <transition to="1649394489367"></transition>
+    <action type="spring-bean">
+      <actionHandle bean="visitorService" clazz="com.client.service.VisitorService" method="checkVisitorAccessTimeTask">
+        <var name="ui" dataType="com.web.bean.UserInfo" contextVarName="userinfo" inOutType="param"></var>
+      </actionHandle>
+    </action>
+  </autoTask>
+  <autoTask id="1649394712821" name="检查二维码进出权限" g="555,865,90,50">
+    <transition to="1649395599261"></transition>
+    <action type="spring-bean">
+      <actionHandle bean="visitorService" clazz="com.client.service.VisitorService" method="checkAccessTypeTask">
+        <var name="ui" dataType="com.web.bean.UserInfo" contextVarName="userinfo" inOutType="param"></var>
+        <var name="vType" dataType="java.lang.String" contextVarName="vt.getvType()" inOutType="param"></var>
+        <var name="accType" dataType="java.lang.String" defaultValue="1" inOutType="param"></var>
+      </actionHandle>
+    </action>
+  </autoTask>
+  <autoTask id="1649381496169" name="检查二维码有效期" g="245,85,90,50">
+    <transition to="1649381004351"></transition>
+    <action type="spring-bean">
+      <actionHandle bean="visitorService" clazz="com.client.service.VisitorService" method="checkQrcodeExpiredDateTask">
+        <var name="expireddate" dataType="java.lang.String" contextVarName="qrcode" inOutType="param"></var>
+      </actionHandle>
+    </action>
+  </autoTask>
+  <autoTask id="1651134692893" name="通知senselink访客通行事件" g="770,1480,90,50">
+    <transition to="1649380717037"></transition>
+  </autoTask>
+  <autoTask id="1649406465725" name="检查员工有效性" g="270,285,90,50">
+    <transition to="1649388422650"></transition>
+    <action type="spring-bean">
+      <actionHandle bean="visitorService" clazz="com.client.service.VisitorService" method="checkEmployeeTask">
+        <var name="qrcode" dataType="java.lang.String" contextVarName="qrcode.substring(44)" inOutType="param"></var>
+        <var name="employee" dataType="com.web.bean.Employee" contextVarName="employee" inOutType="return"></var>
+      </actionHandle>
+    </action>
+  </autoTask>
+  <autoTask id="1649394489367" name="检查访客门禁权限" g="550,755,90,50">
+    <transition to="1649394712821"></transition>
+    <action type="spring-bean">
+      <actionHandle bean="visitorService" clazz="com.client.service.VisitorService" method="checkEquipmentTask">
+        <var name="egids" dataType="java.lang.String" contextVarName="vt.getEgids()" inOutType="param"></var>
+        <var name="devicenumber" dataType="java.lang.String" contextVarName="devicenumber" inOutType="param"></var>
+        <var name="eq" description="当前门禁信息" dataType="com.client.bean.Equipment" contextVarName="eq" inOutType="return"></var>
+      </actionHandle>
+    </action>
+  </autoTask>
+  <autoTask id="1649661262928" name="是否已经结束拜访" g="460,1345,90,50">
+    <transition to="1654761692714"></transition>
+    <action type="spring-bean">
+      <actionHandle bean="visitorService" clazz="com.client.service.VisitorService" method="checkLeaveStatusTask">
+        <var name="vt" dataType="com.client.bean.Visitor" contextVarName="vt" inOutType="param"></var>
+      </actionHandle>
+    </action>
+  </autoTask>
+  <autoTask id="1649394884301" name="获取邀请访客" g="445,285,90,50">
+    <transition to="1649647754694"></transition>
+    <action type="spring-bean">
+      <actionHandle bean="appointmentService" clazz="com.web.service.AppointmentService" method="checkAppointmentPermissionTask">
+        <var name="aid" dataType="java.lang.String" contextVarName="id" inOutType="param"></var>
+        <var name="app" dataType="com.web.bean.Appointment" contextVarName="app" inOutType="return"></var>
+      </actionHandle>
+    </action>
+  </autoTask>
+  <autoTask id="1649396283093" name="检查供应商签到" g="985,495,90,50">
+    <transition to="1649380717037"></transition>
+    <action type="java">
+      <actionHandle clazz="com.utils.BeanUtils" method="doNothing"></actionHandle>
+    </action>
+  </autoTask>
+  <autoTask id="1649395599261" name="检查是否允许签到码进出" g="560,970,90,50">
+    <transition to="1649394813264"></transition>
+    <action type="spring-bean">
+      <actionHandle bean="visitorService" clazz="com.client.service.VisitorService" method="checkAppCodeAccessTask">
+        <var name="qrcodeType" description="访客二维码类型" dataType="java.lang.String" contextVarName="qrcodeType" inOutType="param"></var>
+      </actionHandle>
+    </action>
+  </autoTask>
+  <autoTask id="1649645368274" name="获取签到访客" g="780,290,90,50">
+    <transition to="1649647874189"></transition>
+    <action type="spring-bean">
+      <actionHandle bean="visitorService" clazz="com.client.service.VisitorService" method="checkVisitorPermissionTask">
+        <var name="vid" dataType="java.lang.String" contextVarName="id" inOutType="param"></var>
+        <var name="vt" dataType="com.client.bean.Visitor" contextVarName="vt" inOutType="return"></var>
+      </actionHandle>
+    </action>
+  </autoTask>
+  <autoTask id="1650438186047" name="检查供应商门禁权限" g="980,390,90,50">
+    <transition to="1649396283093"></transition>
+    <action type="spring-bean">
+      <actionHandle bean="visitorService" clazz="com.client.service.VisitorService" method="checkEquipmentTask">
+        <var name="egids" dataType="java.lang.String" contextVarName="rv.getEgids()" inOutType="param"></var>
+        <var name="devicenumber" dataType="java.lang.String" contextVarName="devicenumber" inOutType="param"></var>
+        <var name="eq" dataType="com.client.bean.Equipment" contextVarName="eq" inOutType="return"></var>
+      </actionHandle>
+    </action>
+  </autoTask>
+  <decision id="1649408541167" name="预约方式" g="540,220,90,50">
+    <transition to="1649412707361" name="预约码" expression="qrcodeType.equals(&quot;25&quot;)"></transition>
+    <transition to="1649645368274" name="签到二维码" expression="qrcodeType.equals(&quot;40&quot;)"></transition>
+    <transition to="1649394884301" name="邀请码" expression="qrcodeType.equals(&quot;23&quot;)"></transition>
+    <action type="spring-bean">
+      <actionHandle bean="visitorService" clazz="com.client.service.VisitorService" method="getQrcodeType">
+        <var name="qrcode" dataType="java.lang.String" contextVarName="qrcode" inOutType="param"></var>
+        <var name="qrcodeType" dataType="java.lang.String" contextVarName="qrcodeType" inOutType="return"></var>
+      </actionHandle>
+    </action>
+  </decision>
+  <autoTask id="1649388422650" name="检查员工门禁权限" g="275,405,90,50">
+    <transition to="1649380717037"></transition>
+    <action type="spring-bean">
+      <actionHandle bean="visitorService" clazz="com.client.service.VisitorService" method="checkEquipmentTask">
+        <var name="egids" dataType="java.lang.String" contextVarName="employee.getEgids()" inOutType="param"></var>
+        <var name="devicenumber" dataType="java.lang.String" contextVarName="devicenumber" inOutType="param"></var>
+        <var name="eq" dataType="com.client.bean.Equipment" contextVarName="eq" inOutType="return"></var>
+      </actionHandle>
+    </action>
+  </autoTask>
+  <start id="1648621236439" name="开始" g="35,95,30,30">
+    <transition to="1649381496169"></transition>
+  </start>
+  <autoTask id="1649647754694" name="appToVt" g="440,370,90,50">
+    <transition to="1649647874189"></transition>
+    <action type="java">
+      <actionHandle clazz="com.utils.BeanUtils" method="appointmentToVisitor">
+        <var name="app" dataType="com.web.bean.Appointment" contextVarName="app" inOutType="param"></var>
+        <var name="vt" dataType="com.client.bean.Visitor" contextVarName="vt" inOutType="return"></var>
+      </actionHandle>
+    </action>
+  </autoTask>
+  <autoTask id="1651134391411" name="通知senselink访客通行事件" g="470,1560,90,50">
+    <transition to="1649380717037"></transition>
+    <action type="spring-bean">
+      <actionHandle bean="visitorService" clazz="com.client.service.VisitorService" method="sendVisitorPassMsgTask">
+        <var name="ui" dataType="com.web.bean.UserInfo" contextVarName="userinfo" inOutType="param"></var>
+        <var name="eq" dataType="com.client.bean.Equipment" contextVarName="eq" inOutType="param"></var>
+        <var name="visitor" dataType="com.client.bean.Visitor" contextVarName="vt" inOutType="param"></var>
+      </actionHandle>
+    </action>
+  </autoTask>
+  <subBpm id="1649386795867" name="签到" subBpmCode="bpm.autoCheckin" type="process" waitForCompletion="false" waitForTrigger="false" g="465,1460,90,50">
+    <transition to="1651134391411"></transition>
+    <var name="vtParam" dataType="com.client.bean.Visitor" contextVarName="vt" inOutType="param"></var>
+    <var name="userinfo" dataType="com.web.bean.UserInfo" contextVarName="userinfo" inOutType="param"></var>
+  </subBpm>
+  <autoTask id="1654761692714" name="是否已经签离" g="310,1385,90,50">
+    <transition to="1649386795867"></transition>
+    <action type="spring-bean">
+      <actionHandle bean="visitorService" clazz="com.client.service.VisitorService" method="checkSignoutStatusTask">
+        <var name="vt" dataType="com.client.bean.Visitor" contextVarName="vt" inOutType="param"></var>
+      </actionHandle>
+    </action>
+  </autoTask>
+</bpm>

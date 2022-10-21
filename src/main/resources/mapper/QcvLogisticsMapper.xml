@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.client.dao.QcvLogisticsMapper">
+
+    <resultMap id="BaseResultMap" type="com.client.bean.dto.QcvLogistics">
+            <id property="sid" column="sid" jdbcType="INTEGER"/>
+            <result property="userid" column="userid" jdbcType="INTEGER"/>
+            <result property="dname" column="dname" jdbcType="VARCHAR"/>
+            <result property="dmobile" column="dmobile" jdbcType="VARCHAR"/>
+            <result property="dcardid" column="dcardId" jdbcType="VARCHAR"/>
+            <result property="driverextend" column="driverExtend" jdbcType="VARCHAR"/>
+            <result property="logextend" column="logExtend" jdbcType="VARCHAR"/>
+            <result property="platenum" column="plateNum" jdbcType="VARCHAR"/>
+            <result property="vehicleextend" column="vehicleExtend" jdbcType="VARCHAR"/>
+            <result property="goodsphoto" column="goodsPhoto" jdbcType="VARCHAR"/>
+            <result property="healthphoto" column="healthPhoto" jdbcType="VARCHAR"/>
+            <result property="journphoto" column="journPhoto" jdbcType="VARCHAR"/>
+            <result property="nucleicphoto" column="nucleicPhoto" jdbcType="VARCHAR"/>
+            <result property="logtype" column="logType" jdbcType="VARCHAR"/>
+            <result property="company" column="company" jdbcType="VARCHAR"/>
+            <result property="rname" column="rname" jdbcType="VARCHAR"/>
+            <result property="openid" column="openid" jdbcType="VARCHAR"/>
+            <result property="appointmentstartdate" column="appointmentStartDate" jdbcType="TIMESTAMP"/>
+            <result property="appointmentenddate" column="appointmentEndDate" jdbcType="TIMESTAMP"/>
+            <result property="visitdate" column="visitdate" jdbcType="TIMESTAMP"/>
+            <result property="leavetime" column="leaveTime" jdbcType="TIMESTAMP"/>
+            <result property="finishtime" column="finishTime" jdbcType="TIMESTAMP"/>
+            <result property="pstatus" column="pstatus" jdbcType="TINYINT"/>
+            <result property="lognum" column="logNum" jdbcType="VARCHAR"/>
+            <result property="otherextend" column="otherExtend" jdbcType="VARCHAR"/>
+            <result property="remark" column="remark" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        sid,userid,dname,
+        dmobile,dcardId,driverExtend,
+        logExtend,plateNum,vehicleExtend,
+        goodsPhoto,healthPhoto,journPhoto,
+        nucleicPhoto,logType,company,
+        rname,appointmentStartDate,appointmentEndDate,visitdate,
+        leaveTime,finishTime,pstatus,
+        logNum,inspectExtend,remark,
+        openid,otherextend
+    </sql>
+</mapper>

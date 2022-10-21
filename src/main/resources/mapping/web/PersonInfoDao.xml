@@ -1,0 +1,240 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.dao.PersonInfoDao">
+    <sql id="select_clause">
+	 	a.pmobile,
+		a.pname,
+		a.pemail,
+		a.password,
+		a.pcardid,
+		a.popenid,
+		a.pcompany,
+		a.pposition,
+		a.paddress,
+		a.pqq,
+		a.avatar,
+		a.userid,
+		a.nickname,
+		a.face,
+		a.sex
+    </sql>
+    
+     <sql id="select_clause2">
+	 	a.pmobile,
+		a.pname,
+		a.pemail,
+		a.pcardid,
+		a.popenid,
+		a.pcompany,
+		a.pposition,
+		a.paddress,
+		a.pqq,
+		a.avatar,
+		a.face,
+		a.sex,
+		a.userid
+    </sql>
+    
+     <select id="getVisitPersonByPhone"  resultType="Person">
+        SELECT
+           <include refid="select_clause"/>
+        FROM
+            qcv_visit_personal a where a.pmobile=#{pmobile}
+      </select>
+      
+      <select id="getVisitPersonByCardid"  resultType="Person">
+        SELECT
+           <include refid="select_clause"/>
+        FROM
+            qcv_visit_personal a where a.pcardid=#{pcardid}
+      </select>
+      
+       <select id="getInvitePersonByPhone"  resultType="Person">
+        SELECT
+           <include refid="select_clause2"/>
+        FROM
+            qcv_invite_personal a where a.pmobile=#{pmobile}
+      </select>
+    
+     <insert id="addVisitPerson"  parameterType="Person">
+		INSERT INTO qcv_visit_personal (
+		    pmobile,
+			pname,
+			pemail,
+			password,
+			pcardid,
+			popenid,
+			pcompany,
+			pposition,
+			paddress,
+			pqq,
+		    avatar,
+		    sex,
+			userid
+		) VALUES (
+			#{pmobile,jdbcType=BIGINT},
+			#{pname,jdbcType=VARCHAR},
+			#{pemail,jdbcType=VARCHAR},
+			#{password,jdbcType=VARCHAR},
+			#{pcardid,jdbcType=VARCHAR},
+			#{popenid,jdbcType=VARCHAR},
+			#{pcompany,jdbcType=VARCHAR},
+			#{pposition,jdbcType=VARCHAR},
+			#{paddress,jdbcType=VARCHAR},
+			#{pqq,jdbcType=VARCHAR},
+			#{avatar,jdbcType=VARCHAR},
+			#{sex,jdbcType=INTEGER},
+			#{userid,jdbcType=INTEGER}
+		)
+    </insert>
+    
+     <insert id="addInvitePerson"  parameterType="Person">
+		INSERT INTO qcv_invite_personal (
+		    pmobile,
+			pname,
+			pemail,
+			pcardid,
+			popenid,
+			pcompany,
+			pposition,
+			paddress,
+			pqq,
+			avatar,
+			userid,
+			sex
+		) VALUES (
+			#{pmobile,jdbcType=BIGINT},
+			#{pname,jdbcType=VARCHAR},
+			#{pemail,jdbcType=VARCHAR},
+			#{pcardid,jdbcType=VARCHAR},
+			#{popenid,jdbcType=VARCHAR},
+			#{pcompany,jdbcType=VARCHAR},
+			#{pposition,jdbcType=VARCHAR},
+			#{paddress,jdbcType=VARCHAR},
+			#{pqq,jdbcType=VARCHAR},
+			#{avatar,jdbcType=VARCHAR},
+			#{userid,jdbcType=VARCHAR},
+			#{sex,jdbcType=INTEGER}
+		)
+    </insert>
+    
+     <insert id="updateVisitPerson" parameterType="Person">
+       UPDATE qcv_visit_personal SET  
+       		pname = #{pname,jdbcType=VARCHAR},
+       		pemail = #{pemail,jdbcType=VARCHAR},
+       		pcardid= #{pcardid,jdbcType=VARCHAR},
+       		pcompany= #{pcompany,jdbcType=VARCHAR},
+       		pposition= #{pposition,jdbcType=VARCHAR},
+       		paddress= #{paddress,jdbcType=VARCHAR},
+       		pqq=#{pqq,jdbcType=VARCHAR},
+       		popenid=#{popenid,jdbcType=VARCHAR},
+			avatar=#{avatar,jdbcType=VARCHAR},
+			sex =#{sex,jdbcType=INTEGER}
+         WHERE pmobile = #{oldmobile}
+    </insert>
+    
+    <insert id="updateVisitPersonPwd" parameterType="Person">
+       UPDATE qcv_visit_personal SET  
+       		password = #{password,jdbcType=VARCHAR}
+         WHERE pmobile = #{pmobile}
+    </insert>
+    
+      <insert id="updateNickname" parameterType="Person">
+       UPDATE qcv_visit_personal SET  
+       		nickname = #{nickname,jdbcType=VARCHAR}
+         WHERE pmobile = #{pmobile}
+      </insert>
+    
+    <insert id="updateAvatar" parameterType="Person">
+       UPDATE qcv_visit_personal SET  
+       		avatar = #{avatar,jdbcType=VARCHAR}
+         WHERE pmobile = #{pmobile}
+      </insert>
+      
+      <insert id="updateInviteAvatar" parameterType="Person">
+       UPDATE qcv_invite_personal SET  
+       		avatar = #{avatar,jdbcType=VARCHAR}
+         WHERE pmobile = #{pmobile}
+      </insert>
+    
+     <insert id="activateVisitPersonPwd" parameterType="Person">
+       UPDATE qcv_visit_personal SET  
+       		password = #{password,jdbcType=VARCHAR}
+         WHERE pmobile = #{pmobile}
+    </insert>
+    
+    <insert id="updatePersonUserid" parameterType="Person">
+       UPDATE qcv_visit_personal SET  
+       		userid= #{userid},
+       		pcompany= #{pcompany}  
+         WHERE pmobile = #{pmobile}
+    </insert>
+    
+       <insert id="updateVisitFace" parameterType="Person">
+       UPDATE qcv_visit_personal SET  
+       		face= #{face} 
+         WHERE popenid = #{popenid}
+    </insert>
+    
+    
+       <insert id="updateInviteFace" parameterType="Person">
+       UPDATE qcv_invite_personal SET  
+       		face= #{face}  
+         WHERE popenid = #{popenid}
+    </insert>
+    
+    <insert id="updateInvitePerson" parameterType="Person">
+       UPDATE qcv_invite_personal SET  
+       		pname = #{pname,jdbcType=VARCHAR},
+       		pemail = #{pemail,jdbcType=VARCHAR},
+       		pcardid= #{pcardid,jdbcType=VARCHAR},
+       		pcompany= #{pcompany,jdbcType=VARCHAR},
+       		pposition= #{pposition,jdbcType=VARCHAR},
+       		paddress= #{paddress,jdbcType=VARCHAR},
+       		pqq=#{pqq,jdbcType=VARCHAR},
+       		popenid=#{popenid,jdbcType=VARCHAR},
+       		avatar=#{avatar,jdbcType=VARCHAR},
+       		userid=#{userid,jdbcType=INTEGER},
+       		sex=#{sex,jdbcType=INTEGER}
+         WHERE pmobile = #{oldmobile}
+    </insert>
+    
+    <delete id="delInvitePerson" parameterType="String">
+        DELETE FROM qcv_invite_personal WHERE pmobile = #{pmobile}
+    </delete>
+    
+     <delete id="delInvitePersonByOpenid" parameterType="String">
+        DELETE FROM qcv_invite_personal WHERE popenid = #{popenid}
+    </delete>
+    
+    <delete id="delVisitPerson" parameterType="String">
+        DELETE FROM qcv_visit_personal WHERE popenid = #{popenid}
+    </delete>
+    
+     <select id="getVisitPersonByOpenid"  resultType="Person">
+        SELECT
+           <include refid="select_clause"/>
+        FROM
+            qcv_visit_personal a where a.popenid=#{popenid}
+      </select>
+      
+       <select id="getInvitePersonByOpenid"  resultType="Person">
+        SELECT
+           <include refid="select_clause2"/>
+        FROM
+            qcv_invite_personal a where a.popenid=#{popenid}
+      </select>
+
+	<select id="getVisitPersonByAvatar"  resultType="Person">
+		SELECT
+		<include refid="select_clause"/>
+		FROM
+		qcv_visit_personal a where a.avatar = #{avatar}
+	</select>
+
+	<select id="getInvitePersonByAvatar"  resultType="Person">
+		SELECT
+		<include refid="select_clause2"/>
+		FROM
+		qcv_invite_personal a where a.avatar = #{avatar}
+	</select>
+</mapper>

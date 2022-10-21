@@ -1,0 +1,68 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.dao.MsgTemplateDao">
+    <sql id="select_clause">
+	  a.id,
+	  a.userid,
+	  a.type,
+	  a.templateid,
+	  a.title,
+	  a.content,
+	  a.remark,
+	  a.status
+    </sql>
+
+    
+     <select id="getTemplate"  resultType="MsgTemplate">
+        SELECT
+            <include refid="select_clause"/>
+        FROM
+		 qcv_msg_template a where  a.userid=#{userid} and a.id=#{id}
+      </select>
+      
+
+    
+     <insert id="addTemplate" useGeneratedKeys="true" keyProperty="id" parameterType="MsgTemplate">
+		INSERT INTO qcv_msg_template (
+			userid,
+		    `id`,
+        	`type`,
+        	`templateid`,
+        	`title`,
+        	`content`,
+        	`remark`,
+        	`status`
+		) VALUES (
+			#{userid,jdbcType=INTEGER},
+			#{id,jdbcType=VARCHAR},
+			#{type,jdbcType=VARCHAR},
+			#{templateid,jdbcType=VARCHAR},
+			#{title,jdbcType=VARCHAR},
+			#{content,jdbcType=VARCHAR},
+			#{remark,jdbcType=VARCHAR},
+			#{status,jdbcType=INTEGER}
+		)
+    </insert>
+    
+       <insert id="updateMsgTemplate" parameterType="MsgTemplate">
+       UPDATE qcv_msg_template SET
+       		`type` = #{type,jdbcType=VARCHAR},
+       		`templateid` = #{templateid,jdbcType=VARCHAR},
+       		`title`= #{title,jdbcType=VARCHAR},
+       		`content`= #{content,jdbcType=VARCHAR},
+       		`remark`= #{remark,jdbcType=VARCHAR},
+			`status`=#{status,jdbcType=INTEGER}
+         WHERE id = #{id} and userid = #{userid}
+    </insert>
+    
+    
+       <delete id="delMsgTemplate" parameterType="MsgTemplate">
+        DELETE FROM qcv_msg_template WHERE id = #{id} and userid = #{userid}
+    </delete>
+    
+
+
+
+
+
+
+</mapper>

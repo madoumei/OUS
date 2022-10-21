@@ -1,0 +1,38 @@
+package com.client.bean;
+
+import io.swagger.annotations.ApiModel;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.Date;
+
+@Getter
+@Setter
+@ApiModel("ogistics 物流记录Bean")
+public class Logistics {
+	private int sid;
+	private int userid;
+	private String sname;
+	private String smobile;
+	private String scardId;
+	private String dname;
+	private String dmobile;
+	private String dcardId;
+	private String driverExtend;
+	private String logExtend;
+	private String plateNum;
+	private String vehicleExtend;
+	private String goodsExtend;
+	private String photoInfo;
+	private String logType;
+	private Date appointmentDate;
+	private Date visitdate;
+	private Date leaveTime;
+	private Date finishTime;
+	private int pstatus;
+	private String logNum;
+	private String inspectExtend;
+	private String memberInfo;
+	private String remark;
+	private String otherExtend;
+}

@@ -1,0 +1,39 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.dao.OperatorDao">
+    <sql id="select_clause">
+	  a.id,
+	  a.name,
+	  a.account,
+	  a.password,
+	  a.loginDate
+    </sql>
+    
+     <select id="getOperator"  resultType="Operator">
+        SELECT
+            <include refid="select_clause"/>
+        FROM
+            qcv_operation_user a where  a.account=#{account}
+      </select>
+      
+    <insert id="updateLoginDate" parameterType="Operator">
+       UPDATE qcv_operation_user SET  
+       		loginDate = #{loginDate}
+         WHERE id = #{id}
+    </insert>
+      
+    
+     <insert id="addOperator" useGeneratedKeys="true" keyProperty="id" parameterType="Operator">
+		INSERT INTO qcv_operation_user (
+			  id,
+			  name,
+			  account,
+			  password
+		) VALUES (
+			#{id,jdbcType=INTEGER},
+			#{name,jdbcType=VARCHAR},
+			#{account,jdbcType=VARCHAR},
+			#{password,jdbcType=VARCHAR}
+		)
+    </insert>
+    
+</mapper>

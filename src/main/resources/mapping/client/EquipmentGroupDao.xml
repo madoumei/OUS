@@ -1,0 +1,117 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.client.dao.EquipmentGroupDao">
+    <sql id="select_clause">
+        a.egid,
+		a.userid,
+		a.egname,
+		a.status,
+		a.etype,
+		a.gids
+    </sql>
+
+    <insert id="addEquipmentGroup" useGeneratedKeys="true" keyProperty="egid"  parameterType="EquipmentGroup">
+        INSERT INTO qcv_eqpt_group (
+            userid,
+            egname,
+            status,
+            etype,
+            gids
+        ) VALUES (
+                     #{userid,jdbcType=INTEGER},
+                     #{egname,jdbcType=VARCHAR},
+                     #{status,jdbcType=INTEGER},
+                     #{etype,jdbcType=INTEGER},
+                     #{gids,jdbcType=VARCHAR}
+                 )
+
+    </insert>
+
+    <select id="getEquipmentGroupByUserid"  resultType="EquipmentGroup">
+        SELECT
+        <include refid="select_clause"/>
+        FROM
+        qcv_eqpt_group a where a.userid=#{userid}
+
+        <if test='reqEtype != null and reqEtype != "" and  reqEtype != "null"'>
+            and a.etype in ${reqEtype}
+        </if>
+
+        <if test='egname != null and egname != "" and  egname != "null"'>
+            and a.egname like "%"#{egname}"%"
+        </if>
+
+        <if test='status != 0'>
+            and a.status =#{status}
+        </if>
+
+        <if test='gids != null and gids != "" and  gids != "null"'>
+            and find_in_set(#{gids},gids)
+        </if>
+        order by egname
+    </select>
+
+    <select id="getEquipmentGroupByGname"  resultType="EquipmentGroup">
+        SELECT
+        <include refid="select_clause"/>
+        FROM
+        qcv_eqpt_group a where a.egname=#{egname} and a.userid=#{userid}
+    </select>
+
+
+    <select id="getEgidByName" parameterType="EquipmentGroup" resultType="EquipmentGroup">
+        SELECT
+            GROUP_CONCAT(egid) AS gids
+        FROM
+            qcv_eqpt_group a where  a.userid =#{userid} and a.egname in (${egname})
+    </select>
+
+    <select id="getEquipmentGroupByEgid"  resultType="EquipmentGroup">
+        SELECT
+        <include refid="select_clause"/>
+        FROM
+        qcv_eqpt_group a where a.egid=#{egid}
+    </select>
+
+    <insert id="updateEquipmentGroup"  parameterType="EquipmentGroup">
+        update qcv_eqpt_group set
+                                  status=#{status},
+                                  egname=#{egname},
+                                  etype=#{etype},
+                                  gids=#{gids}
+        where egid = #{egid}
+    </insert>
+
+    <delete id="delEquipmentGroup" parameterType="Integer">
+        DELETE FROM qcv_eqpt_group WHERE egid = #{egid}
+    </delete>
+
+    <select id="getEquipmentGroupByEgidArray" resultType="EquipmentGroup">
+        select
+        <include refid="select_clause"></include>
+        from  qcv_eqpt_group a where egid in
+        <foreach collection="array" item="accessId" index="index" open="(" separator="," close=")">
+            #{accessId}
+        </foreach>
+    </select>
+
+    <select id="getEquipmentGroupListByGid" resultType="EquipmentGroup">
+        select
+            eg.`gids` as gids ,eg.`egid` as egid ,eg.`egname` as egname,eg.status as status
+        from
+            qcv_gate a,qcv_eqpt_group eg
+        where
+            a.`userid` = #{userid}
+          and CONCAT(',',eg.gids, ',') REGEXP concat(',(',replace(#{gid},',','|'),'),')>0
+          and a.`gid`=#{gid};
+    </select>
+
+    <select id="getEquipmentGroupByEgidSmart"  resultType="EquipmentGroup">
+        SELECT
+        <include refid="select_clause"/>
+        FROM
+        qcv_eqpt_group a where a.status=3 <if test="egid!=0">and egid=#{egid}</if>
+    </select>
+
+
+
+</mapper>

@@ -1,0 +1,90 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.client.dao.TbGoodsDao">
+    <sql id="select_clause">
+		a.gid,
+		a.title,
+		a.price,
+		a.origPrice,
+		a.tag,
+		a.sales,
+		a.imageUrl,
+		a.cid,
+		a.onsaleDate,
+		a.status
+    </sql>
+    
+    
+       <insert id="addTbGoods"  parameterType="TbGoods">
+		INSERT INTO qcv_tb_goods (
+			gid,
+			title,
+			price,
+			origPrice,
+			tag,
+			sales,
+			imageUrl,
+			cid,
+			onsaleDate,
+			status
+		) VALUES (
+			#{gid,jdbcType=VARCHAR},
+			#{title,jdbcType=VARCHAR},
+			#{price,jdbcType=DECIMAL},
+			#{origPrice,jdbcType=DECIMAL},
+			#{tag,jdbcType=VARCHAR},
+			#{sales,jdbcType=INTEGER},
+			#{imageUrl,jdbcType=VARCHAR},
+			#{cid,jdbcType=INTEGER},
+			#{onsaleDate},
+			#{status,jdbcType=INTEGER}
+		)
+    </insert>
+    
+    
+      <select id="getAllTbGoods"  resultType="TbGoods">
+        SELECT 
+         <include refid="select_clause"/>
+        FROM  
+        	qcv_tb_goods a order by a.onsaleDate desc
+      </select>
+    
+      <select id="getSaleTbGoods"  resultType="TbGoods">
+        SELECT 
+         <include refid="select_clause"/>
+        FROM  
+        	qcv_tb_goods a  where a.status = 1  order by a.onsaleDate desc
+      </select>
+      
+      <select id="getTbGoodsByGid"  resultType="TbGoods">
+        SELECT 
+         <include refid="select_clause"/>
+        FROM  
+        	qcv_tb_goods a  where a.gid = #{gid} 
+      </select>
+      
+      <select id="getSaleTbGoodsByCid"  resultType="TbGoods">
+        SELECT 
+         <include refid="select_clause"/>
+        FROM  
+        	qcv_tb_goods a  where a.cid = #{cid} and a.status = 1  order by a.onsaleDate desc
+      </select>
+      
+      <insert id="updateTbGoods"  parameterType="TbGoods">
+        update qcv_tb_goods set 
+          title=#{title},
+          price=#{price},
+          origPrice=#{origPrice},
+          tag=#{tag},
+          sales=#{sales},
+          imageUrl=#{imageUrl},
+          cid=#{cid},
+          status=#{status}
+           where gid = #{gid}
+      </insert>
+      
+     <delete id="delTbGoods" parameterType="String">
+        DELETE FROM qcv_tb_goods where gid = #{gid}
+     </delete>
+      
+      
+</mapper>

@@ -1,0 +1,72 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.dao.HolidayDao">
+    <sql id="select_clause">
+		a.hid,
+		a.userid,
+		a.hdate,
+		a.remark,
+		a.passFlag,
+		a.rid  
+    </sql>    
+   
+    
+    <insert id="addHoliday"   parameterType="Holiday">
+		INSERT INTO qcv_holiday_bill (
+		    hid,
+		    userid,
+			hdate,
+			remark,
+			passFlag,
+			rid  
+		) VALUES (
+			#{hid,jdbcType=VARCHAR},
+			#{userid,jdbcType=INTEGER},
+			#{hdate},
+			#{remark,jdbcType=VARCHAR},
+			#{passFlag,jdbcType=INTEGER},
+			#{rid,jdbcType=INTEGER}
+		)
+    </insert>
+    
+	 <select id="getHoliday" parameterType="ReqHd" resultType="Holiday">
+        SELECT
+           <include refid="select_clause"/>
+        FROM
+           qcv_holiday_bill a where a.userid= #{userid}
+           
+            <if test='hdate != null'>
+              and YEAR(a.hdate)= YEAR(#{hdate}) 
+            </if>
+            
+            <if test='sdate != null'>
+              and TO_DAYS(a.hdate)= TO_DAYS(#{sdate}) 
+            </if>
+            
+             <if test='rid != "0"'>
+              and rid=#{rid}
+             </if>
+           
+            order by a.hdate asc
+      </select>
+      
+    <insert id="updateHoliday" parameterType="Holiday">
+       UPDATE qcv_holiday_bill SET      		
+       		hdate=#{hdate},
+       		remark=#{remark},
+       		passFlag=#{passFlag} 
+         WHERE hid=#{hid} and  userid= #{userid}
+    </insert>
+      
+     <delete id="delHoliday" parameterType="Holiday">
+        DELETE FROM qcv_holiday_bill WHERE  userid= #{userid} 
+          <if test='hid != null and hid != "" and  hid != "null"'>
+              and hid=#{hid}
+          </if>
+          
+          <if test='rid != "0"'>
+              and rid=#{rid}
+          </if>
+    
+     </delete>  
+    
+</mapper>

@@ -1,0 +1,46 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.dao.SendRecordDao">
+    <sql id="select_clause">
+    	a.id,
+		a.userid,
+		a.emailSubject,
+	 	a.operator,
+		a.sendDate
+    </sql>
+    
+    
+      <insert id="addSendRecord" useGeneratedKeys="true" keyProperty="id"  parameterType="SendRecord">
+		INSERT INTO qcv_email_sendrecord (
+			userid,
+			emailSubject,
+		 	operator,
+			sendDate
+		) VALUES (
+			#{userid,jdbcType=INTEGER},
+			#{emailSubject,jdbcType=VARCHAR},
+			#{operator,jdbcType=VARCHAR},
+			#{sendDate}
+		)
+     </insert>
+      
+      <select id="getSendRecordList" parameterType="Integer" resultType="SendRecord">
+        SELECT 
+         <include refid="select_clause"/>
+        FROM  
+        	qcv_email_sendrecord a where userid = #{userid}
+      </select>
+      
+      <insert id="updateSendRecord" parameterType="SendRecord">
+        UPDATE qcv_email_sendrecord SET   
+		emailSubject=#{emailSubject},
+		operator=#{operator},
+		sendDate=#{sendDate}
+         WHERE id = #{id}
+      </insert>
+      
+     <delete id="delSendRecord" parameterType="Integer">
+        DELETE FROM qcv_email_sendrecord WHERE id = #{id}
+     </delete>
+      
+      
+</mapper>

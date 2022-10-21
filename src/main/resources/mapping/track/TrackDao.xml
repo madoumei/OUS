@@ -1,0 +1,52 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.client.dao2.TrackDao">
+    <sql id="select_track">
+		 a.id,
+		 a.userid,
+		 a.openId,
+		 a.createTime,
+		 a.longitude,
+		 a.latitude
+    </sql>
+
+
+    <insert id="batchSaveTrack" parameterType="java.util.List">
+        INSERT INTO gis_track (
+        userid,
+        openId,
+        vid,
+        createTime,
+        longitude,
+        latitude,
+        storeposition
+        ) VALUES
+        <foreach collection="list" item="tlist" index="index" separator=",">
+            (#{tlist.userid},#{tlist.openId},#{tlist.vid},#{tlist.createTime},
+            #{tlist.longitude},#{tlist.latitude},st_point(#{tlist.longitude},#{tlist.latitude}))
+        </foreach>
+    </insert>
+
+    <select id="getLatestPointList" parameterType="RequestVisit" resultType="Track">
+       SELECT * from
+       (
+       select openid as openId,createTime,latitude,longitude, ROW_NUMBER() over(partition by openid order by createTime desc) rid
+       from gis_track where createTime &gt;= #{reqDate}
+       )
+       A where A.rid=1
+    </select>
+
+    <select id="isInRoute"  resultType="Boolean">
+        SELECT ST_Intersects(
+               st_makeline(ARRAY(select storeposition from gis_track where vid=#{vid} order by createtime desc limit 10))::geography,
+               st_buffer((select storeline from gis_route where id=#{id}::Integer)::geography,10)) AS pos_inside;
+
+    </select>
+
+    <select id="isInGeofence"  resultType="Boolean">
+        SELECT ST_Intersects(
+               st_makeline(ARRAY(select storeposition from gis_track where vid=#{vid} order by createtime desc limit 10))::geography,
+               st_buffer((select storerange from gis_geofence where id=#{id}::Integer)::geography,10)) AS pos_inside;
+
+    </select>
+
+</mapper>

@@ -1,0 +1,133 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.client.dao.EquipmentPersonGroupDao">
+    <sql id="select_clause">
+		a.pgid,
+		a.gname,
+		a.userid,
+		a.startDate,
+		a.endDate,
+		a.openCount,
+		a.status
+    </sql>
+    
+    <sql id="select_clause2">
+		e.pgid,
+		e.mobile,
+		e.egid,
+		e.status
+    </sql>
+    
+     <sql id="select_clause3">
+		a.egname,
+		e.pgid,
+		e.mobile,
+		e.egid,
+		e.status
+    </sql>
+    
+    
+       <insert id="addEPG" useGeneratedKeys="true" keyProperty="pgid"  parameterType="EquipmentPersonGroup">
+		INSERT INTO qcv_eqptperson_group (
+			userid,
+			gname,
+			startDate,
+			endDate,
+			openCount
+		) VALUES (
+			#{userid,jdbcType=INTEGER},
+			#{gname,jdbcType=VARCHAR},
+			#{startDate},
+			#{endDate},
+			#{openCount,jdbcType=INTEGER}
+		) 
+    </insert>
+    
+    <insert id="addEpgRelation" useGeneratedKeys="true" keyProperty="pgid"  parameterType="EquipmentPersonGroup">
+		INSERT INTO qcv_eqptperson_relation (
+			pgid,
+			mobile,
+			egid
+		) VALUES
+		<foreach collection="list" item="epglist" index="index"  separator="," > 
+	        (#{epglist.pgid},#{epglist.mobile},#{epglist.egid}) 
+	    </foreach> 
+    </insert>
+    
+     <select id="getEpgByGname" parameterType="EquipmentPersonGroup" resultType="EquipmentPersonGroup">
+        SELECT 
+         <include refid="select_clause"/>
+        FROM  
+        	qcv_eqptperson_group a where a.gname=#{gname} and a.userid=#{userid}
+      </select>
+      
+      <select id="getEpgByUserid"  resultType="EquipmentPersonGroup">
+        SELECT 
+         <include refid="select_clause"/>
+        FROM  
+        	qcv_eqptperson_group a where a.userid=#{userid}
+      </select>
+      
+        <select id="getEpgRelationByPgid"  resultType="EquipmentPersonGroup">
+        SELECT 
+         <include refid="select_clause2"/>
+        FROM  
+        	qcv_eqptperson_relation e where e.pgid=#{pgid}
+      </select>
+      
+      <select id="getEpgByEgid"  resultType="EquipmentPersonGroup">
+        SELECT 
+         <include refid="select_clause2"/>
+        FROM  
+        	qcv_eqptperson_relation a where a.egid=#{egid}
+      </select>
+      
+      <select id="getEpgRelation"  resultType="EquipmentPersonGroup">
+        SELECT 
+         <include refid="select_clause3"/>
+        FROM  
+        	qcv_eqpt_group a,qcv_eqptperson_relation e where a.egid=e.egid and e.pgid = #{pgid} and e.status=1
+      </select>
+      
+      <select id="getEpgByMobile"  resultType="EquipmentPersonGroup">
+        SELECT 
+         <include refid="select_clause2"/>
+        FROM  
+        	qcv_eqptperson_relation a where a.mobile=#{mobile}
+      </select>
+      
+      <insert id="updateEquipmentGroupStatus"  parameterType="EquipmentPersonGroup">
+        update qcv_eqptperson_relation set 
+          status=#{status}
+           where egid = #{egid}
+      </insert>
+      
+      <insert id="updateEpgInfo"  parameterType="EquipmentPersonGroup">
+        update qcv_eqptperson_group set 
+           gname=#{gname},
+           startDate=#{startDate},
+           endDate=#{endDate},
+           openCount=#{openCount},
+           status=#{status}
+           where pgid = #{pgid}
+      </insert>
+      
+     <delete id="delEPG" parameterType="Integer">
+        DELETE FROM qcv_eqptperson_group WHERE pgid = #{pgid}
+     </delete>
+     
+      <delete id="delEpgRelation" parameterType="Integer">
+        DELETE FROM qcv_eqptperson_relation WHERE pgid = #{pgid}
+     </delete>
+     
+     <delete id="delEquipmentGroup" parameterType="Integer">
+        DELETE FROM qcv_eqptperson_relation WHERE egid = #{egid}
+     </delete>
+     
+        <delete id="delEpgByMobile" >
+     	DELETE FROM qcv_eqptperson_relation WHERE  pgid=#{pgid} and mobile in
+     	 <foreach collection="mobiles" index="index" item="mobiles" open="(" separator="," close=")">     
+        	#{mobiles}     
+    	 </foreach> 
+      </delete>
+      
+</mapper>

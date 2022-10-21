@@ -1,0 +1,118 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.dao.AddressDao">
+    <sql id="select_clause">
+		a.id,
+		a.userid,
+		a.country,
+	 	a.province,
+		a.city,
+	 	a.town,
+	 	a.address,
+	 	a.postcode,
+	 	a.name,
+	 	a.mobile,
+	 	a.email
+    </sql>
+    
+     <sql id="select_clause1">
+		a.gid,
+		a.gname
+    </sql>
+    
+    
+    
+       <insert id="addAddress" useGeneratedKeys="true" keyProperty="id"  parameterType="Address">
+		INSERT INTO qcv_shipping_address (
+			userid,
+		    country,
+		 	province,
+			city,
+		 	town,
+		 	address,
+		 	postcode,
+		 	name,
+		 	mobile,
+		 	email
+		) VALUES (
+			#{userid,jdbcType=INTEGER},
+			#{country,jdbcType=VARCHAR},
+			#{province,jdbcType=VARCHAR},
+			#{city,jdbcType=VARCHAR},
+			#{town,jdbcType=VARCHAR},
+			#{address,jdbcType=VARCHAR},
+			#{postcode,jdbcType=VARCHAR},
+			#{name,jdbcType=VARCHAR},
+			#{mobile,jdbcType=VARCHAR},
+			#{email,jdbcType=VARCHAR}
+		)
+    </insert>
+   
+      
+      <select id="getAddressList"  resultType="Address">
+        SELECT 
+         <include refid="select_clause"/>
+        FROM  
+        	qcv_shipping_address a
+      </select>
+      
+	    <insert id="updateAddress" parameterType="Address">
+	       UPDATE qcv_shipping_address SET   
+	       		country=#{country,jdbcType=VARCHAR},
+			 	province=#{province,jdbcType=VARCHAR},
+				city=#{city,jdbcType=VARCHAR},
+			 	town=#{town,jdbcType=VARCHAR},
+			 	address=#{address,jdbcType=VARCHAR},
+			 	postcode=#{postcode,jdbcType=VARCHAR},
+			 	name=#{name,jdbcType=VARCHAR},
+			 	mobile=#{mobile,jdbcType=VARCHAR},
+			 	email=#{email,jdbcType=VARCHAR}
+	         WHERE id = #{id}
+	    </insert>
+      
+     <delete id="delAddress" parameterType="Integer">
+        DELETE FROM qcv_shipping_address WHERE id = #{id}
+     </delete>
+     
+     
+     <insert id="addGate" useGeneratedKeys="true" keyProperty="gid"  parameterType="Gate">
+		INSERT INTO qcv_gate (
+			userid,
+			gname
+		) VALUES (
+		    #{userid,jdbcType=INTEGER},
+			#{gname,jdbcType=VARCHAR}
+		)
+    </insert>
+    
+      <insert id="updateGate"   parameterType="Gate">
+		 UPDATE qcv_gate SET   
+	       		gname=#{gname,jdbcType=VARCHAR}
+	         WHERE gid = #{gid} and userid =#{userid}
+      </insert>
+      
+      <delete id="delGate" parameterType="Gate">
+        DELETE FROM qcv_gate WHERE gid = #{gid} and userid =#{userid}
+     </delete>
+      
+       <select id="getGateList"  resultType="Gate">
+        SELECT 
+         <include refid="select_clause1"/>
+        FROM  qcv_gate a where  a.userid =#{userid}
+      </select>
+      
+      <select id="getGateById" parameterType="Gate" resultType="Gate">
+        SELECT 
+         <include refid="select_clause1"/>
+        FROM  
+        	qcv_gate a where  a.userid =#{userid} and CONCAT(',',a.gid, ',') REGEXP concat(',(',replace(#{gids},',','|'),'),')>0
+      </select>
+      
+      <select id="getGateByName" parameterType="Gate" resultType="Gate">
+        SELECT
+		  <include refid="select_clause1"/>, GROUP_CONCAT(gid) AS gids
+        FROM  
+        	qcv_gate a where  a.userid =#{userid} and a.gname in (#{gname})
+      </select>
+      
+      
+</mapper>

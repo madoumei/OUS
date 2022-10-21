@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpm code="bpm.addVisitorApponintmnet" name="bpm.appointment" type="process" description="预约流程">
+  <var name="businessKey" dataType="java.lang.Integer" contextVarName="businessKey" inOutType="return"></var>
+  <var name="employee" dataType="java.lang.String" contextVarName="employee" inOutType="param"></var>
+  <var name="visitor" dataType="java.lang.String" contextVarName="visitor" inOutType="param"></var>
+  <var name="needPermission" description="是否需要授权" dataType="java.lang.Integer" contextVarName="needPermision" inOutType="inner"></var>
+  <var name="userid" dataType="java.lang.Integer" contextVarName="userid" inOutType="param"></var>
+  <var name="subid" description="子公司账号id" dataType="java.lang.Integer" contextVarName="subid" inOutType="param"></var>
+  <var name="needProcess" dataType="java.lang.Integer" contextVarName="needProcess" inOutType="inner"></var>
+  <var name="vid" dataType="java.lang.Integer" contextVarName="vid" inOutType="param"></var>
+  <var name="tid" dataType="java.lang.Integer" contextVarName="tid" inOutType="param"></var>
+  <var name="vType" dataType="java.lang.String" contextVarName="vType" inOutType="param"></var>
+  <autoTask id="1648711741290" name="自动授权" g="410,200,90,50">
+    <transition to="1648715476890"></transition>
+    <action type="spring-bean">
+      <actionHandle bean="visitorService" clazz="com.client.service.VisitorService" method="autoPermission">
+        <var name="vid" dataType="java.lang.Integer" contextVarName="vid" inOutType="param"></var>
+        <var name="tid" dataType="java.lang.Integer" contextVarName="tid" inOutType="param"></var>
+        <var name="vType" description="访客类型" dataType="java.lang.String" contextVarName="vType" inOutType="param"></var>
+      </actionHandle>
+    </action>
+  </autoTask>
+  <note id="1649206969803" name="保存数据" comment="保存数据" visible="false" g="100,35,90,50">
+    <transition to="1648710968174"></transition>
+  </note>
+  <autoTask id="1648711760209" name="通知授权" g="245,410,90,50">
+    <transition to="1648621238799"></transition>
+    <action type="spring-bean">
+      <actionHandle bean="messageService" clazz="com.web.service.MessageService" method="sendAppoinmentPermissionNotify">
+        <var name="vt" dataType="com.client.bean.Visitor" contextVarName="visitor" inOutType="param"></var>
+      </actionHandle>
+    </action>
+  </autoTask>
+  <end id="1648621238799" name="结束" g="900,575,30,30"></end>
+  <start id="1648621236439" name="开始" g="20,50,30,30">
+    <transition to="1649206969803"></transition>
+  </start>
+  <autoTask id="1648622142229" name="通知被访人有访客预约" g="940,275,90,50">
+    <transition to="1649207559164"></transition>
+    <action type="spring-bean">
+      <actionHandle bean="messageService" clazz="com.web.service.MessageService" method="sendCommonNotifyEvent">
+        <var name="visitor" dataType="com.client.bean.Visitor" contextVarName="visitor" inOutType="param"></var>
+        <var name="eventType" dataType="java.lang.String" defaultValue="addAppointment" inOutType="param"></var>
+      </actionHandle>
+    </action>
+  </autoTask>
+  <autoTask id="1648715600525" name="自动审批" g="730,265,90,50">
+    <transition to="1648622142229"></transition>
+    <action type="spring-bean">
+      <actionHandle bean="visitorService" clazz="com.client.service.VisitorService" method="autopproval">
+        <var name="vid" dataType="java.lang.Integer" contextVarName="vid" inOutType="param"></var>
+      </actionHandle>
+    </action>
+  </autoTask>
+  <note id="1649207559164" name="下发通行权限" comment="下发通行权限" visible="false" g="945,455,90,50">
+    <transition to="1648621238799"></transition>
+  </note>
+  <decision id="1648710968174" name="是否要授权" g="240,195,90,50">
+    <transition to="1648711741290" priority="1" name="不需要授权" expression="needPermission==0"></transition>
+    <transition to="1648711760209" name="需要授权"></transition>
+    <action type="spring-bean">
+      <actionHandle bean="userService" clazz="com.web.service.UserService" method="needPermission">
+        <var name="userid" dataType="java.lang.Integer" contextVarName="userid" inOutType="param"></var>
+        <var name="subid" dataType="java.lang.Integer" contextVarName="subid" inOutType="param"></var>
+        <var name="int" dataType="java.lang.Integer" contextVarName="needPermission" inOutType="return"></var>
+      </actionHandle>
+    </action>
+  </decision>
+  <decision id="1648715476890" name="是否要审批" g="570,255,90,50">
+    <transition to="1648711760209" name="需要审批"></transition>
+    <transition to="1648715600525" priority="1" name="不要审批" expression="needProcess==0"></transition>
+    <action type="spring-bean">
+      <actionHandle bean="userService" clazz="com.web.service.UserService" method="needProcess">
+        <var name="userid" dataType="java.lang.Integer" contextVarName="userid" inOutType="param"></var>
+        <var name="subid" dataType="java.lang.Integer" contextVarName="subid" inOutType="param"></var>
+        <var name="int" dataType="java.lang.Integer" contextVarName="needProcess" inOutType="return"></var>
+      </actionHandle>
+    </action>
+  </decision>
+</bpm>

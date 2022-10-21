@@ -1,0 +1,179 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.dao.ManagerDao">
+    <sql id="select_clause">
+       		ss.userid ,
+        	ss.account,
+        	ss.sname,
+        	ss.company,
+        	ss.moblie,
+        	ss.startDate,
+        	ss.endDate,
+        	ss.remark,
+        	ss.sType,
+        	ss.gid,
+        	ss.subAccountId,
+        	ss.createTime,
+        	ss.parentCompany
+    </sql>
+
+    <sql id="select_clause_pwd">
+        	ss.userid,
+        	ss.account,
+        	ss.password,
+        	ss.sname,
+        	ss.company,
+        	ss.moblie,
+        	ss.startDate,
+        	ss.endDate,
+        	ss.remark,
+        	ss.sType,
+        	ss.gid,
+        	ss.subAccountId,
+        	ss.createTime,
+        	ss.parentCompany
+    </sql>
+
+
+    <insert id="addManager" parameterType="Manager">
+        INSERT INTO qcv_security_staff (userid,
+                                        account,
+                                        password,
+                                        sname,
+                                        company,
+                                        moblie,
+                                        startDate,
+                                        endDate,
+                                        remark,
+                                        sType,
+                                        gid,
+                                        subAccountId,
+                                        createTime,
+                                        parentCompany)
+        VALUES (#{userid,jdbcType=INTEGER},
+                #{account,jdbcType=VARCHAR},
+                #{password,jdbcType=VARCHAR},
+                #{sname,jdbcType=VARCHAR},
+                #{company,jdbcType=VARCHAR},
+                #{moblie,jdbcType=VARCHAR},
+                #{startDate,jdbcType=VARCHAR},
+                #{endDate,jdbcType=VARCHAR},
+                #{remark,jdbcType=VARCHAR},
+                #{sType,jdbcType=INTEGER},
+                #{gid,jdbcType=VARCHAR},
+                #{subAccountId,jdbcType=INTEGER},
+                #{createTime},
+                #{parentCompany,jdbcType=VARCHAR})
+    </insert>
+
+    <select id="getByAccount"  resultType="Manager">
+        SELECT
+        <include refid="select_clause"/>
+        FROM
+        qcv_security_staff ss WHERE ss.account=#{account}
+    </select>
+
+    <select id="getPwdByAccount"  resultType="Manager">
+        SELECT
+        <include refid="select_clause_pwd"/>
+        FROM
+        qcv_security_staff ss WHERE ss.account=#{account}
+    </select>
+
+    <select id="getByMobile" parameterType="Manager" resultType="Manager">
+        SELECT
+        <include refid="select_clause"/>
+        FROM
+        qcv_security_staff ss WHERE ss.moblie=#{moblie} and ss.sType=#{sType} and ss.userid=#{userid} limit 0,1
+    </select>
+
+    <select id="getByCompany" parameterType="Manager" resultType="Manager">
+        SELECT
+        <include refid="select_clause"/>
+        FROM
+        qcv_security_staff ss WHERE ss.company=#{company} and ss.userid=#{userid} limit 0,1
+    </select>
+
+    <select id="getByUser" parameterType="Manager" resultType="Manager">
+        SELECT
+        <include refid="select_clause"/>
+        FROM
+        qcv_security_staff ss WHERE ss.userid=#{userid} and sType in
+
+        <foreach collection="stList" index="index" item="stList" open="(" separator="," close=")">
+            #{stList}
+        </foreach>
+        <if test="gid != null">
+           and gid = #{gid}
+        </if>
+    </select>
+
+    <update id="updateManager" parameterType="Manager">
+        UPDATE qcv_security_staff
+        <set>
+            <if test="password != null">
+                password = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="sname != null">
+                sname = #{sname,jdbcType=VARCHAR},
+            </if>
+            <if test="company != null">
+                company = #{company,jdbcType=VARCHAR},
+            </if>
+            <if test="moblie != null">
+                moblie = #{moblie,jdbcType=VARCHAR},
+            </if>
+            <if test="startDate != null">
+                startDate = #{startDate},
+            </if>
+            <if test="endDate != null">
+                endDate = #{endDate},
+            </if>
+            <if test="remark != null">
+                remark = #{remark},
+            </if>
+            <if test="gid != null">
+                gid = #{gid},
+            </if>
+        </set>
+
+        WHERE account=#{account} and userid=#{userid}
+    </update>
+
+    <delete id="deleteManager" parameterType="Manager">
+        DELETE
+        FROM qcv_security_staff
+        WHERE account = #{account}
+          and userid = #{userid}
+    </delete>
+
+    <select id="getManagerListBySubAccountId" parameterType="Manager" resultType="Manager">
+        select
+        <include refid="select_clause"></include>
+        from qcv_security_staff ss where ss.subAccountId = #{subAccountId} and userid=#{userid}
+    </select>
+
+    <update id="updateServerManagerPwd" parameterType="Manager">
+        UPDATE qcv_security_staff
+        <set>
+            <if test="password != null">
+                password = #{password,jdbcType=VARCHAR},
+            </if>
+        </set>
+        WHERE account=#{account} and userid=#{userid}
+    </update>
+
+    <select id="getManagerList" parameterType="Manager" resultType="Manager">
+        SELECT
+        <include refid="select_clause"/>
+        FROM
+        qcv_security_staff ss WHERE ss.userId=#{userid}
+        <if test='account != null and account != "" and  account != "null"'>
+            ss.account=#{account,jdbcType=VARCHAR},
+        </if>
+        <if test='sType != null and sType != "" and  sType != "null"'>
+            ss.sType=#{sType,jdbcType=VARCHAR},
+        </if>
+    </select>
+
+
+</mapper>

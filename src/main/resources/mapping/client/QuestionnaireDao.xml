@@ -1,0 +1,245 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.client.dao.QuestionnaireDao">
+   <sql id="select_clause">
+		a.qid,
+		a.userid,
+		a.title,
+		a.fdesc,
+		a.createTime,
+		a.ansTime,
+		a.topicNum,
+		a.topicRigNum
+    </sql>
+    
+    <sql id="select_clause2">
+		a.qdid,
+		a.qid,
+		a.userid,
+		a.question,
+		a.answer,
+		a.foption,
+		a.qorder,
+		a.fstatus,
+		a.score
+    </sql>
+    
+    <sql id="select_clause3">
+		a.identity,
+		a.userid,
+		a.name,
+		a.correct,
+		a.rcount,
+		a.passDate
+    </sql>
+    
+    
+	<!-- 试卷设置 -->
+	<insert id="addQuestionnaire" parameterType="Questionnaire">
+		insert into qcv_questionnaire (
+		qid,
+		userid,
+		title,
+		fdesc,
+		createTime,
+		ansTime,
+		topicNum,
+		topicRigNum
+		)
+		VALUES (
+		#{qid,jdbcType=VARCHAR},
+		#{userid,jdbcType=INTEGER},
+		#{title,jdbcType=VARCHAR},
+		#{fdesc,jdbcType=VARCHAR},
+		now(),
+		#{ansTime,jdbcType=INTEGER},
+		#{topicNum,jdbcType=VARCHAR},
+		#{topicRigNum,jdbcType=INTEGER}
+		)
+	</insert>
+
+	<!-- 删除试卷 -->
+	<delete id="delQuestionnaire" parameterType="Questionnaire">
+		DELETE FROM qcv_questionnaire where qid = #{qid} and userid=#{userid}
+	</delete>
+	
+		<!-- 删除所属试卷题目 -->
+	<delete id="delQuestionnaireByQid" parameterType="Questionnaire">
+		DELETE FROM qcv_questionnaire_detail where qid = #{qid} and userid=#{userid}
+	</delete>
+
+	<!-- 更新试卷 -->
+	<update id="updateQuestionnaire" parameterType="Questionnaire">
+		update qcv_questionnaire
+		<set>
+			<if test="title != null">
+				title = #{title,jdbcType=VARCHAR},
+			</if>
+			<if test="fdesc != null">
+				fdesc = #{fdesc,jdbcType=VARCHAR},
+			</if>
+			<if test="ansTime != null">
+				ansTime = #{ansTime,jdbcType=INTEGER},
+			</if>
+			<if test="topicNum != null">
+				topicNum = #{topicNum,jdbcType=VARCHAR},
+			</if>
+			<if test="topicRigNum != null">
+				topicRigNum = #{topicRigNum,jdbcType=INTEGER},
+			</if>
+			</set>
+			where qid = #{qid} and userid=#{userid}
+	</update>
+
+	<!-- 分页查询试卷列表 -->
+	<select id="getQuestionnaire" parameterType="ReqQuestion" resultType="Questionnaire">
+		select
+		 <include refid="select_clause"/>  
+		from qcv_questionnaire a where a.userid=#{userid} order by createTime desc
+	</select>
+	
+	<!-- 通过主键查询试卷设置明细 -->
+    <select id="getQueByQid" parameterType="ReqQuestion" resultType="Questionnaire">
+		select 
+		<include refid="select_clause"/>
+		 from qcv_questionnaire a where a.qid=#{qid} and a.userid=#{userid}
+	</select>
+	
+
+	<!-- 插入题目 -->
+	<insert id="addQuestionnaireDetail" useGeneratedKeys="true" keyProperty="qdid" parameterType="QuestionnaireDetail">
+		insert into qcv_questionnaire_detail
+		(
+		qid,
+		userid,
+		question,
+		answer,
+		foption,
+		qorder,
+		fstatus,
+		score
+		) VALUES (
+		#{qid,jdbcType=VARCHAR},
+		#{userid,jdbcType=INTEGER},
+		#{question,jdbcType=VARCHAR},
+		#{answer,jdbcType=VARCHAR},
+		#{foption,jdbcType=VARCHAR,typeHandler=com.utils.jsonUtils.JsonTypeHandler},
+		#{qorder,jdbcType=INTEGER},
+		#{fstatus,jdbcType=INTEGER},
+		#{score,jdbcType=INTEGER}
+		)
+	</insert>
+
+    <!-- 更新题目 -->
+    <update id="updateQuestionnaireDetail" parameterType="QuestionnaireDetail">
+		update qcv_questionnaire_detail
+		<set>
+			<if test="question != null">
+				question = #{question,jdbcType=VARCHAR},
+			</if>
+			<if test="answer != null">
+				answer = #{answer,jdbcType=VARCHAR},
+			</if>
+			<if test="foption != null">
+				foption = #{foption,jdbcType=VARCHAR,typeHandler=com.utils.jsonUtils.JsonTypeHandler},
+			</if>
+			<if test="qorder != null">
+				qorder = #{qorder,jdbcType=INTEGER},
+			</if>
+			<if test="fstatus != null">
+				fstatus = #{fstatus,jdbcType=INTEGER},
+			</if>
+			<if test="score != null">
+				score = #{score,jdbcType=INTEGER},
+			</if>
+			</set>
+			where qdid = #{qdid} and userid=#{userid} 
+	</update>
+
+	<!-- 分页查询指定试卷的题库列表 -->
+	<select id="getQuestionnaireDetail" parameterType="ReqQuestionDetail" resultType ="QuestionnaireDetail">		
+		select 
+			<include refid="select_clause2"/> 
+			from qcv_questionnaire_detail a where a.qid=#{qid} and a.userid=#{userid}
+		<if test="question != null">
+				and a.question like "%"#{question}"%" 
+		</if>
+		order by a.qorder asc
+	</select>
+	
+	<!-- 随机获取题目 -->
+	<select id="getRandomTopic" parameterType="java.util.Map"  resultType ="QuestionnaireDetail">		
+		SELECT 
+		 <include refid="select_clause2"/> 
+		  FROM qcv_questionnaire_detail a
+		WHERE   a.qid=#{qid}  and a.userid=#{userid} 
+		<if test="rtype == 0">
+			and  LENGTH(a.answer)=1  
+		</if>
+			
+		<if test="rtype == 1">
+			and  LENGTH(a.answer)&gt;1 
+		 </if>
+	</select>
+	
+	<!-- 删除题目 -->
+	<delete id="delQuestionnaireDetail" parameterType="ReqQuestionDetail">
+		DELETE FROM qcv_questionnaire_detail where qdid = #{qdid} and userid=#{userid}
+	</delete>
+	
+    <!-- 插入答题结果 -->
+	<insert id="addExamResult" parameterType="VisitorAnswer">
+		insert into qcv_visitor_answer
+		(
+		identity,
+		userid,
+		name,
+		correct,
+		rcount,
+		passDate
+		) VALUES (
+		#{identity,jdbcType=VARCHAR},
+		#{userid,jdbcType=INTEGER},
+		#{name,jdbcType=VARCHAR},
+		#{correct,jdbcType=INTEGER},
+		#{rcount,jdbcType=INTEGER},
+		#{passDate,jdbcType=INTEGER}
+		)
+	</insert>
+	
+	<select id="getAnswerByIdentity" parameterType="VisitorAnswer" resultType="VisitorAnswer">
+		select
+			<include refid="select_clause3"/>
+			 from qcv_visitor_answer a where a.identity=#{identity} and a.userid=#{userid}
+	</select>
+	
+	<update id="updateExamResult" parameterType="VisitorAnswer">
+		update qcv_visitor_answer
+		<set>
+			<if test="correct != null">
+				correct = #{correct,jdbcType=INTEGER},
+			</if>
+			<if test="rcount != null">
+				rcount = #{rcount,jdbcType=INTEGER},
+			</if>
+			<if test="passDate != null">
+				passDate = #{passDate},
+			</if>
+			</set>
+			where identity = #{identity} and userid=#{userid}
+	</update>
+	
+	<insert id="batchAddQuestionnaireDetail" useGeneratedKeys="true" parameterType="java.util.List">
+		insert into qcv_questionnaire_detail
+		(
+		qid,
+		userid,
+		question,
+		answer,
+		foption,
+		score
+		) VALUES
+		<foreach collection="list" item="qlist" index="index"  separator="," > 
+	        (#{qlist.qid},#{qlist.userid},#{qlist.question},#{qlist.answer},#{qlist.foption},#{qlist.score}) 
+	    </foreach> 
+	</insert>
+</mapper>

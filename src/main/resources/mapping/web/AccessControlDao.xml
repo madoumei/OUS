@@ -1,0 +1,120 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.dao.AccessControlDao">
+    <sql id="select_clause">
+		a.cid,
+		a.userid,
+		a.company,
+		a.pcompany,
+		a.egids,
+		a.submitDate,
+		a.empNo,
+		a.empName,
+		a.empDept,
+		a.leaderNo,
+		a.leaderName,
+		a.lStatus,
+		a.fStatus,
+		a.remark,
+		a.refuseReason 
+    </sql>    
+   
+    
+    <insert id="addAccessControl"  parameterType="java.util.List">
+		INSERT INTO qcv_access_control (
+		  	cid,
+			userid,
+			company,
+			pcompany,
+			egids,
+			empNo,
+			empName,
+			empDept,
+			leaderNo,
+			leaderName,
+			submitDate,
+			remark
+		) VALUES  
+	    <foreach collection="list" item="acList" index="index"  separator="," > 
+	        (#{acList.cid},#{acList.userid},#{acList.company},#{acList.pcompany},#{acList.egids},#{acList.empNo},#{acList.empName},
+	         #{acList.empDept},#{acList.leaderNo},#{acList.leaderName},#{acList.submitDate},#{acList.remark}) 
+	    </foreach> 
+    </insert>
+    
+    <insert id="updateAccessControl" parameterType="AccessControl">
+	       UPDATE qcv_access_control
+	       <set>
+	       		<if test='egids != null and egids != "" and  egids != "null"'>
+					egids = #{egids,jdbcType=VARCHAR},
+				</if>
+				<if test='fStatus != "-1"'>
+					fStatus = #{fStatus,jdbcType=INTEGER},
+				</if>
+				<if test='refuseReason != null and refuseReason != "" and  refuseReason != "null"'>
+					refuseReason = #{refuseReason,jdbcType=VARCHAR},
+				</if>
+		   </set>
+	             WHERE cid = #{cid}  and userid = #{userid}
+	 </insert>
+	 
+	  <insert id="updateLmAccessControl" parameterType="AccessControl">
+	       UPDATE qcv_access_control
+	       <set>
+				<if test='lStatus != "0"'>
+					lStatus = #{lStatus,jdbcType=INTEGER},
+				</if>
+				<if test='fStatus != "-1"'>
+					fStatus = #{fStatus,jdbcType=INTEGER},
+				</if>
+				<if test='refuseReason != null and refuseReason != "" and  refuseReason != "null"'>
+					refuseReason = #{refuseReason,jdbcType=VARCHAR},
+				</if>
+		   </set>
+	             WHERE cid = #{cid} and leaderNo =#{leaderNo}
+            
+	 </insert>
+    
+	 <select id="getAcList" parameterType="ReqAC" resultType="AccessControl">
+        SELECT
+           <include refid="select_clause"/>
+        FROM
+            qcv_access_control a WHERE  a.userid = #{userid}   and  fStatus in (${rstatus}) 
+            <if test='startDate != null and startDate != "" and  startDate != "null"'>
+               and DATE_FORMAT(a.submitDate, '%Y-%m-%d') &gt;= #{startDate}
+             </if>
+             <if test='endDate != null and endDate != "" and  endDate != "null"'>
+              and DATE_FORMAT(a.submitDate, '%Y-%m-%d')  &lt;= #{endDate}
+             </if>
+             <if test='empName != null and empName != "" and  empName != "null"'>
+              and a.empName like "%"#{empName}"%" 
+             </if>
+             <if test='egid != null and egid != "" and  egid != "null"'>
+				 and CONCAT(',',a.egids, ',') REGEXP concat(',(',replace(#{egid},',','|'),'),')>0
+             </if>
+              order by submitDate desc
+      </select>
+      
+      <select id="getAcListByEmpNo" parameterType="ReqAC" resultType="AccessControl">
+	       SELECT
+	           <include refid="select_clause"/>
+	        FROM qcv_access_control a where empNo=#{empNo} order by submitDate desc limit 0,1;
+      </select>
+      
+       <select id="getAcListByCid" parameterType="ReqAC" resultType="AccessControl">
+	       SELECT
+	           <include refid="select_clause"/>
+	        FROM
+	            qcv_access_control a where a.cid=#{cid}
+	            
+	         <if test='userid != "0"'>
+              and a.userid=#{userid}  
+            </if>
+      </select>
+      
+        
+	 <select id="getLeaderAcList" parameterType="ReqAC" resultType="AccessControl">
+        SELECT a.cid,a.userid,a.company,group_concat(a.pcompany) as pcompany,a.egids,a.submitDate,a.empNo,a.empName,a.empDept,a.leaderNo,
+			a.leaderName,a.lStatus,a.fStatus,a.remark,a.refuseReason  FROM qcv_access_control a WHERE   a.leaderNo =#{leaderNo} and 
+			 lStatus in (${rstatus}) group by a.cid  order by a.submitDate desc
+      </select>
+      
+</mapper>

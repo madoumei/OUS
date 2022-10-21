@@ -1,0 +1,110 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.client.dao.InterimCardDao">
+    <sql id="select_clause">
+			a.cid,
+			a.userid,
+			a.empid,
+			a.name,
+			a.deptName,
+			a.empNo,
+			a.cardNo,
+			a.phone,
+			a.office,
+			a.submitTime,
+			a.returnTime,
+			a.icStatus,
+			a.refuseReason
+    </sql>
+
+
+    <insert id="addInterimCard" useGeneratedKeys="true" keyProperty="cid" parameterType="InterimCard">
+		INSERT INTO qcv_interimcard (
+			empid,
+			userid,
+			name,
+			deptName,
+			empNo,
+			cardNo,
+			phone,
+			email,
+			office,
+			submitTime
+		) VALUES (
+			#{empid,jdbcType=INTEGER},
+			#{userid,jdbcType=INTEGER},
+			#{name,jdbcType=VARCHAR},
+			#{deptName,jdbcType=VARCHAR},
+			#{empNo,jdbcType=VARCHAR},
+			#{cardNo,jdbcType=VARCHAR},
+			#{phone,jdbcType=VARCHAR},
+			#{email,jdbcType=VARCHAR},
+			#{office,jdbcType=VARCHAR},
+			Now()
+		)
+
+    </insert>
+
+    <select id="getInterimCard" parameterType="ReqInterimCard" resultType="InterimCard">
+        SELECT
+        <include refid="select_clause"/>
+        FROM
+        qcv_interimcard a where a.userid=#{userid}
+        <if test='icList != null and icList.size()>0'>
+            and a.icStatus in
+            <foreach collection="icList" index="index" item="icList" open="(" separator="," close=")">
+                #{icList[${index}]}
+            </foreach>
+        </if>
+
+        <if test='empid != "0"'>
+            and a.empid= #{empid}
+        </if>
+        <if test='name != null and name != "" and  name != "null"'>
+            and a.name= #{name}
+        </if>
+        <if test='empNo != null and empNo != "" and  empNo != "null"'>
+            and a.empNo= #{empNo}
+        </if>
+        <if test='cardNo != null and cardNo != "" and  cardNo != "null"'>
+            and a.cardNo= #{cardNo}
+        </if>
+
+        <if test='startDate != null and startDate != "" and  startDate != "null"'>
+            and DATE_FORMAT(a.submitTime, '%Y-%m-%d') &gt;= #{startDate}
+        </if>
+
+        <if test='endDate != null and endDate != "" and  endDate != "null"'>
+            and DATE_FORMAT(a.submitTime, '%Y-%m-%d') &lt;= #{endDate}
+        </if>
+
+        order by a.cid desc
+
+    </select>
+
+    <insert id="updateInterimCard" parameterType="InterimCard">
+	       UPDATE qcv_interimcard SET   
+			 	cardNo=#{cardNo,jdbcType=VARCHAR},
+			 	icStatus=#{icStatus},
+			 	refuseReason=#{refuseReason}
+	         WHERE cid = #{cid} and userid=#{userid}
+	  </insert>
+
+    <!--	email,
+                phone,
+                icStatus,
+                office,
+                returnTime,-->
+
+    <insert id="returnInterimCard" parameterType="InterimCard">
+	       UPDATE qcv_interimcard SET   
+			 	returnTime=Now(),
+			 	icStatus=2
+	         WHERE cid = #{cid} and userid=#{userid}
+	  </insert>
+
+
+    <delete id="delInterimCard" parameterType="InterimCard">
+        DELETE FROM qcv_interimcard where cid = #{cid} and userid=#{userid}
+     </delete>
+
+</mapper>

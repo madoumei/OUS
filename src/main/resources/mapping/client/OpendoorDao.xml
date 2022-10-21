@@ -1,0 +1,304 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.client.dao.OpendoorDao">
+    <sql id="select_clause">
+        a.kid,
+    	a.userid,
+    	a.pgid,
+		a.mobile,
+		a.deviceCode,
+		a.lockName,
+		a.communityCode,
+		a.openkey,
+		a.status
+    </sql>
+
+    <sql id="select_clause2">
+        a.userid,
+    	a.deviceCode,
+		a.deviceName,
+		a.vname,
+		a.vtype,
+		a.company,
+		a.mobile,
+		a.openStatus,
+		a.openDate,
+		a.direction,
+		a.gname,
+		a.temp,
+		a.vid,
+        a.passWay
+    </sql>
+
+    <insert id="addKeys" useGeneratedKeys="true" parameterType="java.util.List">
+        INSERT INTO qcv_opendoor_keys (
+        userid,
+        pgid,
+        mobile,
+        deviceCode,
+        lockName,
+        communityCode,
+        openkey
+        ) VALUES
+        <foreach collection="list" item="odlist" index="index" separator=",">
+            (#{odlist.userid},#{odlist.pgid}gnameodlist.mobile},#{odlist.deviceCode},#{odlist.lockName},#{odlist.communityCode},#{odlist.openkey})
+        </foreach>
+    </insert>
+
+    <select id="getKeysByMobile" resultType="Opendoor">
+        SELECT
+        <include refid="select_clause"/>
+        FROM
+        qcv_opendoor_keys a,qcv_eqptperson_group e where a.pgid=e.pgid and a.mobile=#{mobile} and a.userid=#{userid} and
+        e.status=1 and a.status=1
+    </select>
+
+    <insert id="updateOpenDoorStatus" parameterType="Opendoor">
+        update qcv_opendoor_keys set
+            status=#{status}
+        where deviceCode = #{deviceCode}
+    </insert>
+
+    <delete id="delkeysByPgid" parameterType="Integer">
+        DELETE FROM qcv_opendoor_keys WHERE pgid=#{pgid}
+    </delete>
+
+
+    <delete id="delkeysByCode" parameterType="String">
+        DELETE FROM qcv_opendoor_keys WHERE deviceCode = #{deviceCode}
+    </delete>
+
+    <delete id="delkeysByMobile">
+        DELETE FROM qcv_opendoor_keys WHERE pgid=#{pgid} and mobile in
+        <foreach collection="mobiles" index="index" item="mobiles" open="(" separator="," close=")">
+            #{mobiles}
+        </foreach>
+    </delete>
+
+    <insert id="addOpendoorInfo" parameterType="OpendoorInfo">
+        INSERT INTO qcv_opendoor_info (
+            userid,
+            deviceCode,
+            deviceName,
+            vname,
+            vtype,
+            company,
+            mobile,
+            openStatus,
+            openDate,
+            direction,
+            gname,
+            temp,
+            vid
+        ) VALUES (
+                     #{userid,jdbcType=INTEGER},
+                     #{deviceCode,jdbcType=VARCHAR},
+                     #{deviceName,jdbcType=VARCHAR},
+                     #{vname,jdbcType=VARCHAR},
+                     #{vtype,jdbcType=VARCHAR},
+                     #{company,jdbcType=VARCHAR},
+                     #{mobile,jdbcType=VARCHAR},
+                     #{openStatus,jdbcType=VARCHAR},
+                     #{openDate},
+                     #{direction,jdbcType=VARCHAR},
+                     #{gname,jdbcType=VARCHAR},
+                     #{temp,jdbcType=VARCHAR},
+                     #{vid,jdbcType=VARCHAR}
+                 )
+
+    </insert>
+
+    <insert id="BatchAddOpendoorInfo" useGeneratedKeys="true" parameterType="java.util.List">
+        INSERT INTO qcv_opendoor_info (
+        userid,
+        deviceCode,
+        deviceName,
+        vname,
+        vtype,
+        company,
+        mobile,
+        openStatus,
+        openDate,
+        direction,
+        gname,
+        temp,
+        vid,
+        passWay
+        ) VALUES
+        <foreach collection="list" item="odlist" index="index" separator=",">
+            (#{odlist.userid},#{odlist.deviceCode},#{odlist.deviceName},#{odlist.vname},#{odlist.vtype},#{odlist.company},#{odlist.mobile}
+            ,#{odlist.openStatus},#{odlist.openDate},#{odlist.direction},#{odlist.gname},#{odlist.temp},#{odlist.vid},#{odlist.passWay})
+        </foreach>
+    </insert>
+
+    <select id="getOpendoorInfo" parameterType="ReqODI" resultType="OpendoorInfo">
+        SELECT
+        <include refid="select_clause2"/>
+        FROM
+        qcv_opendoor_info a
+        where
+        DATE_FORMAT(a.openDate, '%Y-%m-%d') &gt;= #{startDate}
+        and DATE_FORMAT(a.openDate, '%Y-%m-%d') &lt;= #{endDate}
+        and userid=#{userid}
+
+        <if test='deviceCode != null and deviceCode != "" and  deviceCode != "null"'>
+            and deviceCode=#{deviceCode}
+        </if>
+
+        <if test='mobile != null and mobile != "" and  mobile != "null"'>
+            and mobile=#{mobile}
+        </if>
+
+        <if test='vtype != null and vtype != "" and  vtype != "null"'>
+            and vtype=#{vtype}
+        </if>
+
+        <if test='vname != null and vname != "" and  vname != "null"'>
+            and vname=#{vname}
+        </if>
+
+        <if test='gids != null and gids != "" and  gids != "null"'>
+            AND gname IN (SELECT a.`gname` FROM qcv_gate a WHERE a.`userid` = #{userid} AND
+            FIND_IN_SET(a.`gid`,#{gids}))
+        </if>
+
+        <if test='company != null and company != "" and  company != "null"'>
+            and company=#{company}
+        </if>
+
+        <if test='direction != null and direction != "" and  direction != "null"'>
+            and direction=#{direction}
+        </if>
+
+        <if test='vid != null and vid != "" and  vid != "null"'>
+            and vid=#{vid}
+        </if>
+
+        order by openDate desc
+
+    </select>
+
+    <!--	<select id="getArrivedVCount" parameterType="RequestVisit" resultType="VisitorChart">-->
+    <!--		SELECT-->
+    <!--		gname,COUNT(1) AS COUNT-->
+    <!--		FROM-->
+    <!--		qcv_opendoor_info-->
+    <!--		WHERE-->
+    <!--		userid=#{userid}-->
+    <!--		AND vtype='访客'-->
+    <!--		AND DATE_FORMAT(openDate, '%Y-%m-%d') &gt;= #{date}-->
+    <!--		AND DATE_FORMAT(openDate, '%Y-%m-%d') &lt;= #{endDate}-->
+    <!--		GROUP BY-->
+    <!--		gname-->
+    <!--   </select>-->
+
+    <select id="getArrivedVCount" parameterType="RequestVisit" resultType="VisitorChart">
+        SELECT
+            b.gname,COUNT(1) AS COUNT
+        FROM
+            qcv_visitor a , qcv_gate b
+        WHERE
+            a.userid=#{userid}
+          AND a.gid = b.gid
+          AND a.visitdate IS NOT NULL
+          AND DATE_FORMAT(a.visitdate, '%Y-%m-%d') &gt;= #{date}
+          AND DATE_FORMAT(a.visitdate, '%Y-%m-%d') &lt;= #{endDate}
+        GROUP BY gname
+    </select>
+
+
+    <!--      <select id="getArrivedLineChart" parameterType="RequestVisit" resultType="VisitorChart">-->
+    <!--       SELECT *,count(1) AS count FROM (SELECT-->
+    <!--		<if test='chartStatus == "0"'>-->
+    <!--			DATE_FORMAT(a.openDate,'%Y-%m') AS month,-->
+    <!--		</if>-->
+    <!--		<if test='chartStatus == "1"'>-->
+    <!--			DATE_FORMAT(a.openDate,'%Y-%m-%d') AS day,-->
+    <!--		</if>-->
+    <!--		<if test='chartStatus == "2"'>-->
+    <!--			DATE_FORMAT(min(a.openDate),'%H') AS hour,-->
+    <!--		</if>-->
+    <!--		gname FROM qcv_opendoor_info a -->
+    <!--		WHERE a.`userid`= #{userid}  and vtype='访客' -->
+    <!--		<if test='date != null and date != "" and  date != "null"'>-->
+    <!--            and DATE_FORMAT(openDate, '%Y-%m-%d') &gt;= #{date}-->
+    <!--        </if>-->
+    <!--        <if test='endDate != null and endDate != "" and  endDate != "null"'>-->
+    <!--            and DATE_FORMAT(openDate, '%Y-%m-%d') &lt;= #{endDate}-->
+    <!--        </if>-->
+    <!--		GROUP BY vid,gname-->
+    <!--		<if test='chartStatus == "0"'>-->
+    <!--			,month-->
+    <!--		</if>-->
+    <!--		<if test='chartStatus == "1"'>-->
+    <!--			,day-->
+    <!--		</if>-->
+    <!--		) t group by t.gname-->
+    <!--		<if test='chartStatus == "0"'>-->
+    <!--			,t.month-->
+    <!--		</if>-->
+    <!--		<if test='chartStatus == "1"'>-->
+    <!--			,t.day-->
+    <!--		</if>-->
+    <!--		<if test='chartStatus == "2"'>-->
+    <!--			,t.hour-->
+    <!--		</if>-->
+    <!--   </select>-->
+    <select id="getArrivedLineChart" parameterType="RequestVisit" resultType="VisitorChart">
+        SELECT *,count(1) AS count FROM (
+        SELECT
+        <if test='chartStatus == "0"'>
+            DATE_FORMAT(a.visitdate,'%Y-%m') AS month,
+        </if>
+        <if test='chartStatus == "1"'>
+            DATE_FORMAT(a.visitdate,'%Y-%m-%d') AS day,
+        </if>
+        <if test='chartStatus == "2"'>
+            DATE_FORMAT(a.visitdate,'%H') AS hour,
+        </if>
+        a.vid, a.gid AS gid,b.`gname` AS gname
+        FROM qcv_visitor a,qcv_gate b
+        WHERE
+        a.`userid`= #{userid}
+        AND a.visitdate IS NOT NULL
+        AND b.`userid` = a.`userid`
+        AND a.`gid` = b.`gid`
+        <if test='date != null and date != "" and  date != "null"'>
+            and DATE_FORMAT(visitdate, '%Y-%m-%d') &gt;= #{date}
+        </if>
+        <if test='endDate != null and endDate != "" and  endDate != "null"'>
+            and DATE_FORMAT(visitdate, '%Y-%m-%d') &lt;= #{endDate}
+        </if>
+        ) t
+        GROUP BY t.gid
+        <if test='chartStatus == "0"'>
+            ,t.month
+        </if>
+        <if test='chartStatus == "1"'>
+            ,t.day
+        </if>
+        <if test='chartStatus == "2"'>
+            ,t.hour
+        </if>
+    </select>
+
+    <select id="getLastRecords" parameterType="OpendoorInfo" resultType="OpendoorInfo">
+        SELECT
+            a.userid,
+            a.deviceCode,
+            a.deviceName,
+            a.vname,
+            a.vtype,
+            a.company,
+            a.mobile,
+            a.openStatus,
+            a.openDate,
+            a.direction,
+            a.temp
+        FROM
+            qcv_opendoor_info a where  DATE_FORMAT(a.openDate, '%Y-%m-%d') = DATE_FORMAT(#{openDate}, '%Y-%m-%d')
+                                  and userid=#{userid}  and mobile=#{mobile} and openStatus="成功" order by opendate desc limit 0,1
+
+    </select>
+
+
+</mapper>

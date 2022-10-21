@@ -1,0 +1,883 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.dao.EmployeeDao">
+    <sql id="select_clause">
+	  a.empid,
+	  a.userid,
+	  a.ddid,
+	  a.openid,
+	  a.empName,
+	  a.empNo,
+	  a.empEmail,
+	  a.empPhone,
+	  a.empVisitdate,
+	  a.empTeam,
+	  a.empNickname,
+	  a.empRtxAccount,
+	  a.empSex,
+	  a.empPosition,
+	  a.empType,
+	  a.telephone,
+	  a.workbay,
+	  a.visitType,
+	  a.defaultNotify,
+	  a.subaccountId,
+	  a.cardNo,
+	  a.egids,
+	  a.startDate,
+	  a.endDate,
+	  a.remark,
+	  a.avatar,
+	  a.face,
+	  a.plateNum,
+	  a.vegids,
+	  a.appType,
+	  a.ecStatus
+    </sql>
+
+<!--    no empPwd-->
+    <sql id="select_clause2">
+	  a.empid,
+	  a.userid,
+	  a.ddid,
+	  a.openid,
+	  a.empName,
+	  a.empNo,
+	  a.empEmail,
+	  a.empPhone,
+	  a.empTeam,
+	  a.empSex,
+	  a.empNickname,
+	  a.empRtxAccount,
+	  a.empPosition,
+	  a.empType,
+	  a.telephone,
+	  a.workbay,
+	  a.visitType,
+	  a.subaccountId,
+	  a.cardNo,
+	  a.egids,
+	  a.startDate,
+	  a.endDate,
+	  a.remark,
+	  a.avatar,
+	  a.face,
+	  a.plateNum,
+	  a.vegids,
+	  a.appType,
+	  a.ecStatus
+    </sql>
+
+    <sql id="select_clause3">
+	  a.empid,
+	  a.userid,
+	  a.ddid,
+	  a.openid,
+	  a.empName,
+	  a.empNo,
+	  a.empEmail,
+	  a.empPhone,
+	  a.empPwd,
+	  a.empSex,
+	  a.empTeam,
+	  a.empNickname,
+	  a.empRtxAccount,
+	  a.empType,
+	  a.empPosition,
+	  a.telephone,
+	  a.workbay,
+	  a.visitType,
+	  a.subaccountId,
+	  a.cardNo,
+	  a.egids,
+	  a.startDate,
+	  a.endDate,
+	  a.remark,
+	  a.avatar,
+	  a.face,
+	  a.plateNum,
+	  a.vegids,
+	  a.appType,
+	  a.ecStatus
+    </sql>
+
+    <sql id="select_clause4">
+	  a.empid,
+	  a.userid,
+	  a.ddid,
+	  a.openid,
+	  a.empName,
+	  a.empNo,
+	  a.empEmail,
+	  a.empPhone,
+	  a.empSex,
+	  a.empTeam,
+	  a.empNickname,
+	  a.empRtxAccount,
+	  a.empType,
+	  a.empPosition,
+	  a.telephone,
+	  a.workbay,
+	  a.visitType,
+	  a.subaccountId,
+	  a.cardNo,
+	  a.egids,
+	  a.startDate,
+	  a.endDate,
+	  a.remark,
+	  a.avatar,
+	  a.face,
+	  a.plateNum,
+	  a.vegids,
+	  a.ecStatus,
+	  a.appType,
+	  e.deptid
+    </sql>
+
+    <sql id="select_clause5">
+	  a.empid,
+	  a.userid,
+	  a.ddid,
+	  a.openid,
+	  a.empName,
+	  a.empNo,
+	  a.empEmail,
+	  a.empPhone,
+	  a.empTeam,
+	  a.empSex,
+	  a.empNickname,
+	  a.empRtxAccount,
+	  a.empType,
+	  a.empPosition,
+	  a.telephone,
+	  a.workbay,
+	  a.visitType,
+	  a.subaccountId,
+	  a.cardNo,
+	  a.egids,
+	  a.startDate,
+	  a.endDate,
+	  a.remark,
+	  a.avatar,
+	  a.face,
+	  a.plateNum,
+	  a.vegids,
+	  a.ecStatus,
+	  e.deptid,
+	  d.deptName
+    </sql>
+
+    <insert id="addEmployee" useGeneratedKeys="true" keyProperty="empid" parameterType="Employee">
+		INSERT INTO qcv_employee (
+		    userid,
+        	empName,
+        	empNo,
+        	empEmail,
+        	empPhone,
+        	empTeam,
+        	empNickname,
+            empRtxAccount,
+	 		empSex,
+	  		empPosition,
+	  		empType,
+	  		telephone,
+	  		workbay,
+	  		visitType,
+	  		subaccountId,
+	  		cardNo,
+		    egids,
+		    startDate,
+		    endDate,
+	  		remark,
+	  		avatar,
+	  		plateNum,
+	  		vegids,
+	  	    ecStatus,
+	  	    appType
+		) VALUES (
+			#{userid,jdbcType=INTEGER},
+			#{empName,jdbcType=VARCHAR},
+			#{empNo,jdbcType=VARCHAR},
+			#{empEmail,jdbcType=VARCHAR},
+			#{empPhone,jdbcType=VARCHAR},
+			#{empTeam,jdbcType=VARCHAR},
+			#{empNickname,jdbcType=VARCHAR},
+			#{empRtxAccount,jdbcType=VARCHAR},
+			#{empSex,jdbcType=VARCHAR},
+			#{empPosition,jdbcType=VARCHAR},
+			#{empType,jdbcType=INTEGER},
+			#{telephone,jdbcType=VARCHAR},
+			#{workbay,jdbcType=VARCHAR},
+			#{visitType,jdbcType=VARCHAR},
+			#{subaccountId,jdbcType=INTEGER},
+			#{cardNo,jdbcType=VARCHAR},
+			#{egids,jdbcType=VARCHAR},
+			#{startDate},
+			#{endDate},
+			#{remark,jdbcType=VARCHAR},
+			#{avatar,jdbcType=VARCHAR},
+	  		#{plateNum,jdbcType=VARCHAR},
+	  		#{vegids,jdbcType=VARCHAR},
+	  		#{ecStatus,jdbcType=INTEGER},
+	  		#{appType,jdbcType=INTEGER}
+		)
+    </insert>
+
+    <insert id="updateEmployee" parameterType="Employee">
+       UPDATE qcv_employee SET  
+       		empName = #{empName,jdbcType=VARCHAR},
+       		empNo = #{empNo,jdbcType=VARCHAR},
+       		empEmail= #{empEmail,jdbcType=VARCHAR},
+       		empPhone= #{empPhone,jdbcType=VARCHAR},
+       		empType=#{empType,jdbcType=INTEGER},
+       		subaccountId=#{subaccountId,jdbcType=INTEGER},
+       		empNickname=#{empNickname,jdbcType=VARCHAR},
+       		empPosition=#{empPosition,jdbcType=VARCHAR},
+       		workbay=#{workbay,jdbcType=VARCHAR},
+       		telephone=#{telephone,jdbcType=VARCHAR},
+       		cardNo=#{cardNo,jdbcType=VARCHAR},
+			egids=#{egids,jdbcType=VARCHAR},
+			startDate=#{startDate},
+			endDate=#{endDate},
+       		remark=#{remark,jdbcType=VARCHAR},
+			avatar=#{avatar,jdbcType=VARCHAR},
+	  		plateNum=#{plateNum,jdbcType=VARCHAR},
+	  		vegids=#{vegids,jdbcType=VARCHAR},
+	  		ecStatus=#{ecStatus,jdbcType=INTEGER},
+	  		empSex=#{empSex,jdbcType=VARCHAR},
+	  		appType=#{appType,jdbcType=VARCHAR}
+         WHERE empid = #{empid}
+    </insert>
+
+    <select id="getEmployeeList" parameterType="RequestEmp" resultType="Employee">
+        SELECT
+        <include refid="select_clause"/>
+        FROM qcv_employee a where a.userid=#{userid}
+        <if test='phone != null and phone != "" and  phone != "null"'>
+            and a.empPhone = #{phone}
+        </if>
+
+        <if test='subaccountId != 0'>
+            and a.subaccountId=#{subaccountId}
+        </if>
+    </select>
+
+    <select id="getEmpListPages" parameterType="RequestEmp" resultType="Employee">
+        SELECT
+        <include refid="select_clause"/>,fristPinyin(empName) as ename
+        FROM
+        qcv_employee a where a.userid=#{userid} AND a.empid NOT IN(SELECT t.empid FROM qcv_emp_dept t WHERE
+        t.userid=#{userid})
+
+        <if test='empName != null and empName != "" and  empName != "null"'>
+            and a.empName like "%"#{empName}"%"
+        </if>
+
+        <if test='empNo != null and empNo != "" and  empNo != "null"'>
+            and a.empNo like "%"#{empNo}"%"
+        </if>
+
+        <if test='phone != null and phone != "" and  phone != "null"'>
+            and a.empPhone like "%"#{phone}"%"
+        </if>
+
+        ORDER BY ename ASC,CONVERT(empName USING gbk) ASC
+    </select>
+
+    <select id="getSubEmpListPages" parameterType="RequestEmp" resultType="Employee">
+        SELECT
+        <include refid="select_clause"/>,b.companyName
+        FROM qcv_employee a,qcv_sub_account b
+        where a.userid=#{userid} and a.subaccountId=#{subaccountId} AND b.`id` = a.`subaccountId` and a.empType=1
+        union all
+        SELECT
+        <include refid="select_clause"/>,d.companyName
+        FROM qcv_employee a, qcv_sub_account d
+        where a.userid=#{userid} and a.subaccountId=#{subaccountId} AND
+        d.`id` = a.`subaccountId` and a.empType!=1
+    </select>
+
+    <select id="getEmpDeptList" resultType="Employee">
+        SELECT
+        <include refid="select_clause4"/>
+        FROM
+        qcv_employee a,qcv_emp_dept e where a.empid=e.empid and e.deptid=#{deptid} and e.userid=#{userid}
+    </select>
+
+    <select id="getDeptManager" resultType="Employee">
+        SELECT
+        <include refid="select_clause"/>
+        FROM
+        qcv_employee a where a.empid in ${empids}
+    </select>
+
+    <select id="searchEmpByCondition" resultType="Employee">
+        SELECT f.`deptName`,e.deptid,a.empid,a.userid,a.ddid,a.openid,a.empName,a.empNo,a.empEmail,a.empPhone,a.empSex,
+                a.empTeam,a.empNickname,a.empRtxAccount,a.empType,a.empPosition,a.telephone,a.workbay,a.visitType,
+                a.subaccountId,a.cardNo,a.egids,a.startDate,a.endDate,a.remark,a.avatar,a.face,a.plateNum,a.vegids,
+                a.ecStatus,a.appType
+        FROM
+            qcv_employee a,qcv_emp_dept e,qcv_department f
+        WHERE
+            a.empid=e.empid
+            AND  e.userid=#{userid}
+            AND f.deptid = e.deptid
+            <if test='empName != null and empName !="" and empName != "null" '>
+                and empName = #{empName}
+            </if>
+            <if test='egids != null and egids !="" and egids != "null" '>
+                AND  FIND_IN_SET(#{egids},a.egids)
+            </if>
+            <if test='deptIdStr != null and deptIdStr !="" and deptIdStr != "null" '>
+                AND FIND_IN_SET(e.deptid,#{deptIdStr})
+            </if>
+    </select>
+
+    <select id="getEmpDeptByUserid" parameterType="Integer" resultType="Employee">
+        SELECT
+        <include refid="select_clause4"/>
+        FROM
+        qcv_employee a LEFT JOIN qcv_emp_dept e ON a.empid=e.empid WHERE a.userid=#{userid}
+    </select>
+
+    <select id="getEmpByFaceResult" parameterType="RequestEmp" resultType="Employee">
+        SELECT
+        <include refid="select_clause5"/>
+        FROM
+        qcv_employee a LEFT JOIN qcv_emp_dept e ON a.empid=e.empid
+        LEFT JOIN qcv_department d ON d.deptid=e.deptid
+        WHERE a.userid=#{userid}
+        <if test='exType == 1'>
+            and (a.face!=0)
+        </if>
+
+        <if test='exType == 2'>
+            and (a.empNo is null or a.empNo='')
+        </if>
+
+        <if test='exType == 3'>
+            and (a.empPhone is null or a.empPhone='')
+        </if>
+
+        <if test='exType == 4'>
+            and (a.empEmail is null or a.empEmail='')
+        </if>
+
+        <if test='exType == 5'>
+            and (a.openid is null or a.openid='')
+        </if>
+
+
+    </select>
+
+    <select id="getEmployeeByempRtxAccount"   resultType="Employee">
+        select
+        <include refid="select_clause"></include>
+        from qcv_employee a where a.empRtxAccount = #{wchartUserId} and a.userid=#{userid}
+    </select>
+
+    <select id="getEmpInfoByDDid"   resultType="Employee">
+        select
+        <include refid="select_clause"></include>
+        from qcv_employee a where a.ddid = #{ddid} and a.userid=#{userid}
+    </select>
+
+    <select id="getOldEmployeeList"  parameterType="Integer"  resultType="Employee">
+        SELECT
+        <include refid="select_clause3"/>
+        FROM
+        qcv_employee a where a.userid=#{userid}
+    </select>
+
+    <select id="getEmployeeByEmail" resultType="Employee">
+        SELECT
+        <include refid="select_clause"/>
+        FROM
+        qcv_employee a where a.empEmail=#{empEmail} and a.userid=#{userid}
+    </select>
+
+    <select id="getSubAccountEmpList" resultType="Employee">
+        SELECT
+        <include refid="select_clause"/>,fristPinyin(empName) as ename
+        FROM
+        qcv_employee a where a.userid=#{userid} and a.subaccountId=#{subaccountId} ORDER BY ename,CONVERT(empName USING gbk) ASC
+    </select>
+
+    <select id="getDefalutNotify" resultType="Employee">
+        SELECT
+        <include refid="select_clause2"/>
+        FROM
+        qcv_employee a where a.visitType=#{visitType} and a.userid=#{userid} and a.defaultNotify=1
+
+        <if test='subaccountId != 0'>
+            and a.subaccountId=#{subaccountId}
+        </if>
+
+        <if test='subaccountId == 0'>
+            and a.subaccountId=0
+        </if>
+
+    </select>
+
+    <select id="getEmployee" parameterType="Integer" resultType="Employee">
+        SELECT
+        <include refid="select_clause"/>
+        FROM
+        qcv_employee a where a.empid=#{empid}
+    </select>
+
+    <select id="getEmployeePassword" resultType="Employee">
+        SELECT
+        <include refid="select_clause3"/>
+        FROM
+        qcv_employee a where a.empPhone=#{phone}
+    </select>
+
+    <select id="getEmployeeByCardNo" resultType="Employee">
+        SELECT
+        <include refid="select_clause3"/>
+        FROM
+        qcv_employee a where  a.cardNo=#{cardNo} limit 1
+    </select>
+
+    <select id="getEmpListByName" resultType="Employee">
+        SELECT
+        <include refid="select_clause2"/>
+        FROM
+        qcv_employee a where a.userid=#{userid} and a.empName=#{empName}
+    </select>
+
+    <select id="getDefaultEmpList" parameterType="RequestEmp" resultType="Employee">
+        SELECT
+        a.empid,a.userid,a.empName,a.subaccountId
+        FROM
+        qcv_employee a
+        where a.userid=#{userid} and a.empType =1
+        <if test='subaccountId != 0'>
+            and a.subaccountId=#{subaccountId}
+        </if>
+    </select>
+
+    <select id="getEmpListByempName" parameterType="RequestEmp" resultType="Employee">
+        SELECT
+        a.empid,a.empName,RIGHT(a.empPhone,4) as empPhone,a.empType,a.startDate,a.endDate
+        FROM
+        qcv_employee a where a.userid=#{userid}
+        and (a.empName like "%"#{name}"%") limit 20
+        <if test='subaccountId != 0'>
+            and a.subaccountId=#{subaccountId}
+        </if>
+
+    </select>
+
+    <select id="getEmpListByKey" parameterType="RequestEmp" resultType="Employee">
+        SELECT
+        <include refid="select_clause2"/>
+        FROM
+        qcv_employee a where a.userid=#{userid}
+        and (a.empName like "%"#{name}"%" or a.empNo like "%"#{name}"%" or a.cardNo like "%"#{name}"%" or a.empPhone
+        like "%"#{name}"%")
+        <if test='subaccountId != 0'>
+            and a.subaccountId=#{subaccountId}
+        </if>
+        limit 100
+    </select>
+
+
+    <select id="getEmpListByOpenid" resultType="Employee">
+        SELECT
+        <include refid="select_clause2"/>
+        FROM
+        qcv_employee a where a.openid=#{openid}
+    </select>
+
+    <select id="getEmpByDDid" parameterType="Employee" resultType="Employee">
+        SELECT
+        <include refid="select_clause2"/>
+        FROM
+        qcv_employee a where a.ddid=#{ddid} and a.userid=#{userid} limit 0,1
+    </select>
+
+    <select id="getSendUrlEmp" resultType="Employee">
+        SELECT
+        <include refid="select_clause"/>
+        FROM
+        qcv_employee a where a.empName=#{empName} and a.userid=#{userid} and a.empPhone= #{empPhone} limit 0,1
+    </select>
+
+    <select id="getEmpIdByOpenid" resultType="Integer">
+	      SELECT
+	           a.empid
+	        FROM
+	            qcv_employee a where a.openid=#{openid}     
+      </select>
+
+    <select id="getOpenid" parameterType="Integer" resultType="Employee">
+        SELECT
+        <include refid="select_clause2"/>
+        FROM
+        qcv_employee a where a.empid=#{empid}
+    </select>
+
+
+    <select id="getEmployeeCount" parameterType="Integer" resultType="Integer">
+        SELECT
+            count(1)
+        FROM
+            qcv_employee a where a.userid=#{userid}      
+      </select>
+
+    <select id="getRelAccEmpCount" resultType="Integer">
+        SELECT
+            count(1)
+        FROM
+            qcv_employee a where a.userid in ${userids}      
+      </select>
+
+    <select id="checkEmployeeExists" resultType="Employee">
+        SELECT
+        <include refid="select_clause2"/>
+        FROM
+        qcv_employee a where a.userid=#{userid} and (a.empPhone=#{empPhone} or a.empEmail =#{empPhone})
+    </select>
+
+    <select id="checkEmployeeExistsStrict" resultType="Employee">
+        SELECT
+        <include refid="select_clause2"/>
+        FROM
+        qcv_employee a where a.userid=#{userid} and name=#{name}
+
+        <if test='empPhone != null and empPhone != "" and  empPhone != "null"'>
+            and empPhone =#{empPhone}
+        </if>
+
+        <if test='email != null and email != "" and  email != "null"'>
+            and empEmail =#{email}
+        </if>
+
+        <if test='empNo != null and empNo != "" and  empNo != "null"'>
+            and empNo =#{empNo}
+        </if>
+    </select>
+
+
+    <select id="checkEmployeeExistsByRtxAccount" resultType="Employee">
+        SELECT
+        <include refid="select_clause2"/>
+        FROM
+        qcv_employee a where  empRtxAccount=#{empRtxAccount}
+    </select>
+
+    <select id="getEmpInfo" resultType="Employee">
+        SELECT
+        <include refid="select_clause3"/>
+        FROM
+        qcv_employee a where a.userid=#{userid} and empPhone=#{empPhone}
+    </select>
+
+    <select id="getEmployeebyPhone" resultType="Employee">
+        SELECT
+        <include refid="select_clause2"/>
+        FROM
+        qcv_employee a where a.userid =#{userid}
+        <if test='empPhone != null and empPhone != "" and  empPhone != "null"'>
+            and a.empPhone =#{empPhone}
+        </if>
+        <if test='openid != null and openid != "" and  openid != "null"'>
+            and a.openid =#{openid}
+        </if>
+    </select>
+
+    <select id="getEmployeebyPlateNum" parameterType="Employee" resultType="Employee">
+        SELECT
+        <include refid="select_clause2"/>
+        FROM
+        qcv_employee a where a.plateNum like "%"#{plateNum}"%" and a.userid =#{userid} limit 0,1
+    </select>
+
+    <select id="getEmpRoleList" resultType="Employee">
+        SELECT
+        <include refid="select_clause"/>
+        FROM
+        qcv_employee a where a.empid in (select r.empid from qcv_role_emp r where r.rid=#{rid})
+    </select>
+
+    <select id="getEmployeesByEmpids" parameterType="java.util.List" resultType="Employee">
+        select
+        <include refid="select_clause"/>
+        FROM qcv_employee a WHERE a.empid in
+        <foreach collection="list" index="index" item="empids" open="(" separator="," close=")">
+            #{empids}
+        </foreach>
+    </select>
+
+    <delete id="delEmployee" parameterType="Integer">
+        DELETE FROM qcv_employee WHERE empid = #{empid}
+    </delete>
+
+    <delete id="delEmployees" parameterType="Integer">
+        DELETE FROM qcv_employee WHERE userid = #{userid} and empType=0
+    </delete>
+
+    <delete id="delEmployeesByUserid" parameterType="Integer">
+        DELETE FROM qcv_employee WHERE userid = #{userid}
+    </delete>
+
+    <delete id="delSAEmployees" parameterType="Integer">
+        DELETE FROM qcv_employee WHERE subaccountId=#{subaccountId}
+    </delete>
+
+    <delete id="batchDelEmployee" parameterType="java.util.List">
+        DELETE FROM qcv_employee WHERE empid in
+        <foreach collection="list" index="index" item="empids" open="(" separator="," close=")">
+            #{empids}
+        </foreach>
+
+    </delete>
+
+    <insert id="addEmployees" useGeneratedKeys="true" keyProperty="empid" keyColumn="empid"
+            parameterType="java.util.List">
+        insert into qcv_employee (
+        empid,
+        userid,
+        openid,
+        ddid,
+        empName,
+        empNo,
+        empEmail,
+        empPhone,
+        empTeam,
+        empRtxAccount,
+        empNickname,
+        empSex,
+        empPosition,
+        empType,
+        visitType,
+        telephone,
+        cardNo,
+        egids,
+        workbay,
+        subaccountId,
+        startDate,
+        endDate,
+        avatar,
+        remark,
+        plateNum,
+        vegids,
+        ecStatus,
+        appType
+        ) values
+        <foreach collection="list" item="emplist" index="index" separator=",">
+            (#{emplist.empid},#{emplist.userid},#{emplist.openid},#{emplist.ddid},#{emplist.empName},#{emplist.empNo},#{emplist.empEmail},
+            #{emplist.empPhone},#{emplist.empTeam},#{emplist.empRtxAccount},#{emplist.empNickname},#{emplist.empSex},#{emplist.empPosition},#{emplist.empType},
+            #{emplist.visitType},#{emplist.telephone},#{emplist.cardNo},#{emplist.egids},#{emplist.workbay},
+            #{emplist.subaccountId},#{emplist.startDate},#{emplist.endDate},#{emplist.avatar},#{emplist.remark},#{emplist.plateNum},#{emplist.vegids},1,#{emplist.appType})
+        </foreach>
+    </insert>
+
+    <insert id="addEmployeesbydd" useGeneratedKeys="true" keyProperty="empid" keyColumn="empid"
+            parameterType="java.util.List">
+        insert into qcv_employee (
+        empid,
+        userid,
+        openid,
+        ddid,
+        empName,
+        empNo,
+        empEmail,
+        empPhone,
+        empPwd,
+        empPosition,
+        empTeam,
+        ecStatus
+        ) values
+        <foreach collection="list" item="emplist" index="index" separator=",">
+            (#{emplist.empid},#{emplist.userid},#{emplist.openid},#{emplist.ddid},#{emplist.empName},#{emplist.empNo},
+            #{emplist.empEmail},#{emplist.empPhone},#{emplist.empPwd},#{emplist.empPosition},#{emplist.empTeam},1)
+        </foreach>
+    </insert>
+
+    <insert id="addEmployeesNoInc" parameterType="java.util.List">
+        insert into qcv_employee (
+        empid,
+        userid,
+        openid,
+        ddid,
+        empName,
+        empNo,
+        empEmail,
+        empPhone,
+        empTeam,
+        empRtxAccount,
+        empNickname,
+        empSex,
+        empPosition,
+        empType,
+        visitType,
+        telephone,
+        cardNo,
+        egids,
+        workbay,
+        startDate,
+        endDate,
+        subaccountId,
+        remark,
+        plateNum,
+        vegids,
+        ecStatus
+        ) values
+        <foreach collection="list" item="emplist" index="index" separator=",">
+            (#{emplist.empid},#{emplist.userid},#{emplist.openid},#{emplist.ddid},#{emplist.empName},#{emplist.empNo},#{emplist.empEmail},
+            #{emplist.empPhone},#{emplist.empTeam},#{emplist.empRtxAccount},#{emplist.empNickname},#{emplist.empSex},#{emplist.empPosition},#{emplist.empType},
+            #{emplist.visitType},#{emplist.telephone},#{emplist.cardNo},#{emplist.egids},#{emplist.startDate},#{emplist.endDate},
+            #{emplist.workbay},#{emplist.subaccountId},#{emplist.remark},#{emplist.plateNum},#{emplist.vegids},1)
+        </foreach>
+    </insert>
+
+    <update id="batchUpdateEmployees" parameterType="java.util.List">
+        <foreach collection="list" item="emplist" index="index" open="" close="" separator=";">
+            update qcv_employee
+            <set>
+                openid= #{emplist.openid},
+                ddid= #{emplist.ddid},
+                empName= #{emplist.empName},
+                empNo= #{emplist.empNo},
+                empEmail= #{emplist.empEmail},
+                empPhone= #{emplist.empPhone},
+                empTeam= #{emplist.empTeam},
+                empRtxAccount= #{emplist.empRtxAccount},
+                empNickname= #{emplist.empNickname},
+                empSex= #{emplist.empSex},
+                empPosition= #{emplist.empPosition},
+                empType=#{emplist.empType},
+                visitType=#{emplist.visitType},
+                telephone= #{emplist.telephone},
+                cardNo= #{emplist.cardNo},
+                egids= #{emplist.egids},
+                workbay= #{emplist.workbay},
+                subaccountId= #{emplist.subaccountId},
+                startDate= #{emplist.startDate},
+                endDate= #{emplist.endDate},
+                remark= #{emplist.remark},
+                plateNum= #{emplist.plateNum},
+                vegids= #{emplist.vegids},
+                appType= #{emplist.appType},
+                defaultNotify = #{emplist.defaultNotify}
+            </set>
+            where empid = #{emplist.empid}
+        </foreach>
+    </update>
+
+    <update id="UpdateDefaultNotify" parameterType="java.util.List">
+        <foreach collection="list" item="emplist" index="index" open="" close="" separator=";">
+            update qcv_employee
+            <set>
+                defaultNotify=#{emplist.defaultNotify}
+            </set>
+            where empid = #{emplist.empid}
+        </foreach>
+    </update>
+
+    <update id="batchUpdateEmpEgids" parameterType="java.util.List">
+        <foreach collection="list" item="repEmp" index="index" open="" close="" separator=";">
+            update qcv_employee
+            <set>
+                egids=#{repEmp.egids}
+            </set>
+            where empid = #{repEmp.empid}
+        </foreach>
+    </update>
+
+    <insert id="bindingOpenid" parameterType="Employee">
+       UPDATE qcv_employee SET  
+       		openid= #{openid,jdbcType=VARCHAR}
+         WHERE empEmail = #{empEmail} and userid=#{userid}
+    </insert>
+
+    <insert id="bindingOpenidByPhone" parameterType="Employee">
+       UPDATE qcv_employee SET  
+       		openid= #{openid,jdbcType=VARCHAR},
+       		avatar= #{avatar,jdbcType=VARCHAR},
+       		subaccountId= #{subaccountId}
+         WHERE empPhone = #{empPhone}  and userid=#{userid}
+    </insert>
+
+    <insert id="resetOpenid" parameterType="Employee">
+       UPDATE qcv_employee SET  
+       		openid= '' 
+         WHERE openid = #{openid}
+    </insert>
+
+    <insert id="quickbindingOpenid" parameterType="Employee">
+       UPDATE qcv_employee SET  
+       		openid= #{openid,jdbcType=VARCHAR}
+         WHERE userid = #{userid} and  empName = #{empName}
+    </insert>
+
+    <insert id="updateEmpPwd" parameterType="Employee">
+       UPDATE qcv_employee SET  
+       		empPwd= #{empPwd}  
+         WHERE empPhone = #{empPhone}
+    </insert>
+
+    <insert id="quickbindingOpenidbyemail" parameterType="Employee">
+       UPDATE qcv_employee SET  
+       		openid= #{openid,jdbcType=VARCHAR}
+         WHERE userid=#{userid} and  empName = #{empName} and empEmail = #{empEmail} 
+    </insert>
+
+
+    <insert id="updateEmpSubAccount" parameterType="java.util.List">
+        <foreach collection="list" item="emplist" index="index" open="" close="" separator=";">
+            update qcv_employee
+            <set>
+                subaccountId= #{emplist.subaccountId}
+            </set>
+            where empid = #{emplist.empid}
+        </foreach>
+    </insert>
+
+    <insert id="updateEmpFace" parameterType="Employee">
+         UPDATE qcv_employee SET  
+       		face= #{face,jdbcType=INTEGER}
+         WHERE empid=#{empid} 
+    </insert>
+
+    <insert id="updateEmpAvatar" parameterType="Employee">
+         UPDATE qcv_employee SET  
+       		avatar= #{avatar,jdbcType=INTEGER}
+         WHERE openid=#{openid} 
+    </insert>
+
+    <insert id="updateEmpEgids" parameterType="Employee">
+         UPDATE qcv_employee SET  
+       		egids=TRIM(BOTH ',' FROM replace(concat(',',egids,','),#{egids},',')) 
+         WHERE userid = #{userid}
+    </insert>
+
+    <update id="batchUpdateEmpName" parameterType="java.util.List">
+        <foreach collection="list" item="emplist" index="index" open="" close="" separator=";">
+            update qcv_employee
+            <set>
+                empName=#{emplist.empName},
+                empPhone = #{emplist.empPhone},
+                empEmail = #{emplist.empEmail},
+                empRtxAccount = #{emplist.empRtxAccount},
+                cardNo = #{emplist.cardNo},
+                plateNum = #{emplist.plateNum},
+                empNickname = #{emplist.empNickname}
+            </set>
+            where openid = #{emplist.openid}
+        </foreach>
+    </update>
+
+    <insert id="batchUpdateEmpAvatar" parameterType="java.util.List">
+        <foreach collection="list" item="emplist" index="index" open="" close="" separator=";">
+            update qcv_employee
+            <set>
+                avatar= #{emplist.avatar}
+            </set>
+            where empPhone = #{emplist.empPhone}
+        </foreach>
+    </insert>
+
+</mapper>

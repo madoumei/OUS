@@ -1,0 +1,134 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.client.dao.EquipmentDao">
+    <sql id="select_clause">
+			a.eid,
+			a.userid,
+			a.deviceName,
+			a.deviceCode,
+			a.extendCode,
+			a.roomNum,
+			a.deviceIp,
+			a.devicePort,
+			a.deviceQrcode,
+			a.status,
+			a.eType,
+            a.enterStatus,
+            a.onlineStatus
+    </sql>
+    
+    
+    <sql id="select_clause2">
+			a.cardNo,
+			a.deviceCode,
+			a.status
+    </sql>
+    
+      <insert id="addEquipment" useGeneratedKeys="true" keyProperty="eid"  parameterType="Equipment">
+		INSERT INTO qcv_eqpt (
+			userid,
+			deviceName,
+			deviceCode,
+			extendCode,
+			roomNum,
+			deviceIp,
+			devicePort,
+			deviceQrcode,
+			eType,
+		    enterStatus
+		) VALUES (
+			#{userid,jdbcType=INTEGER},
+			#{deviceName,jdbcType=VARCHAR},
+			#{deviceCode,jdbcType=VARCHAR},
+			#{extendCode,jdbcType=VARCHAR},
+			#{roomNum,jdbcType=VARCHAR},
+			#{deviceIp,jdbcType=VARCHAR},
+			#{devicePort,jdbcType=INTEGER},
+			#{deviceQrcode,jdbcType=VARCHAR},
+			#{eType,jdbcType=VARCHAR},
+			#{enterStatus,jdbcType=VARCHAR}
+		)
+    </insert>
+    
+     <select id="getEquipmentbyUserid"  resultType="Equipment">
+        SELECT 
+         <include refid="select_clause"/>
+        FROM  
+        	qcv_eqpt a where a.userid=#{userid}
+      </select>
+
+    <select id="getEquipmentCountbyUserid"  resultType="Equipment">
+        SELECT
+            *, count(*) as count
+        FROM
+        qcv_eqpt a where a.userid=#{userid} group by a.eType
+    </select>
+      
+      <select id="getEquipmentbyDeviceName"  resultType="Equipment">
+        SELECT 
+         <include refid="select_clause"/>
+        FROM  
+        	qcv_eqpt a where a.userid=#{userid} and  a.deviceName=#{deviceName}
+      </select>
+      
+      <select id="getEquipmentbyDeviceCode"  resultType="Equipment">
+        SELECT 
+         <include refid="select_clause"/>
+        FROM  
+        	qcv_eqpt a where a.deviceCode=#{deviceCode}
+      </select>
+      
+      <select id="getEquipmentbyDcRn"  resultType="Equipment">
+        SELECT 
+         <include refid="select_clause"/>
+        FROM  
+        	qcv_eqpt a where a.deviceCode=#{deviceCode} and a.roomNum=#{roomNum}
+      </select>
+      
+      <select id="getEquipmentbyDeviceQrcode"  resultType="Equipment">
+        SELECT 
+         <include refid="select_clause"/>
+        FROM  
+        	qcv_eqpt a where a.deviceQrcode=#{deviceQrcode}
+      </select>
+      
+      <select id="getEquipmentbyExtendCode"  resultType="Equipment">
+        SELECT 
+         <include refid="select_clause"/>
+        FROM  
+        	qcv_eqpt a where a.extendCode=#{extendCode}
+      </select>
+      
+       <select id="getEquipmentbyEid"  resultType="Equipment">
+        SELECT 
+         <include refid="select_clause"/>
+        FROM  
+        	qcv_eqpt a where a.eid=#{eid}
+      </select>
+      
+      <insert id="updateEquipment"  parameterType="Equipment">
+        update qcv_eqpt set 
+          deviceName=#{deviceName},
+          deviceCode=#{deviceCode},
+          extendCode=#{extendCode},
+          roomNum=#{roomNum},
+          deviceIp=#{deviceIp},
+          devicePort=#{devicePort},
+          deviceQrcode=#{deviceQrcode},
+          status=#{status},
+          eType=#{eType},
+          enterStatus=#{enterStatus}
+           where eid = #{eid}
+      </insert>
+      
+     <delete id="delEquipment" parameterType="Integer">
+        DELETE FROM qcv_eqpt WHERE eid = #{eid}
+     </delete>
+
+    <insert id="updateOnlineStatus"  parameterType="com.client.bean.Equipment">
+        update qcv_eqpt set
+                        onlineStatus=#{onlineStatus}
+        where deviceCode = #{deviceCode}
+    </insert>
+      
+      
+</mapper>

@@ -1,0 +1,62 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.client.dao.TrainingDao">
+    <sql id="select_clause">
+			a.tvid,
+			a.qid,
+			a.userid,
+			a.title,
+			a.duration,
+			a.uploader,
+			a.uploadTime,
+			a.filesize,
+			a.videoUrl
+    </sql>
+    
+    
+       <insert id="addTrainingVideo"   parameterType="Training">
+		INSERT INTO qcv_training_video (
+			tvid,
+			qid,
+			title,
+			userid,
+			duration,
+			uploader,
+			uploadTime,
+			filesize,
+			videoUrl
+		) VALUES (
+			#{tvid,jdbcType=VARCHAR},
+			#{qid,jdbcType=VARCHAR},
+			#{title,jdbcType=VARCHAR},
+			#{userid,jdbcType=INTEGER},
+			#{duration,jdbcType=VARCHAR},
+			#{uploader,jdbcType=VARCHAR},
+			Now(),
+			#{filesize,jdbcType=VARCHAR},
+			#{videoUrl,jdbcType=VARCHAR}
+		)
+    </insert>
+    
+      <select id="getTrainingVideo"  resultType="Training">
+        SELECT 
+         <include refid="select_clause"/>
+        FROM  
+        	qcv_training_video a where a.userid=#{userid} and a.qid=#{qid} 
+        
+        <if test='title != null and title != "" and  title != "null"'>
+              and a.title like "%"#{title}"%" 
+        </if>	
+      </select>
+      
+      <insert id="updateTrainingVideo"  parameterType="Training">
+        update qcv_training_video set 
+          	title=#{title}
+           where tvid = #{tvid} and userid=#{userid} and  qid=#{qid}
+      </insert>
+      
+     <delete id="delTrainingVideo" parameterType="Training">
+        DELETE FROM qcv_training_video where tvid = #{tvid} and userid=#{userid} and  qid=#{qid}
+     </delete>
+      
+      
+</mapper>

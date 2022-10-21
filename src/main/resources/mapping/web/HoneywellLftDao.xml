@@ -1,0 +1,58 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.dao.HoneywellLftDao">
+    <sql id="select_clause">
+			a.id,
+			a.accessLevel,
+			a.detail,
+			a.startDate,
+			a.endDate,
+			a.status,
+			a.userid,
+			a.vid,
+			a.active,
+			a.gid,
+			a.type
+    </sql>
+    
+       <insert id="addHoneywellLft" useGeneratedKeys="true" keyProperty="id"  parameterType="HoneywellLft">
+		INSERT INTO hn_lft (
+			accessLevel,
+			detail,
+			startDate,
+			endDate,
+			status,
+			userid,
+			vid,
+			active,
+			gid,
+			type
+		) VALUES (
+			#{accessLevel,jdbcType=VARCHAR},
+			#{detail,jdbcType=VARCHAR},
+			#{startDate},
+			#{endDate},
+			#{status,jdbcType=INTEGER},
+			#{userid,jdbcType=INTEGER},
+			#{vid,jdbcType=VARCHAR},
+			#{active,jdbcType=INTEGER},
+			#{gid,jdbcType=VARCHAR},
+			#{type,jdbcType=INTEGER}
+		)
+    </insert>
+   
+      
+      <select id="getHoneywellLft" parameterType="HoneywellLft" resultType="HoneywellLft">
+        SELECT 
+         <include refid="select_clause"/>
+        FROM  
+        	hn_lft a where vid=#{vid} and status=#{status} and type=#{type} limit 0,1
+      </select>
+      
+	    <insert id="updateHoneywellLft" parameterType="HoneywellLft">
+	       UPDATE hn_lft SET   
+	       		status=#{status,jdbcType=INTEGER},
+			 	active=#{active,jdbcType=INTEGER}
+	         WHERE id = #{id}
+	    </insert>
+      
+</mapper>

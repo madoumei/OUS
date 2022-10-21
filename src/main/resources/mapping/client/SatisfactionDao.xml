@@ -1,0 +1,120 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.client.dao.SatisfactionDao">
+    <sql id="Satisfaction">
+		 a.sid,
+		 a.userid,
+		 a.title,
+		 a.description,
+		 a.scoreDesc,
+		 a.expirydate,
+		 a.createTime
+    </sql>
+
+    <sql id="SatisfactionQuestionnaire">
+        b.sqid,
+        b.sid,
+        b.userid,
+        b.question,
+        b.qtype,
+        b.option,
+        b.answer,
+        b.feedback,
+        b.sorder,
+        b.createTime
+    </sql>
+
+
+    <insert id="addSatisfaction" useGeneratedKeys="true" keyProperty="sid"  parameterType="Satisfaction">
+        INSERT INTO qcv_satisfaction (
+            sid,
+            userid,
+            title,
+            description,
+            scoreDesc,
+            expirydate,
+            createTime
+        ) VALUES (
+             #{sid,jdbcType=INTEGER},
+             #{userid,jdbcType=INTEGER},
+             #{title,jdbcType=VARCHAR},
+             #{description,jdbcType=VARCHAR},
+             #{scoreDesc,jdbcType=VARCHAR},
+             #{expirydate,jdbcType=INTEGER},
+             #{createTime}
+         )
+    </insert>
+
+    <update id="updateSatisfaction" parameterType="Satisfaction">
+        update qcv_satisfaction set
+            title = #{title},
+            description = #{description},
+            scoreDesc =#{scoreDesc},
+            expirydate = #{expirydate}
+        where userid = #{userid} and sid = #{sid}
+    </update>
+
+    <select id="getSatisfactionByUserid" parameterType="Satisfaction" resultType="Satisfaction">
+        select
+        <include refid="Satisfaction"></include>
+        from qcv_satisfaction a where  a.userid = #{userid}
+
+    </select>
+
+	<insert id="addSatisfactionQuestionnaire" useGeneratedKeys="true" keyProperty="sid"  parameterType="SatisfactionQuestionnaire">
+		insert  into qcv_satisfaction_questionnaire(
+            sid,
+		    sqid,
+            userid,
+            qtype,
+            question,
+            option,
+            answer,
+            feedback,
+		    sorder,
+            createTime
+		)values (
+         #{sid,jdbcType=INTEGER},
+         #{sqid,jdbcType=INTEGER},
+         #{userid,jdbcType=INTEGER},
+         #{qtype,jdbcType=INTEGER},
+         #{question,jdbcType=VARCHAR},
+         #{option,jdbcType=VARCHAR},
+         #{answer,jdbcType=VARCHAR},
+         #{feedback,jdbcType=VARCHAR},
+         #{sorder,jdbcType=INTEGER},
+         #{createTime}
+		)
+	</insert>
+
+    <delete id="deleteSatisfactionQuestionnaire" parameterType="SatisfactionQuestionnaire">
+        delete from qcv_satisfaction_questionnaire where userid = #{userid} and sqid = #{sqid}
+    </delete>
+
+    <select id="getSatisfactionQuestionnaire" parameterType="SatisfactionQuestionnaire" resultType="SatisfactionQuestionnaire">
+        select
+        <include refid="SatisfactionQuestionnaire"></include>
+        from qcv_satisfaction_questionnaire b
+        where b.userid = #{userid} and b.sqid = #{sqid}
+    </select>
+
+    <select id="getSatisfactionQuestionnaireByUserid" parameterType="SatisfactionQuestionnaire" resultType="SatisfactionQuestionnaire">
+        select
+        <include refid="SatisfactionQuestionnaire"></include>
+        from qcv_satisfaction_questionnaire b
+        where b.userid = #{userid}
+        order by sorder ASC
+    </select>
+
+    <update id="updateSatisfactionQuestionnaire" parameterType="SatisfactionQuestionnaire">
+        update qcv_satisfaction_questionnaire
+        set
+            question = #{question},
+            qtype = #{qtype},
+            option = #{option},
+            answer =#{answer},
+            feedback = #{feedback},
+            sorder = #{sorder}
+        where userid = #{userid} and sqid = #{sqid}
+    </update>
+
+</mapper>

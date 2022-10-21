@@ -1,0 +1,209 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.client.dao.LogisticsDao">
+    <sql id="select_clause">
+		 a.sid,
+		 a.userid,
+		 a.sname,
+		 a.smobile,
+		 a.scardId,
+		 a.dname,
+		 a.dmobile,
+		 a.dcardId,
+		 a.driverExtend,
+		 a.logExtend,
+		 a.plateNum,
+		 a.vehicleExtend,
+		 a.goodsExtend,
+		 a.photoInfo,
+		 a.logType,
+		 a.appointmentDate,
+		 a.visitdate,
+		 a.leaveTime,
+		 a.finishTime,
+		 a.pstatus,
+		 a.logNum,
+		 a.inspectExtend,
+		 a.memberInfo,
+		 a.remark,
+		 a.otherExtend
+    </sql>
+    
+    
+       <insert id="addLogisticsInfo" useGeneratedKeys="true" keyProperty="sid"  parameterType="Logistics">
+		INSERT INTO qcv_logistics (
+		     userid,
+			 sname,
+			 smobile,
+			 scardId,
+			 dname,
+			 dmobile,
+			 dcardId,
+			 driverExtend,
+			 logExtend,
+			 plateNum,
+			 vehicleExtend,
+			 goodsExtend,
+			 photoInfo,
+			 logType,
+			 appointmentDate,
+			 logNum,
+			 pstatus,
+			 memberInfo,
+			 otherExtend
+		) VALUES (
+			#{userid,jdbcType=INTEGER},
+			#{sname,jdbcType=VARCHAR},
+			#{smobile,jdbcType=VARCHAR},
+			#{scardId,jdbcType=VARCHAR},
+			#{dname,jdbcType=VARCHAR},
+			#{dmobile,jdbcType=VARCHAR},
+			#{dcardId,jdbcType=VARCHAR},
+			#{driverExtend,jdbcType=VARCHAR},
+			#{logExtend,jdbcType=VARCHAR},
+			#{plateNum,jdbcType=VARCHAR},
+			#{vehicleExtend,jdbcType=VARCHAR},
+			#{goodsExtend,jdbcType=VARCHAR},
+			#{photoInfo,jdbcType=VARCHAR},
+			#{logType,jdbcType=VARCHAR},
+			#{appointmentDate},
+			#{logNum,jdbcType=VARCHAR},
+			#{pstatus,jdbcType=VARCHAR},
+			#{memberInfo,jdbcType=VARCHAR},
+			#{otherExtend,jdbcType=VARCHAR}
+		)
+    </insert>
+    
+      <select id="getLogisticsInfo"  parameterType="ReqLogistics" resultType="Logistics">
+        SELECT 
+         <include refid="select_clause"/>
+        FROM  
+        	qcv_logistics a where a.userid=#{userid} and a.pstatus in  
+        	
+		     <foreach collection="psList" index="index" item="psList" open="(" separator="," close=")">     
+		        #{psList[${index}]}     
+		     </foreach>   
+        	
+        	<if test='startDate != null and startDate != "" and  startDate != "null"'>
+               and DATE_FORMAT(a.appointmentDate, '%Y-%m-%d') &gt;= #{startDate}
+             </if>
+             
+             <if test='endDate != null and endDate != "" and  endDate != "null"'>
+              and DATE_FORMAT(a.appointmentDate, '%Y-%m-%d')  &lt;= #{endDate}
+             </if>
+        	
+        	<if test='sname != null and sname != "" and  sname != "null"'>
+               and a.sname=#{sname} 
+            </if>
+            
+            <if test='plateNum != null and plateNum != "" and  plateNum != "null"'>
+               and a.plateNum=#{plateNum} 
+            </if>
+            
+            <if test='logType != null and logType != "" and  logType != "null"'>
+               and a.logType=#{logType} 
+            </if>
+            
+             <if test='cardid != null and cardid != "" and  cardid != "null"'>
+               and (a.scardId=#{cardid} or a.dcardId=#{cardid})
+            </if>
+            
+              <if test='memberInfo != null and memberInfo != "" and  memberInfo != "null"'>
+               and a.memberInfo  like "%"#{memberInfo}"%" 
+            </if>
+            
+             <if test='mobile != null and mobile != "" and  mobile != "null"'>
+               and a.smobile=#{mobile} 
+            </if>
+            
+             order by a.appointmentDate desc
+      </select>
+      
+      <select id="getTodayLogisticsInfo"  parameterType="ReqLogistics" resultType="Logistics">
+        SELECT 
+         <include refid="select_clause"/>
+        FROM  
+        	qcv_logistics a where a.userid=#{userid} and  TO_DAYS(appointmentDate)=TO_DAYS(NOW()) and a.plateNum=#{plateNum} 
+             order by a.appointmentDate desc limit 0,1
+      </select>
+      
+       <select id="getLogisticsById"  parameterType="Logistics" resultType="Logistics">
+        SELECT 
+         <include refid="select_clause"/>
+        FROM  
+        	qcv_logistics a where a.sid = #{sid} and a.userid=#{userid}
+      </select>
+      
+      <update id="updateLogisticsInfo" parameterType="Logistics">
+		update qcv_logistics
+		<set>
+		    <if test="driverExtend != null">
+				driverExtend = #{driverExtend},
+			</if>
+			<if test="logExtend != null">
+				logExtend = #{logExtend},
+			</if>
+			<if test="goodsExtend != null">
+				goodsExtend = #{goodsExtend},
+			</if>
+			<if test="vehicleExtend != null">
+				vehicleExtend = #{vehicleExtend},
+			</if>
+			<if test="otherExtend != null">
+				otherExtend = #{otherExtend},
+			</if>
+			<if test="photoInfo != null">
+				photoInfo = #{photoInfo},
+			</if>
+			<if test="logType != null">
+				logType = #{logType},
+			</if>
+			<if test="sname != null">
+				sname = #{sname},
+			</if>
+			<if test="plateNum != null">
+				plateNum = #{plateNum},
+			</if>
+			<if test="smobile != null">
+				smobile = #{smobile},
+			</if>
+			<if test="appointmentDate != null">
+				appointmentDate = #{appointmentDate},
+			</if>
+			<if test="visitdate != null">
+				visitdate = #{visitdate},
+			</if>
+			<if test="leaveTime != null">
+				leaveTime = #{leaveTime},
+			</if>
+			<if test="finishTime != null">
+				finishTime = #{finishTime},
+			</if>
+			<if test="memberInfo != null">
+				memberInfo = #{memberInfo},
+			</if>
+			<if test="pstatus != 0">
+				pstatus = #{pstatus},
+			</if>
+			<if test="dname != null">
+				dname = #{dname},
+			</if>
+			<if test="dmobile != null">
+				dmobile = #{dmobile},
+			</if>
+			<if test="dcardId != null">
+				dcardId = #{dcardId},
+			</if>
+			<if test="inspectExtend != null">
+				inspectExtend = #{inspectExtend},
+			</if>
+			<if test="remark != null">
+				remark = #{remark},
+			</if>
+		</set>
+			where sid = #{sid} and userid=#{userid} and scardId=#{scardId}
+	</update>
+	
+	
+	
+      
+</mapper>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpm code="bpm.checkICCard" name="bpm.checkICCard" type="process" description="ic卡验证">
+  <var name="qrcode" description="二维码" dataType="java.lang.String" contextVarName="qrcode" inOutType="param"></var>
+  <var name="devicenumber" description="扫码设备编码" dataType="java.lang.String" contextVarName="devicenumber" inOutType="param"></var>
+  <var name="employee" description="员工" dataType="com.web.bean.Employee" contextVarName="employee" inOutType="return"></var>
+  <var name="eq" description="扫码设备" dataType="com.client.bean.Equipment" contextVarName="eq" inOutType="return"></var>
+  <var name="userinfo" dataType="com.web.bean.UserInfo" contextVarName="userinfo" inOutType="return"></var>
+  <autoTask id="1649381496169" name="检查设备" g="270,180,90,50">
+    <transition to="1649388422650"></transition>
+    <action type="spring-bean">
+      <actionHandle bean="visitorService" clazz="com.client.service.VisitorService" method="checkEquipmentTask">
+        <var name="egids" dataType="java.lang.String" contextVarName="employee.getEgids()" inOutType="param"></var>
+        <var name="devicenumber" dataType="java.lang.String" contextVarName="devicenumber" inOutType="param"></var>
+        <var name="com.client.bean.Equipment" dataType="com.client.bean.Equipment" contextVarName="eq" inOutType="return"></var>
+      </actionHandle>
+    </action>
+  </autoTask>
+  <autoTask id="1649406465725" name="检查员工有效性" g="255,80,90,50">
+    <transition to="1649381496169"></transition>
+    <action type="spring-bean">
+      <actionHandle bean="visitorService" clazz="com.client.service.VisitorService" method="checkEmployeeByCardNoTask">
+        <var name="cardNo" dataType="java.lang.String" contextVarName="qrcode" inOutType="param"></var>
+        <var name="employee" dataType="com.web.bean.Employee" contextVarName="employee" inOutType="return"></var>
+      </actionHandle>
+    </action>
+  </autoTask>
+  <end id="1649380717037" name="结束" g="565,700,30,30"></end>
+  <autoTask id="1649388422650" name="检查员工门禁权限" g="275,265,90,50">
+    <transition to="1656059862924"></transition>
+    <action type="spring-bean">
+      <actionHandle bean="visitorService" clazz="com.client.service.VisitorService" method="checkEquipmentTask">
+        <var name="egids" dataType="java.lang.String" contextVarName="employee.getEgids()" inOutType="param"></var>
+        <var name="devicenumber" dataType="java.lang.String" contextVarName="devicenumber" inOutType="param"></var>
+        <var name="eq" dataType="com.client.bean.Equipment" contextVarName="eq" inOutType="return"></var>
+      </actionHandle>
+    </action>
+  </autoTask>
+  <start id="1648621236439" name="开始" g="35,95,30,30">
+    <transition to="1649406465725"></transition>
+  </start>
+  <autoTask id="1656059866872" name="检查员工通行策略" g="275,450,90,50">
+    <transition to="1649380717037"></transition>
+    <action type="spring-bean">
+      <actionHandle bean="visitorService" clazz="com.client.service.VisitorService" method="checkEquipmentPassTimeTask">
+        <var name="eqpt" dataType="com.client.bean.Equipment" contextVarName="eq" inOutType="param"></var>
+        <var name="employee" dataType="com.web.bean.Employee" contextVarName="employee" inOutType="param"></var>
+      </actionHandle>
+    </action>
+  </autoTask>
+  <autoTask id="1656059862924" name="检查门禁潮汐策略" g="275,350,90,50">
+    <transition to="1656059866872"></transition>
+    <action type="spring-bean">
+      <actionHandle bean="visitorService" clazz="com.client.service.VisitorService" method="checkEquipmentRuleTask">
+        <var name="eqpt" dataType="com.client.bean.Equipment" contextVarName="eq" inOutType="param"></var>
+      </actionHandle>
+    </action>
+  </autoTask>
+</bpm>

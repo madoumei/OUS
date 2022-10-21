@@ -1,0 +1,1252 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.dao.AppointmentDao">
+    <sql id="select_clause">
+        a.id,
+		a.userid,
+		a.company,
+		a.empdeptid,
+		a.empid,
+		a.empName,
+		a.empEmail,
+		a.empPhone,
+	 	a.name,
+		a.phone,
+		a.vemail,
+	 	a.appointmentDate,
+	 	a.visitDate,
+	 	a.visitType,
+	 	a.visitReason,
+	 	a.inviteContent,
+	 	a.address,
+	 	a.longitude,
+	 	a.latitude,
+	 	a.companyProfile,
+	 	a.traffic,
+	 	a.status,
+	 	a.photoUrl,
+	 	a.smsStatus,
+	 	a.subaccountId,
+	 	a.sendStatus,
+	 	a.cardId,
+	 	a.vcompany,
+	 	a.remark,
+	 	a.mid,
+	 	a.qrcodeConf,
+	 	a.qrcodeType,
+	 	a.openCount,
+	 	a.leaveTime,
+	 	a.tid,
+	 	a.vType,
+	 	a.areaid,
+	 	a.area,
+	 	a.agroup,
+	 	a.plateNum,
+	 	a.appExtendCol,
+	 	a.gid,
+	 	a.cardNo,
+	 	a.clientNo,
+	 	a.visitorCount,
+	 	a.sex,
+	 	a.floors,
+		a.isWeekendVisitor,
+		a.isHolidayVisitor,
+		a.isSCTimeVisitor,
+		a.permission,
+        a.signDate,
+        a.face,
+        a.id as appid,
+        a.meetingStatus,
+        a.healthDeclaration,
+        a.createTime
+    </sql>
+
+    <sql id="select_emp">
+        a
+        .
+        userid
+        ,
+		a.empEmail,
+		a.empPhone,
+	 	a.templateType,
+	 	a.inviteContent,
+	 	a.address,
+	 	a.longitude,
+	 	a.latitude,
+	 	a.companyProfile,
+	 	a.traffic,
+	 	a.gid
+    </sql>
+
+    <sql id="select_user">
+        a
+        .
+        userid
+        ,
+	 	a.templateType,
+	 	a.inviteContent,
+	 	a.address,
+	 	a.longitude,
+	 	a.latitude,
+	 	a.companyProfile,
+	 	a.traffic,
+	 	a.gid
+    </sql>
+
+    <sql id="select_subaccount">
+        a
+        .
+        subaccountId
+        ,
+		a.userid,
+	 	a.templateType,
+	 	a.inviteContent,
+	 	a.address,
+	 	a.longitude,
+	 	a.latitude,
+	 	a.companyProfile,
+	 	a.traffic,
+	 	a.gid
+    </sql>
+
+
+    <insert id="addUsertemplate" parameterType="Usertemplate">
+        INSERT INTO qcv_appointment_usertemplate (userid,
+                                                  templateType,
+                                                  inviteContent,
+                                                  address,
+                                                  longitude,
+                                                  latitude,
+                                                  companyProfile,
+                                                  traffic,
+                                                  gid)
+        VALUES (#{userid,jdbcType=INTEGER},
+                #{templateType,jdbcType=VARCHAR},
+                #{inviteContent,jdbcType=VARCHAR},
+                #{address,jdbcType=VARCHAR},
+                #{longitude,jdbcType=VARCHAR},
+                #{latitude,jdbcType=VARCHAR},
+                #{companyProfile,jdbcType=VARCHAR},
+                #{traffic,jdbcType=VARCHAR},
+                #{gid,jdbcType=INTEGER})
+    </insert>
+
+
+    <select id="getUsertemplate" parameterType="Usertemplate" resultType="Usertemplate">
+        SELECT
+        <include refid="select_user"/>
+        FROM
+        qcv_appointment_usertemplate a where a.userid=#{userid} and a.templateType=#{templateType} and a.gid= #{gid}
+    </select>
+
+    <select id="getOldUsertemplate" parameterType="Usertemplate" resultType="Usertemplate">
+        SELECT
+        <include refid="select_user"/>
+        FROM
+        qcv_appointment_usertemplate a where a.userid=#{userid} and a.templateType=#{oldTemplateType} and a.gid= #{gid}
+    </select>
+
+    <select id="getUsertemplateByUserid" parameterType="Usertemplate" resultType="Usertemplate">
+        SELECT
+        <include refid="select_user"/>
+        FROM
+        qcv_appointment_usertemplate a where a.userid=#{userid}
+    </select>
+
+    <select id="getUserTemplateType" parameterType="Usertemplate" resultType="Usertemplate">
+        SELECT a.userid, a.templateType, gid
+        FROM qcv_appointment_usertemplate a
+        where a.userid = #{userid}
+          and a.gid = #{gid}
+    </select>
+
+    <delete id="delUsertemplate" parameterType="Usertemplate">
+        DELETE FROM qcv_appointment_usertemplate WHERE userid = #{userid} and gid= #{gid}
+
+        <if test='templateType != null and templateType != "" and  templateType != "null"'>
+            and templateType= #{templateType}
+        </if>
+
+    </delete>
+
+    <insert id="updateUsertemplate" parameterType="Usertemplate">
+        UPDATE qcv_appointment_usertemplate
+        SET templateType=#{templateType,jdbcType=VARCHAR},
+            inviteContent=#{inviteContent,jdbcType=VARCHAR},
+            address=#{address,jdbcType=VARCHAR},
+            longitude=#{longitude,jdbcType=VARCHAR},
+            latitude=#{latitude,jdbcType=VARCHAR},
+            companyProfile=#{companyProfile,jdbcType=VARCHAR},
+            traffic=#{traffic,jdbcType=VARCHAR}
+        WHERE userid = #{userid}
+          and templateType = #{templateType}
+          and gid = #{gid}
+    </insert>
+
+    <insert id="updateOldUsertemplate" parameterType="Usertemplate">
+        UPDATE qcv_appointment_usertemplate
+        SET templateType=#{templateType,jdbcType=VARCHAR},
+            inviteContent=#{inviteContent,jdbcType=VARCHAR},
+            address=#{address,jdbcType=VARCHAR},
+            longitude=#{longitude,jdbcType=VARCHAR},
+            latitude=#{latitude,jdbcType=VARCHAR},
+            companyProfile=#{companyProfile,jdbcType=VARCHAR},
+            traffic=#{traffic,jdbcType=VARCHAR}
+        WHERE userid = #{userid}
+          and templateType = #{oldTemplateType}
+          and gid = #{gid}
+    </insert>
+
+    <insert id="addSAtemplate" parameterType="SubAccountTemplate">
+        INSERT INTO qcv_appointment_satemplate (subaccountId,
+                                                userid,
+                                                templateType,
+                                                inviteContent,
+                                                address,
+                                                longitude,
+                                                latitude,
+                                                companyProfile,
+                                                traffic,
+                                                gid)
+        VALUES (#{subaccountId,jdbcType=INTEGER},
+                #{userid,jdbcType=INTEGER},
+                #{templateType,jdbcType=VARCHAR},
+                #{inviteContent,jdbcType=VARCHAR},
+                #{address,jdbcType=VARCHAR},
+                #{longitude,jdbcType=VARCHAR},
+                #{latitude,jdbcType=VARCHAR},
+                #{companyProfile,jdbcType=VARCHAR},
+                #{traffic,jdbcType=VARCHAR},
+                #{gid})
+    </insert>
+
+    <insert id="updateSAtemplate" parameterType="SubAccountTemplate">
+        UPDATE qcv_appointment_satemplate
+        SET inviteContent=#{inviteContent,jdbcType=VARCHAR},
+            address=#{address,jdbcType=VARCHAR},
+            longitude=#{longitude,jdbcType=VARCHAR},
+            latitude=#{latitude,jdbcType=VARCHAR},
+            companyProfile=#{companyProfile,jdbcType=VARCHAR},
+            traffic=#{traffic,jdbcType=VARCHAR}
+        WHERE subaccountId = #{subaccountId}
+          and templateType = #{templateType}
+          and gid = #{gid}
+    </insert>
+
+    <select id="getSAtemplate" resultType="SubAccountTemplate">
+        SELECT
+        <include refid="select_subaccount"/>
+        FROM
+        qcv_appointment_satemplate a where a.subaccountId=#{subaccountId} and templateType=#{templateType} and
+        gid=#{gid}
+    </select>
+
+    <delete id="delSAtemplate" parameterType="SubAccountTemplate">
+        DELETE FROM qcv_appointment_satemplate WHERE subaccountId = #{subaccountId}
+
+        <if test='gid != "0"'>
+            and gid=#{gid}
+        </if>
+    </delete>
+
+    <insert id="addEmptemplate" parameterType="Emptemplate">
+        INSERT INTO qcv_appointment_emptemplate (userid,
+                                                 empEmail,
+                                                 empPhone,
+                                                 templateType,
+                                                 inviteContent,
+                                                 address,
+                                                 longitude,
+                                                 latitude,
+                                                 companyProfile,
+                                                 traffic,
+                                                 gid)
+        VALUES (#{userid,jdbcType=INTEGER},
+                #{empEmail,jdbcType=VARCHAR},
+                #{empPhone,jdbcType=VARCHAR},
+                #{templateType,jdbcType=VARCHAR},
+                #{inviteContent,jdbcType=VARCHAR},
+                #{address,jdbcType=VARCHAR},
+                #{longitude,jdbcType=VARCHAR},
+                #{latitude,jdbcType=VARCHAR},
+                #{companyProfile,jdbcType=VARCHAR},
+                #{traffic,jdbcType=VARCHAR},
+                #{gid,jdbcType=INTEGER})
+    </insert>
+
+
+    <select id="getEmptemplate" parameterType="Emptemplate" resultType="Emptemplate">
+        SELECT
+        <include refid="select_emp"/>
+        FROM
+        qcv_appointment_emptemplate a where a.userid=#{userid} and empPhone=#{empPhone}
+        <if test="templateType!=null and templateType!='' and templateType!='null'">
+            and templateType=#{templateType}
+        </if>
+        and gid=#{gid}
+    </select>
+
+    <insert id="updateEmptemplate" parameterType="Emptemplate">
+        UPDATE qcv_appointment_emptemplate
+        SET inviteContent=#{inviteContent,jdbcType=VARCHAR},
+            address=#{address,jdbcType=VARCHAR},
+            longitude=#{longitude,jdbcType=VARCHAR},
+            latitude=#{latitude,jdbcType=VARCHAR},
+            companyProfile=#{companyProfile,jdbcType=VARCHAR},
+            traffic=#{traffic,jdbcType=VARCHAR}
+        WHERE userid = #{userid}
+          and empPhone = #{empPhone}
+          and templateType = #{templateType}
+          and gid = #{gid}
+    </insert>
+
+    <delete id="delEmptemplate" parameterType="Appointment">
+        DELETE
+        FROM qcv_appointment_emptemplate
+        WHERE empEmail = #{empEmail}
+          and userid = #{userid}
+          and gid = #{gid}
+    </delete>
+
+    <insert id="batchaddAppointment" useGeneratedKeys="true" parameterType="java.util.List">
+        INSERT INTO qcv_appointment (
+        userid,
+        empid,
+        name,
+        phone,
+        vemail,
+        appointmentDate,
+        visitType,
+        inviteContent,
+        address,
+        longitude,
+        latitude,
+        companyProfile,
+        traffic,
+        status,
+        vcompany,
+        remark,
+        qrcodeConf,
+        qrcodeType,
+        tid,
+        vType,
+        plateNum,
+        appExtendCol
+        ) VALUES
+        <foreach collection="list" item="atlist" index="index" separator=",">
+            (#{atlist.userid},#{atlist.empid},#{atlist.name},#{atlist.phone},{atlist.vemail},#{atlist.appointmentDate},#{atlist.visitType},#{atlist.inviteContent},
+            #{atlist.address},#{atlist.longitude},#{atlist.latitude},#{atlist.companyProfile},#{atlist.traffic},#{atlist.status},#{atlist.vcompany},
+            #{atlist.remark},#{atlist.qrcodeConf},#{atlist.qrcodeType},#{atlist.tid},#{atlist.vType},#{atlist.plateNum},#{atlist.appExtendCol})
+        </foreach>
+    </insert>
+
+    <insert id="addAppointment" useGeneratedKeys="true" keyProperty="id" parameterType="Appointment">
+        INSERT INTO qcv_appointment (userid,
+                                     company,
+                                     empdeptid,
+                                     empid,
+                                     empName,
+                                     empEmail,
+                                     empPhone,
+                                     name,
+                                     phone,
+                                     vemail,
+                                     cardId,
+                                     appointmentDate,
+                                     visitType,
+                                     permission,
+                                     inviteContent,
+                                     address,
+                                     longitude,
+                                     latitude,
+                                     companyProfile,
+                                     traffic,
+                                     status,
+                                     subaccountId,
+                                     vcompany,
+                                     remark,
+                                     mid,
+                                     qrcodeConf,
+                                     qrcodeType,
+                                     tid,
+                                     vType,
+                                     agroup,
+                                     plateNum,
+                                     appExtendCol,
+                                     gid,
+                                     sex,
+                                     clientNo,
+                                     visitorCount,
+                                     floors,
+                                     isWeekendVisitor,
+                                     isHolidayVisitor,
+                                     isSCTimeVisitor,
+                                     acode,
+                                     area,
+                                     areaid
+                                     )
+        VALUES (#{userid,jdbcType=INTEGER},
+                #{company,jdbcType=VARCHAR},
+                #{empdeptid,jdbcType=INTEGER},
+                #{empid,jdbcType=INTEGER},
+                #{empName,jdbcType=VARCHAR},
+                #{empEmail,jdbcType=VARCHAR},
+                #{empPhone,jdbcType=VARCHAR},
+                #{name,jdbcType=VARCHAR},
+                #{phone,jdbcType=VARCHAR},
+                #{vemail,jdbcType=VARCHAR},
+                #{cardId,jdbcType=VARCHAR},
+                #{appointmentDate},
+                #{visitType,jdbcType=VARCHAR},
+                #{permission,jdbcType=INTEGER},
+                #{inviteContent,jdbcType=VARCHAR},
+                #{address,jdbcType=VARCHAR},
+                #{longitude,jdbcType=VARCHAR},
+                #{latitude,jdbcType=VARCHAR},
+                #{companyProfile,jdbcType=VARCHAR},
+                #{traffic,jdbcType=VARCHAR},
+                #{status,jdbcType=INTEGER},
+                #{subaccountId,jdbcType=INTEGER},
+                #{vcompany,jdbcType=VARCHAR},
+                #{remark,jdbcType=VARCHAR},
+                #{mid,jdbcType=INTEGER},
+                #{qrcodeConf,jdbcType=INTEGER},
+                #{qrcodeType,jdbcType=INTEGER},
+                #{tid,jdbcType=VARCHAR},
+                #{vType,jdbcType=VARCHAR},
+                #{agroup,jdbcType=VARCHAR},
+                #{plateNum,jdbcType=VARCHAR},
+                #{appExtendCol,jdbcType=VARCHAR},
+                #{gid,jdbcType=INTEGER},
+                #{sex,jdbcType=VARCHAR},
+                #{clientNo,jdbcType=INTEGER},
+                #{visitorCount,jdbcType=INTEGER},
+                #{floors,jdbcType=VARCHAR},
+                #{isWeekendVisitor,jdbcType=VARCHAR},
+                #{isHolidayVisitor,jdbcType=VARCHAR},
+                #{isSCTimeVisitor,jdbcType=VARCHAR},
+                #{acode,jdbcType=VARCHAR},
+                #{area,jdbcType=VARCHAR},
+                #{areaid,jdbcType=INTEGER}
+               )
+    </insert>
+
+
+    <select id="getAppointmentbyId" resultType="Appointment">
+        SELECT
+        <include refid="select_clause"/>
+        FROM
+        qcv_appointment a where a.id=#{id}
+    </select>
+
+    <select id="getAppointments" resultType="Appointment">
+        SELECT
+        <include refid="select_clause"/>
+        FROM
+        qcv_appointment a where a.empEmail=#{email} and a.sendStatus=#{status} order by a.appointmentDate desc
+    </select>
+
+    <select id="getAppointmentByUserid" resultType="Appointment">
+        SELECT
+        <include refid="select_clause"/>
+        FROM
+        qcv_appointment a where a.userid=#{userid} order by a.appointmentDate desc
+    </select>
+
+    <select id="getAppointmentByPhone" parameterType="Appointment" resultType="Appointment">
+        SELECT
+        <include refid="select_clause"/>
+        FROM
+        qcv_appointment a where RIGHT(phone, 4)=#{phone} and userid=#{userid}
+        <if test='subaccountId != 0'>
+            and a.subaccountId= #{subaccountId}
+        </if>
+        and status in (0,2,3) AND TO_DAYS(appointmentDate)=TO_DAYS(NOW())
+    </select>
+
+    <select id="getAppointmentByHash" parameterType="Appointment" resultType="Appointment">
+        SELECT
+        <include refid="select_clause"/>
+        FROM
+        qcv_appointment a where id=#{qrContent}
+    </select>
+
+    <select id="getAppointmentByWPhone" parameterType="Appointment" resultType="Appointment">
+        SELECT
+        <include refid="select_clause"/>
+        FROM
+        qcv_appointment a where phone=#{phone} and userid=#{userid}
+        <if test='subaccountId != 0'>
+            and a.subaccountId= #{subaccountId}
+        </if>
+        <if test='visitType != null and visitType != "" and  visitType != "null"'>
+            and a.visitType= #{visitType}
+        </if>
+        and status in (0,2,3) and TO_DAYS(appointmentDate)=TO_DAYS(NOW()) limit 0,1
+    </select>
+
+    <select id="getAppointmentPhotoUrl" parameterType="Appointment" resultType="Appointment">
+        SELECT
+        <include refid="select_clause"/>
+        FROM
+        qcv_appointment a where phone=#{phone} and userid=#{userid} and status in (0,2,3) and photoUrl is not null and
+        TO_DAYS(appointmentDate)=TO_DAYS(NOW())
+        <if test='gid != "0"'>
+            and gid=#{gid}
+        </if>
+        limit 0,1
+    </select>
+
+    <select id="getAppointmentList" parameterType="Appointment" resultType="Appointment">
+        SELECT
+        <include refid="select_clause"/>
+        FROM
+        qcv_appointment a where phone=#{phone} and userid=#{userid} and status in (0,2,3) and photoUrl is not null and
+        TO_DAYS(appointmentDate)=TO_DAYS(NOW())
+    </select>
+
+    <select id="getAppointmentOldRecords" parameterType="Appointment" resultType="Appointment">
+        SELECT
+        <include refid="select_clause"/>
+        FROM
+        qcv_appointment a where a.phone=#{phone} and a.userid=#{userid} and a.status=1 order by a.visitDate desc limit
+        0,1
+    </select>
+
+    <select id="getAppExpiredRecords" resultType="String">
+        SELECT DISTINCT(phone) as phone
+        FROM qcv_appointment a
+        WHERE TO_DAYS(appointmentDate) &lt; TO_DAYS(NOW())
+          AND TO_DAYS(appointmentDate) &gt; TO_DAYS(NOW()) - 8
+          AND a.userid = #{userid}
+    </select>
+
+    <select id="getAppointmentByMid" parameterType="Integer" resultType="Appointment">
+        SELECT
+        <include refid="select_clause"/>
+        FROM
+        qcv_appointment a WHERE a.mid=#{mid}
+    </select>
+
+    <select id="getAMeetingRecord" parameterType="Integer" resultType="Appointment">
+        SELECT
+        <include refid="select_clause"/>
+        FROM
+        qcv_appointment a WHERE a.mid=#{mid} limit 0,1
+    </select>
+
+    <select id="getMeetingAppointment" resultType="Appointment">
+        SELECT
+        <include refid="select_clause"/>
+        FROM
+        qcv_appointment a WHERE a.phone=#{phone} and a.userid=#{userid} and a.mid=#{mid} limit 0,1
+    </select>
+
+    <insert id="updateAppointmentStatus" parameterType="Appointment">
+        UPDATE qcv_appointment SET
+        status=1,
+        visitDate=#{visitDate},
+        photoUrl=#{photoUrl,jdbcType=VARCHAR},
+        cardId=#{cardId,jdbcType=VARCHAR},
+        remark=#{remark,jdbcType=VARCHAR},
+        plateNum=#{plateNum,jdbcType=VARCHAR}
+        WHERE userid=#{userid} and
+        <if test='phone != null and phone != "" and  phone != "null"'>
+            phone=#{phone} and
+        </if>
+
+        <if test='vemail != null and vemail != "" and  vemail != "null"'>
+            vemail=#{vemail} and
+        </if>
+
+        <if test='id != "0"'>
+            id=#{id} and
+        </if>
+        CASE qrcodeType
+        WHEN 0 THEN TO_DAYS(#{visitDate})&lt;=TO_DAYS(appointmentDate)+qrcodeConf-1
+        WHEN 1 THEN TO_DAYS(appointmentDate)=TO_DAYS(#{visitDate})
+        END
+        and status in (0,1,2,3,6)
+        <if test='visitType != null and visitType != "" and  visitType != "null"'>
+            and visitType= #{visitType}
+        </if>
+    </insert>
+
+    <insert id="updateSaAppointmentStatus" parameterType="Appointment">
+        UPDATE qcv_appointment SET
+        status=1,
+        visitDate=#{visitDate},
+        photoUrl=#{photoUrl,jdbcType=VARCHAR},
+        cardId=#{cardId,jdbcType=VARCHAR},
+        remark=#{remark,jdbcType=VARCHAR},
+        plateNum=#{plateNum,jdbcType=VARCHAR},
+        visitorCount=#{visitorCount,jdbcType=INTEGER}
+        WHERE phone=#{phone} and userid=#{userid} and
+        <if test='id != "0"'>
+            id=#{id} and
+        </if>
+        CASE qrcodeType
+        WHEN 0 THEN TO_DAYS(#{visitDate})&lt;=TO_DAYS(appointmentDate)+qrcodeConf-1
+        WHEN 1 THEN TO_DAYS(appointmentDate)=TO_DAYS(#{visitDate})
+        END
+        and subaccountId= #{subaccountId} and status in (0,1,2,3,6)
+        <if test='visitType != null and visitType != "" and  visitType != "null"'>
+            and visitType= #{visitType}
+        </if>
+    </insert>
+
+    <insert id="updateMeetingAppStatus" parameterType="Appointment">
+        UPDATE qcv_appointment
+        SET status=1,
+            visitDate=#{visitDate}
+        WHERE phone = #{phone}
+          and userid = #{userid}
+          and mid = #{mid}
+    </insert>
+
+    <insert id="updateAppPreview" parameterType="Appointment">
+        UPDATE qcv_appointment
+        SET inviteContent=#{inviteContent,jdbcType=VARCHAR},
+            address=#{address,jdbcType=VARCHAR},
+            longitude=#{longitude,jdbcType=VARCHAR},
+            latitude=#{latitude,jdbcType=VARCHAR},
+            companyProfile=#{companyProfile,jdbcType=VARCHAR},
+            traffic=#{traffic,jdbcType=VARCHAR},
+            userid=#{userid},
+            empName=#{empName},
+            appointmentDate=#{appointmentDate},
+            subaccountId=#{subaccountId},
+            appExtendCol=#{appExtendCol},
+            remark=#{remark},
+            visitType=#{visitType},
+            qrcodeConf=#{qrcodeConf},
+            name=#{name}
+        WHERE id = #{id}
+    </insert>
+
+    <insert id="AppointmentReply" parameterType="Appointment">
+        UPDATE qcv_appointment
+        SET status=#{status}
+        WHERE id = #{id}
+    </insert>
+
+    <insert id="updatePhotoUrl">
+        UPDATE qcv_appointment
+        SET photoUrl=#{photoUrl}
+        WHERE id = #{id}
+    </insert>
+
+    <insert id="updateAppSendStatus" parameterType="Appointment">
+        UPDATE qcv_appointment
+        SET sendStatus=1
+        WHERE id = #{id}
+    </insert>
+
+    <update id="batchUpdateAppSendStatus" parameterType="java.util.List">
+        <foreach collection="list" item="atlist" index="index" open="" close="" separator=";">
+            update qcv_appointment
+            set sendStatus=#{atlist.sendStatus,jdbcType=INTEGER}
+            where id = #{atlist.id,jdbcType=INTEGER}
+        </foreach>
+    </update>
+
+    <insert id="updateAppointmentSms" parameterType="Integer">
+        UPDATE qcv_appointment
+        SET smsStatus= 1
+        WHERE id = #{id}
+    </insert>
+
+    <insert id="updateOpenCount" parameterType="Appointment">
+        UPDATE qcv_appointment
+        SET openCount=#{openCount}
+        WHERE id = #{id}
+    </insert>
+
+    <insert id="updateLeaveTime" parameterType="Appointment">
+        UPDATE qcv_appointment
+        SET leaveTime= #{leaveTime}
+        WHERE id = #{id}
+          and userid = #{userid}
+    </insert>
+
+    <insert id="updateAppAreaInfo" parameterType="Appointment">
+        UPDATE qcv_appointment
+        SET visitReason=#{visitReason},
+            areaid=#{areaid},
+            area= #{area}
+        WHERE id = #{id}
+    </insert>
+
+    <insert id="updateCardNo" parameterType="Appointment">
+        UPDATE qcv_appointment
+        SET cardNo= #{cardNo}
+        WHERE id = #{id}
+    </insert>
+
+    <insert id="updateAppExtendCol" parameterType="Appointment">
+        UPDATE qcv_appointment
+        SET appExtendCol= #{appExtendCol}
+        WHERE id = #{id}
+    </insert>
+    <insert id="addAppointmentReserve">
+        INSERT INTO qcv_appointment (userid,
+                                     company,
+                                     empdeptid,
+                                     empid,
+                                     empName,
+                                     empEmail,
+                                     empPhone,
+                                     name,
+                                     phone,
+                                     vemail,
+                                     cardId,
+                                     appointmentDate,
+                                     visitType,
+                                     permission,
+                                     inviteContent,
+                                     address,
+                                     longitude,
+                                     latitude,
+                                     companyProfile,
+                                     traffic,
+                                     status,
+                                     subaccountId,
+                                     vcompany,
+                                     remark,
+                                     mid,
+                                     qrcodeConf,
+                                     qrcodeType,
+                                     tid,
+                                     vType,
+                                     agroup,
+                                     plateNum,
+                                     appExtendCol,
+                                     gid,
+                                     sex,
+                                     clientNo,
+                                     visitorCount,
+                                     floors,
+                                     isWeekendVisitor,
+                                     isHolidayVisitor,
+                                     isSCTimeVisitor,
+                                     acode,
+                                     meetingStatus)
+        VALUES (#{userid,jdbcType=INTEGER},
+                #{company,jdbcType=VARCHAR},
+                #{empdeptid,jdbcType=INTEGER},
+                #{empid,jdbcType=INTEGER},
+                #{empName,jdbcType=VARCHAR},
+                #{empEmail,jdbcType=VARCHAR},
+                #{empPhone,jdbcType=VARCHAR},
+                #{name,jdbcType=VARCHAR},
+                #{phone,jdbcType=VARCHAR},
+                #{vemail,jdbcType=VARCHAR},
+                #{cardId,jdbcType=VARCHAR},
+                #{appointmentDate},
+                #{visitType,jdbcType=VARCHAR},
+                #{permission,jdbcType=INTEGER},
+                #{inviteContent,jdbcType=VARCHAR},
+                #{address,jdbcType=VARCHAR},
+                #{longitude,jdbcType=VARCHAR},
+                #{latitude,jdbcType=VARCHAR},
+                #{companyProfile,jdbcType=VARCHAR},
+                #{traffic,jdbcType=VARCHAR},
+                #{status,jdbcType=INTEGER},
+                #{subaccountId,jdbcType=INTEGER},
+                #{vcompany,jdbcType=VARCHAR},
+                #{remark,jdbcType=VARCHAR},
+                #{mid,jdbcType=INTEGER},
+                #{qrcodeConf,jdbcType=INTEGER},
+                #{qrcodeType,jdbcType=INTEGER},
+                #{tid,jdbcType=VARCHAR},
+                #{vType,jdbcType=VARCHAR},
+                #{agroup,jdbcType=VARCHAR},
+                #{plateNum,jdbcType=VARCHAR},
+                #{appExtendCol,jdbcType=VARCHAR},
+                #{gid,jdbcType=INTEGER},
+                #{sex,jdbcType=VARCHAR},
+                #{clientNo,jdbcType=INTEGER},
+                #{visitorCount,jdbcType=INTEGER},
+                #{floors,jdbcType=VARCHAR},
+                #{isWeekendVisitor,jdbcType=VARCHAR},
+                #{isHolidayVisitor,jdbcType=VARCHAR},
+                #{isSCTimeVisitor,jdbcType=VARCHAR},
+                #{acode,jdbcType=VARCHAR},
+                #{meetingStatus,jdbcType=INTEGER})
+    </insert>
+
+    <update id="updateAppointmentPermission" parameterType="Appointment">
+        update qcv_appointment
+        set permission = #{permission}
+        where userid = #{userid}
+          and id = #{id}
+    </update>
+    <update id="updateAppointmentJoinMeetingSign">
+        update qcv_appointment a
+        set signDate = #{signDate}
+        where userid = #{userid}
+          and id = #{appid}
+    </update>
+    <update id="updateAppointmentFaceById">
+        update qcv_appointment
+        set face = #{face}
+        where userid = #{userid}
+          and id = #{appid}
+    </update>
+    <update id="updateAppointmentMeetingStatus">
+        UPDATE qcv_appointment
+        set
+            inviteContent=#{inviteContent},
+            address=#{address},
+            longitude=#{longitude},
+            latitude=#{latitude},
+            companyProfile=#{companyProfile},
+            traffic=#{traffic},
+            sendStatus=1,
+            appExtendCol=#{appExtendCol},
+            meetingStatus=#{meetingStatus}
+        WHERE
+            id = #{id}
+    </update>
+    <update id="updateSupplementAppointment">
+        UPDATE qcv_appointment
+        <trim prefix="set" suffixOverrides=",">
+            <if test="photoUrl!=null and photoUrl!='' and photoUrl!=''">
+                photoUrl=#{photoUrl},
+            </if>
+            <if test="vemail!=null and vemail!='' and vemail!='null'">
+                vemail=#{vemail},
+            </if>
+            <if test="cardId!=null and cardId!='' and cardId!='null'">
+                cardId=#{cardId},
+            </if>
+            <if test="vcompany!=null and vcompany!='' and vcompany!='null'">
+                vcompany=#{vcompany},
+            </if>
+            <if test="remark!=null and remark!='' and remark!='null'">
+                remark=#{remark},
+            </if>
+            <if test="plateNum!=null and plateNum!='' and plateNum!=''">
+                plateNum=#{plateNum},
+            </if>
+            <if test="appointmentDate!=null">
+                appointmentDate=#{appointmentDate},
+            </if>
+            <if test="name!=null and name!='' and name!='null'">
+                name=#{name},
+            </if>
+            <if test="phone!=null and phone!='null' and phone!=''">
+                phone=#{phone},
+            </if>
+            <if test="appExtendCol!=null and appExtendCol!='null' and appExtendCol!=''">
+                appExtendCol=#{appExtendCol},
+            </if>
+            <if test="healthDeclaration!=null and healthDeclaration!='null' and healthDeclaration!=''">
+                healthDeclaration=#{healthDeclaration},
+            </if>
+        </trim>
+        WHERE
+        id = #{id}
+    </update>
+    <update id="updateAppointmentVgroup">
+        UPDATE qcv_appointment
+        <trim prefix="set" suffixOverrides=",">
+            <if test="agroup!=null and agroup!='' and agroup!='null'">
+                agroup=#{agroup}
+            </if>
+        </trim>
+        WHERE
+        id = #{id}
+    </update>
+    <update id="updateSupplementAppointmentDateById">
+        UPDATE qcv_appointment
+        <trim prefix="set" suffixOverrides=",">
+            <if test="appointmentDate!=null">
+                appointmentDate=#{appointmentDate}
+            </if>
+        </trim>
+        WHERE
+        agroup = #{id}
+    </update>
+
+    <update id="updateAppointmentStatusById">
+        update qcv_appointment
+        set status = #{status}
+        where userid = #{userid}
+          and id = #{id}
+    </update>
+
+    <select id="searchInviteByCondition" parameterType="java.util.Map" resultType="RespVisitor">
+        SELECT a.id AS vid,a.company,a.empName,a.empPhone,a.phone AS
+        vphone,a.tid,a.vemail,a.vType,a.visitdate,a.appointmentDate,a.leaveTime,a.name AS vname,a.photoUrl AS
+        vphoto,a.visitType,a.vcompany,a.sendStatus AS 'permission' ,'0' AS 'peopleCount','0' AS 'vgroup',null AS
+        signOutDate,a.remark,a.qrcodeType,a.qrcodeConf,
+        '1' AS 'signinType',a.status,a.gid,a.plateNum,a.appExtendCol as extendCol FROM qcv_appointment a WHERE a.userid=
+        #{userid}
+
+        <if test='startDate != null and startDate != "" and  startDate != "null" and endDate != startDate '>
+            and DATE_FORMAT(a.appointmentDate, '%Y-%m-%d') &gt;= #{startDate}
+        </if>
+
+        <if test='endDate != null and endDate != "" and  endDate != "null" and endDate != startDate '>
+            and DATE_FORMAT(a.appointmentDate, '%Y-%m-%d') &lt;= #{endDate} and visitDate is null
+        </if>
+
+        <if test='endDate == startDate '>
+            and (TO_DAYS(#{startDate}) &gt;= TO_DAYS(a.appointmentDate) and TO_DAYS(#{startDate}) &lt;=
+            TO_DAYS(a.appointmentDate)+a.qrcodeConf-1 )
+            and (DATE_FORMAT(a.visitdate, '%Y-%m-%d')!=#{startDate} or a.visitdate is null)
+        </if>
+
+        <if test='gid != null and gid != "" and  gid != "null"'>
+            and a.gid= #{gid}
+        </if>
+
+        <if test='subaccountId != "0"'>
+            and a.subaccountId= #{subaccountId}
+        </if>
+        UNION ALL
+        SELECT
+        v.vid,v.company,v.empName,v.empPhone,v.vphone,v.tid,v.vemail,v.vType,v.visitdate,v.appointmentDate,v.leaveTime,v.vname,v.vphoto,
+        v.visitType,v.vcompany,v.permission,v.peopleCount,v.vgroup,v.signOutDate,v.remark,'0' AS 'qrcodeType',v.qrcodeConf,
+        v.signinType,'1' as status,v.gid,v.plateNum,v.extendCol FROM qcv_visitor v WHERE v.signinType=1 and v.userid=
+        #{userid}
+
+        <if test='startDate != null and startDate != "" and  startDate != "null"'>
+            and DATE_FORMAT(v.appointmentDate, '%Y-%m-%d') &gt;= #{startDate}
+        </if>
+
+        <if test='endDate != null and endDate != "" and  endDate != "null"'>
+            and DATE_FORMAT(v.appointmentDate, '%Y-%m-%d') &lt;= #{endDate}
+        </if>
+
+        <if test='gid != null and gid != "" and  gid != "null"'>
+            and v.gid= #{gid}
+        </if>
+
+        <if test='subaccountId != "0"'>
+            and v.subaccountId= #{subaccountId}
+        </if>
+
+        order by visitdate desc
+
+    </select>
+
+
+    <select id="searchInviteByConditionPage" parameterType="RequestVisit" resultType="RespVisitor">
+        SELECT a.id AS vid,a.company,a.empName,a.empPhone,a.phone AS
+        vphone,a.tid,a.vemail,a.vType,a.visitdate,a.appointmentDate,a.leaveTime,
+        a.name AS vname,a.photoUrl AS vphoto,a.visitType,a.vcompany, a.permission,'0' AS
+        'peopleCount','0' AS 'vgroup',null AS signOutDate,a.remark,
+        '1' AS 'signinType',a.status,a.gid,a.plateNum,a.appExtendCol as extendCol,a.cardNo AS cardNo,a.sex,
+        a.qrcodeConf,a.qrcodeType
+        FROM qcv_appointment a WHERE a.userid= #{userid}
+        <if test='searchType == "4"'>
+            and 1!=1
+        </if>
+
+        <if test='date != null and date != "" and  date != "null" and endDate != date '>
+            and DATE_FORMAT(a.appointmentDate, '%Y-%m-%d') &gt;= #{date}
+        </if>
+
+        <if test='endDate != null and endDate != "" and  endDate != "null" and endDate != date '>
+            and DATE_FORMAT(a.appointmentDate, '%Y-%m-%d') &lt;= #{endDate} and a.visitdate is null
+        </if>
+
+        <if test='endDate == date and endDate!="" and date!=""'>
+            and (TO_DAYS(#{date}) &gt;= TO_DAYS(a.appointmentDate) and TO_DAYS(#{date}) &lt;=
+            TO_DAYS(a.appointmentDate)+a.qrcodeConf-1 )
+            and ( a.visitdate is null or a.id not in (select v.appid from qcv_visitor v where (DATE_FORMAT(v.visitdate,
+            '%Y-%m-%d')=#{date}) and v.signinType=1))
+        </if>
+
+        <if test='empPhone != null and empPhone != "" and  empPhone != "null" '>
+            and a.empPhone=#{empPhone}
+        </if>
+
+        <if test='empid != 0'>
+            and a.empid=#{empid}
+        </if>
+
+        <if test='gid != null and gid != "" and  gid != "null"'>
+            and CONCAT(',',a.gid, ',') REGEXP concat(',(',replace(#{gid},',','|'),'),')>0
+        </if>
+
+        <if test='reception != null and reception != "" and  reception != "null"'>
+            and (a.name like "%"#{reception}"%" or a.phone like "%"#{reception}"%"
+            or a.company like "%"#{reception}"%" or a.vcompany like "%"#{reception}"%"
+            or a.empName like "%"#{reception}"%" or a.visitType like "%"#{reception}"%")
+        </if>
+
+        <if test='subaccountId != "0"'>
+            and a.subaccountId= #{subaccountId}
+        </if>
+
+        UNION ALL
+
+        SELECT
+        v.vid,v.company,v.empName,v.empPhone,v.vphone,v.tid,v.vemail,v.vType,v.visitdate,v.appointmentDate,v.leaveTime,v.vname,v.vphoto,v.visitType,v.vcompany,v.permission,v.peopleCount,v.vgroup,v.signOutDate,v.remark,
+        v.signinType,'1' as status,v.gid,v.plateNum,v.extendCol ,v.cardNo AS cardNo,v.sex,v.qrcodeConf,'0' AS 'qrcodeType'
+        FROM qcv_visitor v WHERE v.signinType=1 and v.userid= #{userid}
+
+        <if test='searchType == "2"'>
+            and 1!=1
+        </if>
+
+        <if test='date != null and date != "" and  date != "null"'>
+            and DATE_FORMAT(v.visitdate, '%Y-%m-%d') &gt;= #{date}
+        </if>
+
+        <if test='endDate != null and endDate != "" and  endDate != "null"'>
+            and DATE_FORMAT(v.visitdate, '%Y-%m-%d') &lt;= #{endDate}
+        </if>
+
+        <if test='empPhone != null and empPhone != "" and  empPhone != "null" '>
+            and v.empPhone=#{empPhone}
+        </if>
+
+        <if test='empid != 0'>
+            and a.empid=#{empid}
+        </if>
+
+        <if test='gid != null and gid != "" and  gid != "null"'>
+            and CONCAT(',',v.gid, ',') REGEXP concat(',(',replace(#{gid},',','|'),'),')>0
+        </if>
+
+        <if test='subaccountId != "0"'>
+            and v.subaccountId= #{subaccountId}
+        </if>
+
+        <if test='reception != null and reception != "" and  reception != "null"'>
+            and (v.vname like "%"#{reception}"%" or v.vphone like "%"#{reception}"%" or v.company like
+            "%"#{reception}"%" or v.vcompany like "%"#{reception}"%" or v.empName like "%"#{reception}"%"
+            or v.visitType like "%"#{reception}"%")
+        </if>
+
+        <if test='searchType == "0"'>
+            order by appointmentDate desc
+        </if>
+        <if test='searchType != "0"'>
+            order by visitdate desc
+        </if>
+    </select>
+
+    <select id="getAppointmnetByAgroup" parameterType="Appointment" resultType="Appointment">
+        SELECT
+        <include refid="select_clause"/>
+        FROM
+        qcv_appointment a WHERE a.agroup=#{agroup} and a.userid=#{userid}
+    </select>
+
+    <select id="getAppointmentbyAcode" resultType="Appointment">
+        SELECT
+        <include refid="select_clause"/>
+        FROM
+        qcv_appointment a
+        where acode = #{acode}
+        and
+        CASE qrcodeType
+        WHEN 0 THEN TO_DAYS(NOW()) &lt;= TO_DAYS(appointmentDate)+qrcodeConf-1
+        END
+        order by a.appointmentDate desc
+    </select>
+
+    <select id="getAppointmentByexpireDate" resultType="Appointment">
+        SELECT
+        <include refid="select_clause"></include>
+        FROM qcv_appointment a
+        WHERE a.userid = #{userid} AND a.appointmentDate &lt;= #{expireDate}
+    </select>
+
+    <delete id="deleteAppointmentByids" parameterType="list">
+        delete from qcv_appointment
+        where id in
+        <foreach collection="list" item="id" index="index" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="searchNotSendCardVisitList" parameterType="map" resultType="RespVisitor">
+        SELECT
+        a.`vid` AS vid ,a.`appointmentDate` as appointmentDate,a.`company` AS company,a.`vname` AS vname,a.`vphone` AS
+        vphone,a.`visitType` AS visitType,
+        a.`vType` AS vType,a.`cardNo` AS cardNo,a.`clientNo`AS clientNo,a.`cardOpName` AS cardOpName,a.`gid` AS gid,
+        a.sex as sex,a.`empName` AS empName,a.`permission` AS permission ,a.`signinType` AS signinType,'' AS
+        qrcodeConf,a.`cardNo` AS cardNo,a.`appid` AS appid,
+        a.extendCol as extendCol
+        FROM
+        qcv_visitor a
+        WHERE
+        a.`userid` = #{userid}
+        AND a.signinType IN(1,2)
+        AND a.`cardNo` is null
+        AND a.`permission` =1
+        <if test='startDate != null and startDate != "" and  startDate != "null"'>
+            and DATE_FORMAT(a.appointmentDate, '%Y-%m-%d') &gt;= #{startDate}
+        </if>
+
+        <if test='endDate != null and endDate != "" and  endDate != "null"'>
+            and DATE_FORMAT(a.appointmentDate, '%Y-%m-%d') &lt;= #{endDate}
+        </if>
+
+        <if test='gid != null and gid != "" and  gid != "null"'>
+            and FIND_IN_SET(#{gid},a.`gid`)
+        </if>
+
+        <if test='subaccountId != "0"'>
+            and a.subaccountId= #{subaccountId}
+        </if>
+
+        UNION ALL
+
+        SELECT
+        '' AS vid,b.`appointmentDate` AS appointmentDate,b.company AS company,b.name AS vname,b.phone AS
+        vphone,b.visitType AS visitType,
+        b.vType AS vType,b.cardNo AS cardNo,b.clientNo AS clientNo,'' AS cardOpName ,b.`gid` AS gid,b.sex as sex,
+        b.`empName` AS empName,b.permission,'1' AS signinType,b.qrcodeConf AS qrcodeConf,b.cardNo AS cardNo,b.id AS
+        appid,
+        b.appExtendCol as extendCol
+        FROM
+        qcv_appointment b
+        WHERE
+        b.userid = #{userid} AND b.status not in (1,4)
+        AND (TO_DAYS(b.`appointmentDate`)+b.`qrcodeConf`-1 )>= TO_DAYS(NOW())
+        <if test='gid != null and gid != "" and  gid != "null"'>
+            and FIND_IN_SET(#{gid},b.`gid`)
+        </if>
+
+        <if test='subaccountId != "0"'>
+            and b.subaccountId= #{subaccountId}
+        </if>
+
+        ORDER BY appointmentDate DESC
+    </select>
+
+    <select id="getInviteCount" parameterType="RequestVisit" resultType="DataStatistics">
+        select (sum(noArrivedCount)+sum(arrivedCount)) as totalVisitor, sum(noArrivedCount) as
+        noArrivedCount,sum(arrivedCount) as arrivedCount from(SELECT count(1) AS noArrivedCount,0 as arrivedCount FROM
+        qcv_appointment a WHERE a.userid= #{userid}
+        <if test='date != null and date != "" and  date != "null" and endDate != date '>
+            and DATE_FORMAT(a.appointmentDate, '%Y-%m-%d') &gt;= #{date}
+        </if>
+        <if test='endDate != null and endDate != "" and  endDate != "null" and endDate != date '>
+            and DATE_FORMAT(a.appointmentDate, '%Y-%m-%d') &lt;= #{endDate} and a.visitdate IS NULL
+        </if>
+
+        <if test='endDate == date and endDate!="" and date!=""'>
+            and (TO_DAYS(#{date}) &gt;= TO_DAYS(a.appointmentDate) and TO_DAYS(#{date}) &lt;=
+            TO_DAYS(a.appointmentDate)+a.qrcodeConf-1 )
+            and (a.visitdate is null or a.id not in (select v.appid from qcv_visitor v where (DATE_FORMAT(v.visitdate,
+            '%Y-%m-%d')=#{date}) and v.signinType=1))
+        </if>
+        <if test='gid != null and gid != "" and  gid != "null"'>
+            and CONCAT(',',a.gid, ',') REGEXP concat(',(',replace(#{gid},',','|'),'),')>0
+        </if>
+        UNION ALL
+        SELECT 0 as noArrivedCount,count(1) AS arrivedCount FROM qcv_visitor v WHERE v.signinType=1 and v.userid=
+        #{userid}
+        <if test='date != null and date != "" and  date != "null"'>
+            and DATE_FORMAT(v.visitdate, '%Y-%m-%d') &gt;= #{date}
+        </if>
+
+        <if test='endDate != null and endDate != "" and  endDate != "null"'>
+            and DATE_FORMAT(v.visitdate, '%Y-%m-%d') &lt;= #{endDate}
+        </if>
+        <if test='gid != null and gid != "" and  gid != "null"'>
+            and CONCAT(',',v.gid, ',') REGEXP concat(',(',replace(#{gid},',','|'),'),')>0
+        </if>
+        ) t
+    </select>
+
+    <select id="getDeptAppVisitByAppDate" parameterType="RequestVisit" resultType="VisitorChart">
+        SELECT
+        <if test='chartStatus == "0"'>
+            DATE_FORMAT(a.`appointmentDate`,'%Y-%m') AS month ,
+        </if>
+        <if test='chartStatus == "1"'>
+            DATE_FORMAT(a.`appointmentDate`,'%Y-%m-%d') AS day,
+        </if>
+        <if test='chartStatus == "2"'>
+            DATE_FORMAT(a.`appointmentDate`,'%H') AS hour,
+        </if>
+        b.`deptid` as deptId,a.userid , COUNT(a.`empid`)AS COUNT
+        FROM
+        qcv_appointment a,
+        qcv_emp_dept b
+        WHERE
+        DATE_FORMAT(a.`appointmentDate`,'%Y-%m-%d') &gt;= #{date}
+        AND
+        DATE_FORMAT(a.`appointmentDate`,'%Y-%m-%d') &lt;=#{endDate}
+        AND a.`userid` = #{userid} AND b.`userid` = #{userid} AND b.`empid` = a.`empid`
+        <if test='gid != null and gid != "" and  gid != "null"'>
+            and CONCAT(',',a.gid, ',') REGEXP concat(',(',replace(#{gid},',','|'),'),')>0
+        </if>
+
+        GROUP BY
+        <if test='chartStatus == "0"'>
+            month,
+        </if>
+        <if test='chartStatus == "1"'>
+            day,
+        </if>
+        <if test='chartStatus == "2"'>
+            hour,
+        </if>
+        deptid
+    </select>
+    <select id="searchAppointmentByMidOrder" resultType="com.web.bean.Appointment">
+        SELECT
+        <include refid="select_clause"/>
+        FROM qcv_appointment a
+        WHERE a.mid = #{mid}
+        ORDER BY signDate DESC
+    </select>
+    <select id="getAppointmentByPhoneAndMid" resultType="com.web.bean.Appointment">
+        SELECT
+        <include refid="select_clause"/>
+        FROM
+        qcv_appointment a
+        WHERE 1=1
+        AND a.phone=#{phone}
+        AND a.mid=#{mid}
+        AND a.userid=#{userid}
+    </select>
+    <select id="getReviewMeeting" resultType="com.web.bean.Appointment">
+        SELECT
+        <include refid="select_clause"/>
+        FROM
+        qcv_appointment a
+        WHERE 1=1
+        <if test="startDate !='' and startDate != null and startDate !='null'">
+            AND a.appointmentDate>= #{startDate}
+        </if>
+        <if test="endDate != null and endDate != 'null' and endDate != null">
+            AND a.appointmentDate &lt;= #{endDate}
+        </if>
+        <if test="name !='' and name != 'null' and name != null">
+            AND a.name = #{name}
+        </if>
+        <if test="phone != null and phone !='null' and phone !=''">
+            AND a.phone = #{phone}
+        </if>
+        <if test="meetingStatus != null">
+            AND a.meetingStatus=#{meetingStatus}
+        </if>
+        AND a.userid = #{userid}
+        AND a.meetingStatus in (0,1,2)
+    </select>
+    <select id="getAppointmentByIdAndAgroup" resultType="com.web.bean.Appointment">
+        SELECT
+        <include refid="select_clause"/>
+        FROM qcv_appointment a
+        where 1=1
+        and a.agroup=#{id}
+    </select>
+
+    <update id="batchUpdateAppExtendCol" parameterType="java.util.List">
+        <foreach collection="list" item="atlist" index="index" open="" close="" separator=";">
+            update qcv_appointment
+            set appExtendCol=#{atlist.appExtendCol,jdbcType=VARCHAR}
+            where id = #{atlist.id,jdbcType=INTEGER}
+        </foreach>
+    </update>
+</mapper>

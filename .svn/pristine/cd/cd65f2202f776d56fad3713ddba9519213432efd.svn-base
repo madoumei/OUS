@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script type="text/javascript">
+		;(function(){
+			const websocket = new WebSocket('ws://127.0.0.1:10020');
+			websocket.onmessage = e => {
+				console.log('收到消息:', e.data);
+			}
+			websocket.onclose = e => {
+				let {code, reason} = e;
+				console.log(`链接断开:code=${code}, reason=${reason}`);
+			}
+			websocket.onopen = () => {
+				console.log(`链接建立...`);
+				websocket.send('Hello');
+			}
+			websocket.onerror = e => {
+				console.log('链接异常:', e);
+			}
+		})();
+
+	</script>
+</body>
+</html>

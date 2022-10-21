@@ -1,0 +1,103 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.client.dao.VehicleRecordDao">
+    <sql id="select_clause">
+		 a.userid,
+		 a.deviceCode,
+		 a.deviceName,
+		 a.plateNum,
+		 a.name,
+		 a.moblie,
+		 a.empNo,
+		 a.vehType,
+		 a.sTime,
+		 a.sType,
+		 a.photoUrl,
+		 a.vsid,
+	     a.gid
+    </sql>
+    
+    
+       <insert id="addVehicleRecord"   parameterType="VehicleRecord">
+		INSERT INTO qcv_vehicle_records (
+			 userid,
+			 deviceCode,
+			 deviceName,
+			 plateNum,
+			 name,
+			 moblie,
+			 empNo,
+			 vehType,
+			 sTime,
+			 sType,
+			 photoUrl,
+			 vsid,
+			 gid
+		) VALUES (
+			#{userid,jdbcType=INTEGER},
+			#{deviceCode,jdbcType=VARCHAR},
+			#{deviceName,jdbcType=VARCHAR},
+			#{plateNum,jdbcType=VARCHAR},
+			#{name,jdbcType=VARCHAR},
+			#{moblie,jdbcType=VARCHAR},
+			#{empNo,jdbcType=VARCHAR},
+			#{vehType,jdbcType=INTEGER},
+			Now(),
+			#{sType,jdbcType=INTEGER},
+			#{photoUrl,jdbcType=VARCHAR},
+			#{vsid,jdbcType=VARCHAR},
+			#{gid,jdbcType=VARCHAR}
+		)
+    </insert>
+    
+      <select id="getVehicleRecord" parameterType="ReqVR" resultType="VehicleRecord">
+        SELECT 
+         <include refid="select_clause"/>
+        FROM  
+        	qcv_vehicle_records a  where a.userid=#{userid}
+        	
+       	<if test='vehList != null and vehList.size()>0'>
+        	 and  a.vehType in  
+		     <foreach collection="vehList" index="index" item="vehList" open="(" separator="," close=")">     
+		        #{vehList[${index}]}     
+		     </foreach>  
+		</if> 
+        	
+        <if test='plateNum != null and plateNum != "" and  plateNum != "null"'>
+              and a.plateNum like "%"#{plateNum}"%" 
+        </if>
+        
+        <if test='name != null and name != "" and  name != "null"'>
+              and a.name like "%"#{name}"%"
+        </if>
+        	
+        <if test='deviceCode != null and deviceCode != "" and  deviceCode != "null"'>
+              and a.deviceCode=#{deviceCode}
+        </if>
+        
+        <if test='deviceName != null and deviceName != "" and  deviceName != "null"'>
+              and a.deviceName = #{deviceName}
+        </if>
+        
+         <if test='startDate != null and startDate != "" and  startDate != "null"'>
+               and DATE_FORMAT(a.sTime, '%Y-%m-%d') &gt;= #{startDate}
+         </if>
+         
+         <if test='endDate != null and endDate != "" and  endDate != "null"'>
+               and DATE_FORMAT(a.sTime, '%Y-%m-%d')  &lt;= #{endDate}
+         </if>
+         
+          <if test='gid != null and gid != "" and  gid != "null"'>
+			  and CONCAT(',',a.gid, ',') REGEXP concat(',(',replace(#{gid},',','|'),'),')>0
+         </if>
+        	
+      </select>
+      
+       <select id="getVehicleRecordByVsid" parameterType="VehicleRecord" resultType="VehicleRecord">
+        SELECT 
+         <include refid="select_clause"/>
+        FROM  
+        	qcv_vehicle_records a  where a.userid=#{userid} and  a.vehType=#{vehType} and a.sType=#{sType} and a.vsid=#{vsid} limit 0,1
+        	
+      </select>
+      
+</mapper>

@@ -1,0 +1,162 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.client.dao.MrRecordsDao">
+    <sql id="select_clause">
+		a.id,
+		a.userid,
+		a.mrid,
+		a.name,
+		a.address,
+		a.lockName,
+		a.communityCode,
+		a.title,
+		a.peopleCount,
+		a.empName,
+		a.empPhone,
+		a.startDate,
+		a.endDate,
+		a.cost,
+		a.status
+    </sql>
+    
+     <sql id="select_clause2">
+		b.id,
+		b.userid,
+		b.mrid,
+		b.name,
+		b.address,
+		b.openkey,
+		b.lockName,
+		b.communityCode,
+		b.title,
+		b.peopleCount,
+		b.empName,
+		b.empPhone,
+		b.startDate,
+		b.endDate,
+		b.cost,
+		b.status
+    </sql>
+    
+    
+       <insert id="addMrRecords" useGeneratedKeys="true" keyProperty="id"  parameterType="ReqMrRecords">
+		INSERT INTO qcv_mr_record (
+			userid,
+			mrid,
+			name,
+			address,
+			openkey,
+			lockName,
+			communityCode,
+			title,
+			peopleCount,
+			empName,
+			empPhone,
+			startDate,
+			endDate,
+			cost
+		) VALUES (
+			#{userid,jdbcType=INTEGER},
+			#{mrid,jdbcType=VARCHAR},
+			#{name,jdbcType=VARCHAR},
+			#{address,jdbcType=VARCHAR},
+			#{openkey,jdbcType=VARCHAR},
+			#{lockName,jdbcType=VARCHAR},
+			#{communityCode,jdbcType=VARCHAR},
+			#{title,jdbcType=VARCHAR},
+			#{peopleCount,jdbcType=INTEGER},
+			#{empName,jdbcType=VARCHAR},
+			#{empPhone,jdbcType=VARCHAR},
+			#{startDate},
+			#{endDate},
+			#{cost,jdbcType=DECIMAL}
+		)
+    </insert>
+   
+      
+       <select id="getMrRecordsList"   parameterType="ReqMrRecords" resultType="MrRecords">
+        SELECT 
+         <include refid="select_clause"/>
+        FROM  
+        	qcv_mr_record a where  a.userid= #{userid} 
+        	
+        	 <if test='mrid != "0"'>
+              and a.mrid= #{mrid} 
+             </if>
+        	
+        	 <if test='startDate != null and startDate != "" and  startDate != "null"'>
+               and DATE_FORMAT(a.startDate, '%Y-%m-%d') &gt;= #{startDate}
+             </if>
+             
+             <if test='endDate != null and endDate != "" and  endDate != "null"'>
+              and DATE_FORMAT(a.startDate, '%Y-%m-%d')  &lt;= #{endDate}
+             </if>
+               
+              <if test='name != null and name != "" and  name != "null"'>
+              and a.name like "%"#{name}"%"
+             </if>
+             
+             <if test='address != null and address != "" and  address != "null"'>
+              and a.address like "%"#{address}"%"
+             </if>
+             
+             <if test='empName != null and empName != "" and  empName != "null"'>
+              and a.empName =#{empName}
+             </if>
+             
+             <if test='empPhone != null and empPhone != "" and  empPhone != "null"'>
+              and a.empPhone =#{empPhone}
+             </if>
+             
+             order by id desc
+      </select>
+      
+      <select id="getMrRecordsById"   parameterType="ReqMrRecords" resultType="MrRecords">
+        SELECT 
+         <include refid="select_clause"/>
+        FROM  
+        	qcv_mr_record a where  a.mrid= #{mrid}  and DATE_FORMAT(a.startDate, '%Y-%m-%d') = #{startDate} and a.status=1
+      </select>
+      
+      <select id="getMrRecord"   parameterType="Integer" resultType="MrRecords">
+        SELECT 
+         <include refid="select_clause"/>
+        FROM  
+        	qcv_mr_record a where  a.id= #{id}
+      </select>
+      
+      <select id="checkMrRecords"  parameterType="ReqMrRecords" resultType="MrRecords">
+        SELECT 
+         <include refid="select_clause"/>
+        FROM  
+        	qcv_mr_record a where a.userid= #{userid} and a.startDate &gt;= #{startDate} and a.startDate  &lt; #{endDate} and a.mrid=#{mrid}  and a.status=1
+         union all
+         SELECT 
+         <include refid="select_clause"/>
+        FROM  
+        	qcv_mr_record a where a.userid= #{userid} and a.endDate &gt; #{startDate} and a.endDate  &lt;= #{endDate} and a.mrid=#{mrid} and  a.status=1
+        union all
+         SELECT 
+         <include refid="select_clause"/>
+        FROM  
+        	qcv_mr_record a where a.userid= #{userid} and a.endDate &gt; #{endDate} and a.startDate  &lt; #{startDate} and a.mrid=#{mrid} and a.status=1
+      </select>
+      
+       <select id="getMeetingRoomKeys"  resultType="MrRecords">
+        SELECT 
+         <include refid="select_clause2"/>
+        FROM  
+        	qcv_mr_record b where b.userid= #{userid} and  b.empPhone = #{empPhone} and b.status=1 and b.endDate &gt;= NOW()
+      </select>
+
+      
+	  <insert id="updateMeetingRoom" parameterType="ReqMrRecords">
+	       UPDATE qcv_mr_record SET   
+			 	status=#{status,jdbcType=INTEGER}
+	         WHERE id = #{rid}
+	  </insert>
+	    
+	  <delete id="deleteMeeting" parameterType="Integer">
+        DELETE FROM qcv_mr_record WHERE  id=#{id}
+      </delete>  
+      
+</mapper>

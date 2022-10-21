@@ -1,0 +1,3276 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.client.dao.VisitorDao">
+    <sql id="select_clause">
+        a.vid,
+		  a.empid,
+		  a.empName,
+		  a.empPhone,
+		  a.userid,
+		  a.company,
+		  a.vname,
+		  a.vemail,
+		  a.vphone,
+		  a.visitType,
+		  a.vphoto,
+		  a.visitdate,
+		  a.appointmentDate,
+		  a.extendCol,
+		  a.peopleCount,
+		  a.smsStatus,
+		  a.subaccountId,
+		  a.cardId,
+		  a.permission,
+		  a.signinType,
+		  a.signOutDate,
+		  a.vcompany,
+		  a.remark,
+		  a.vgroup,
+		  a.visitReason,
+		  a.aid,
+		  a.area,
+		  a.memberName,
+		  a.signInOpName,
+		  a.signOutOpName,
+		  a.signInGate,
+		  a.signOutGate,
+		  a.signPdf,
+		  a.leaveTime,
+		  a.tid,
+		  a.vType,
+		  a.appid,
+		  a.plateNum,
+		  a.meetingPoint,
+		  a.gid,
+		  a.sex,
+		  a.cardNo,
+		  a.clientNo,
+		  a.cardOpName,
+		  a.createTime,
+		  a.qrcodeConf,
+		  a.overallScore,
+		  a.scoreDetail,
+           a.empdeptid,
+           a.healthDeclaration,
+           a.status
+    </sql>
+
+    <sql id="select_clause2">
+        a.vid,
+		  a.userid,
+		  a.company,
+		  a.empName,
+		  a.empPhone,
+		  a.vname,
+		  a.vemail,
+		  a.vphone,
+		  a.visitType,
+		  a.vphoto,
+		  a.visitdate,
+		  a.appointmentDate,
+		  a.peopleCount,
+		  a.subaccountId,
+		  a.cardId,
+		  a.permission,
+		  a.signinType,
+		  a.signOutDate,
+		  a.vcompany,
+		  a.remark,
+		  a.vgroup,
+		  a.visitReason,
+		  a.aid,
+		  a.area,
+		  a.memberName,
+		  a.signInOpName,
+		  a.signOutOpName,
+		  a.signInGate,
+		  a.signOutGate,
+		  a.signPdf,
+		  a.leaveTime,
+		  a.tid,
+		  a.vType,
+		  a.appid,
+		  a.plateNum,
+		  a.meetingPoint,
+		  a.gid,
+		  a.sex,
+		  a.cardNo,
+		  a.clientNo,
+		  a.cardOpName,
+        a.empdeptid
+    </sql>
+
+    <sql id="select_clause3">
+        a.vid,
+		  a.userid,
+		  a.company,
+		  a.empName,
+		  a.empPhone,
+		  a.vname,
+		  a.vemail,
+		  a.vphone,
+		  a.visitType,
+		  a.vphoto,
+		  a.visitdate,
+		  a.appointmentDate,
+		  a.peopleCount,
+		  a.subaccountId,
+		  a.cardId,
+		  a.permission,
+		  a.signinType,
+		  a.signOutDate,
+		  a.vcompany,
+		  a.remark,
+		  a.vgroup,
+		  a.visitReason,
+		  a.aid,
+		  a.area,
+		  a.memberName,
+		  a.signInOpName,
+		  a.signOutOpName,
+		  a.signInGate,
+		  a.signOutGate,
+		  a.signPdf,
+		  a.leaveTime,
+		  a.tid,
+		  a.vType,
+		  a.appid,
+		  a.plateNum,
+		  a.meetingPoint,
+		  a.gid,
+		  a.sex,
+		  a.cardNo,
+		  a.clientNo,
+		  a.cardOpName,
+          ap.mid,
+        a.empdeptid
+    </sql>
+
+<sql id="select_respVisitor">
+    a.vid,
+        a.company,
+        a.empPhone,
+        a.empName,
+        a.vphone,
+        a.vemail,
+        a.visitdate,
+        a.leaveTime,
+        a.appointmentDate,
+        a.vname,
+        a.memberName,
+        a.cardNo,
+        a.plateNum,
+        a.tid,
+        a.vType,
+        a.signOutDate,
+        a.vphoto,
+        a.visitType,
+        a.remark,
+        a.vcompany,
+        a.permission,
+        a.peopleCount,
+        a.signinType,
+        a.vgroup,
+        a.extendCol,
+        a.gid,
+        a.sex,
+        a.healthDeclaration,
+        a.status,
+        a.createTime as createTime
+</sql>
+
+    <insert id="addVisitor" useGeneratedKeys="true" keyProperty="vid" parameterType="Visitor">
+        INSERT INTO qcv_visitor (empid,
+                                 empdeptid,
+                                 empName,
+                                 empPhone,
+                                 userid,
+                                 company,
+                                 vcompany,
+                                 vname,
+                                 vemail,
+                                 vphone,
+                                 visitType,
+                                 vphoto,
+                                 signinType,
+                                 visitdate,
+                                 appointmentDate,
+                                 extendCol,
+                                 peopleCount,
+                                 subaccountId,
+                                 cardId,
+                                 remark,
+                                 signInOpName,
+                                 signOutOpName,
+                                 gid,
+                                 memberName,
+                                 tid,
+                                 vType,
+                                 plateNum,
+                                 meetingPoint,
+                                 sex,
+                                 cardNo,
+                                 clientNo,
+                                 bCompany,
+                                 visitorCount,
+                                 permissionName,
+                                 floors,
+                                 isWeekendVisitor,
+                                 isHolidayVisitor,
+                                 isSCTimeVisitor,
+                                 isDaysOffVisitor,
+                                 qrcodeConf,
+                                 signInGate,
+                                 permission)
+        VALUES (#{empid,jdbcType=INTEGER},
+                #{empdeptid,jdbcType=INTEGER},
+                #{empName,jdbcType=VARCHAR},
+                #{empPhone,jdbcType=VARCHAR},
+                #{userid,jdbcType=INTEGER},
+                #{company,jdbcType=VARCHAR},
+                #{vcompany,jdbcType=VARCHAR},
+                #{vname,jdbcType=VARCHAR},
+                #{vemail,jdbcType=VARCHAR},
+                #{vphone,jdbcType=VARCHAR},
+                #{visitType,jdbcType=VARCHAR},
+                #{vphoto,jdbcType=VARCHAR},
+                #{signinType,jdbcType=INTEGER},
+                #{visitdate},
+                #{appointmentDate},
+                #{extendCol,jdbcType=VARCHAR},
+                #{peopleCount,jdbcType=INTEGER},
+                #{subaccountId,jdbcType=INTEGER},
+                #{cardId, jdbcType=CHAR},
+                #{remark,jdbcType=VARCHAR},
+                #{signInOpName,jdbcType=VARCHAR},
+                #{signOutOpName,jdbcType=VARCHAR},
+                #{gid,jdbcType=VARCHAR},
+                #{memberName,jdbcType=VARCHAR},
+                #{tid,jdbcType=INTEGER},
+                #{vType,jdbcType=VARCHAR},
+                #{plateNum,jdbcType=VARCHAR},
+                #{meetingPoint,jdbcType=VARCHAR},
+                #{sex,jdbcType=VARCHAR},
+                #{cardNo,jdbcType=VARCHAR},
+                #{clientNo,jdbcType=INTEGER},
+                #{bCompany,jdbcType=VARCHAR},
+                #{visitorCount,jdbcType=INTEGER},
+                #{permissionName,jdbcType=VARCHAR},
+                #{floors,jdbcType=VARCHAR},
+                #{isWeekendVisitor,jdbcType=VARCHAR},
+                #{isHolidayVisitor,jdbcType=VARCHAR},
+                #{isSCTimeVisitor,jdbcType=VARCHAR},
+                #{isDaysOffVisitor,jdbcType=VARCHAR},
+                #{qrcodeConf,jdbcType=INTEGER},
+                #{signInGate,jdbcType=VARCHAR},
+                #{permission,jdbcType=INTEGER} )
+    </insert>
+
+    <insert id="addGroupVisitor" useGeneratedKeys="true" keyProperty="vid" parameterType="java.util.List">
+        INSERT INTO qcv_visitor (
+        empid,
+        empdeptid,
+        empName,
+        empPhone,
+        userid,
+        company,
+        vname,
+        vphone,
+        visitType,
+        appointmentDate,
+        signinType,
+        peopleCount,
+        subaccountId,
+        remark,
+        vgroup,
+        vcompany,
+        extendCol,
+        visitdate,
+        gid,
+        tid,
+        vType,
+        signInOpName,
+        signInGate,
+        plateNum,
+        meetingPoint,
+        permission,
+        sex,
+        vphoto,
+        cardNo,
+        clientNo,
+        bCompany,
+        visitorCount,
+        permissionName,
+        floors,
+        isWeekendVisitor,
+        isHolidayVisitor,
+        isSCTimeVisitor,
+        isDaysOffVisitor,
+        qrcodeConf
+        ) VALUES
+        <foreach collection="list" item="vlist" index="index" separator=",">
+            (#{vlist.empid},#{vlist.empdeptid},#{vlist.empName},#{vlist.empPhone},#{vlist.userid},#{vlist.company},#{vlist.vname},
+            #{vlist.vphone},#{vlist.visitType},#{vlist.appointmentDate},#{vlist.signinType},#{vlist.peopleCount},#{vlist.subaccountId},
+            #{vlist.remark},#{vlist.vgroup},#{vlist.vcompany},#{vlist.extendCol},
+            #{vlist.visitdate},#{vlist.gid},#{vlist.tid},
+            #{vlist.vType},#{vlist.signInOpName},#{vlist.signInGate},#{vlist.plateNum},#{vlist.meetingPoint},#{vlist.permission},
+            #{vlist.sex},#{vlist.vphoto},#{vlist.cardNo},#{vlist.clientNo},#{vlist.bCompany},#{vlist.visitorCount},#{vlist.permissionName},
+            #{vlist.floors},#{vlist.isWeekendVisitor},#{vlist.isHolidayVisitor},#{vlist.isSCTimeVisitor},#{vlist.isDaysOffVisitor},
+            #{vlist.qrcodeConf})
+        </foreach>
+    </insert>
+
+    <insert id="addVisitorApponintmnet" useGeneratedKeys="true" keyProperty="vid" parameterType="Visitor">
+        INSERT INTO qcv_visitor (empid,
+                                 empdeptid,
+                                 empPhone,
+                                 empName,
+                                 userid,
+                                 company,
+                                 vname,
+                                 vemail,
+                                 vphone,
+                                 vphoto,
+                                 cardId,
+                                 visitType,
+                                 peopleCount,
+                                 appointmentDate,
+                                 signinType,
+                                 remark,
+                                 vgroup,
+                                 subaccountId,
+                                 vcompany,
+                                 memberName,
+                                 signInOpName,
+                                 signInGate,
+                                 extendCol,
+                                 plateNum,
+                                 gid,
+                                 permission,
+                                 sex,
+                                 vType,
+                                 tid,
+                                 clientNo,
+                                 bCompany,
+                                 visitorCount,
+                                 permissionName,
+                                 floors,
+                                 isWeekendVisitor,
+                                 isHolidayVisitor,
+                                 isSCTimeVisitor,
+                                 isDaysOffVisitor,
+                                 qrcodeConf,
+                                 aid,
+                                 area)
+        VALUES (#{empid,jdbcType=INTEGER},
+                #{empdeptid,jdbcType=INTEGER},
+                #{empPhone,jdbcType=VARCHAR},
+                #{empName,jdbcType=VARCHAR},
+                #{userid,jdbcType=INTEGER},
+                #{company,jdbcType=VARCHAR},
+                #{vname,jdbcType=VARCHAR},
+                #{vemail,jdbcType=VARCHAR},
+                #{vphone,jdbcType=VARCHAR},
+                #{vphoto,jdbcType=VARCHAR},
+                #{cardId,jdbcType=VARCHAR},
+                #{visitType,jdbcType=VARCHAR},
+                #{peopleCount,jdbcType=INTEGER},
+                #{appointmentDate},
+                #{signinType,jdbcType=INTEGER},
+                #{remark,jdbcType=VARCHAR},
+                #{vgroup,jdbcType=INTEGER},
+                #{subaccountId,jdbcType=INTEGER},
+                #{vcompany,jdbcType=VARCHAR},
+                #{memberName,jdbcType=VARCHAR},
+                #{signInOpName,jdbcType=VARCHAR},
+                #{signInGate,jdbcType=VARCHAR},
+                #{extendCol,jdbcType=VARCHAR},
+                #{plateNum,jdbcType=VARCHAR},
+                #{gid,jdbcType=VARCHAR},
+                #{permission,jdbcType=INTEGER},
+                #{sex,jdbcType=VARCHAR},
+                #{vType,jdbcType=VARCHAR},
+                #{tid,jdbcType=INTEGER},
+                #{clientNo,jdbcType=INTEGER},
+                #{bCompany,jdbcType=VARCHAR},
+                #{visitorCount,jdbcType=VARCHAR},
+                #{permissionName,jdbcType=VARCHAR},
+                #{floors,jdbcType=VARCHAR},
+                #{isWeekendVisitor,jdbcType=VARCHAR},
+                #{isHolidayVisitor,jdbcType=VARCHAR},
+                #{isSCTimeVisitor,jdbcType=VARCHAR},
+                #{isDaysOffVisitor,jdbcType=VARCHAR},
+                #{qrcodeConf,jdbcType=INTEGER},
+                #{aid,jdbcType=INTEGER},
+                #{area,jdbcType=VARCHAR}
+                )
+    </insert>
+
+    <insert id="addApponintmnetVisitor" useGeneratedKeys="true" keyProperty="vid" parameterType="Visitor">
+        INSERT INTO qcv_visitor (empid,
+                                 empdeptid,
+                                 empName,
+                                 empPhone,
+                                 userid,
+                                 company,
+                                 vname,
+                                 vphone,
+                                 vemail,
+                                 visitType,
+                                 peopleCount,
+                                 vphoto,
+                                 visitdate,
+                                 extendCol,
+                                 appointmentDate,
+                                 permission,
+                                 signinType,
+                                 cardId,
+                                 vcompany,
+                                 remark,
+                                 subaccountId,
+                                 signInOpName,
+                                 signInGate,
+                                 leaveTime,
+                                 tid,
+                                 vType,
+                                 appid,
+                                 gid,
+                                 plateNum,
+                                 meetingPoint,
+                                 clientNo,
+                                 bCompany,
+                                 visitorCount,
+                                 permissionName,
+                                 cardNo,
+                                 qrcodeConf,
+                                 sex,
+                                 floors,
+                                 isWeekendVisitor,
+                                 isHolidayVisitor,
+                                 isSCTimeVisitor,
+                                 isDaysOffVisitor)
+        VALUES (#{empid,jdbcType=INTEGER},
+                #{empdeptid,jdbcType=INTEGER},
+                #{empName,jdbcType=VARCHAR},
+                #{empPhone,jdbcType=VARCHAR},
+                #{userid,jdbcType=INTEGER},
+                #{company,jdbcType=VARCHAR},
+                #{vname,jdbcType=VARCHAR},
+                #{vphone,jdbcType=VARCHAR},
+                #{vemail,jdbcType=VARCHAR},
+                #{visitType,jdbcType=VARCHAR},
+                #{peopleCount,jdbcType=INTEGER},
+                #{vphoto,jdbcType=VARCHAR},
+                #{visitdate},
+                #{extendCol,jdbcType=VARCHAR},
+                #{appointmentDate},
+                #{permission,jdbcType=INTEGER},
+                #{signinType,jdbcType=INTEGER},
+                #{cardId, jdbcType=CHAR},
+                #{vcompany, jdbcType=VARCHAR},
+                #{remark,jdbcType=VARCHAR},
+                #{subaccountId,jdbcType=INTEGER},
+                #{signInOpName,jdbcType=VARCHAR},
+                #{signInGate,jdbcType=VARCHAR},
+                #{leaveTime},
+                #{tid,jdbcType=INTEGER},
+                #{vType,jdbcType=VARCHAR},
+                #{appid,jdbcType=INTEGER},
+                #{gid,jdbcType=VARCHAR},
+                #{plateNum,jdbcType=VARCHAR},
+                #{meetingPoint,jdbcType=VARCHAR},
+                #{clientNo,jdbcType=INTEGER},
+                #{bCompany,jdbcType=VARCHAR},
+                #{visitorCount,jdbcType=VARCHAR},
+                #{permissionName,jdbcType=VARCHAR},
+                #{cardNo,jdbcType=VARCHAR},
+                #{qrcodeConf,jdbcType=INTEGER},
+                #{sex,jdbcType=INTEGER},
+                #{floors,jdbcType=VARCHAR},
+                #{isWeekendVisitor,jdbcType=VARCHAR},
+                #{isHolidayVisitor,jdbcType=VARCHAR},
+                #{isSCTimeVisitor,jdbcType=VARCHAR},
+                #{isDaysOffVisitor,jdbcType=VARCHAR})
+    </insert>
+
+    <insert id="batchSingin" useGeneratedKeys="true" parameterType="Visitor">
+        INSERT INTO qcv_visitor (
+        empid,
+        empName,
+        empPhone,
+        userid,
+        vname,
+        vemail,
+        vphone,
+        visitType,
+        vphoto,
+        visitdate,
+        extendCol,
+        peopleCount,
+        subaccountId,
+        cardId,
+        sex,
+        clientNo
+        ) VALUES
+        <foreach collection="list" item="vlist" index="index" separator=",">
+            (#{vlist.empid},#{vlist.empName},#{vlist.empPhone},#{vlist.userid},#{vlist.vname},#{vlist.vemail},#{vlist.vphone},#{vlist.visitType},
+            #{vlist.vphoto},#{vlist.visitdate},#{vlist.extendCol},#{vlist.peopleCount},#{vlist.subaccountId},#{vlist.cardId},#{vlist.sex},#{vlist.clientNo})
+        </foreach>
+    </insert>
+
+    <insert id="updateVisitor" parameterType="Visitor">
+        UPDATE qcv_visitor
+        SET vphoto= #{vphoto,jdbcType=VARCHAR}
+        WHERE vid = #{vid}
+    </insert>
+
+    <insert id="updateVisitorAppointment" parameterType="Visitor">
+        UPDATE qcv_visitor
+        SET
+        <if test='vphoto != null and vphoto != "" and  vphoto != "null"'>
+            vphoto= #{vphoto,jdbcType=VARCHAR},
+        </if>
+        <if test='cardId != null and cardId != "" and  cardId != "null"'>
+            cardId=#{cardId, jdbcType=CHAR},
+        </if>
+        <if test='plateNum != null and plateNum != "" and  plateNum != "null"'>
+            plateNum=#{plateNum, jdbcType=VARCHAR},
+        </if>
+        <if test='vcompany != null and vcompany != "" and  vcompany != "null"'>
+            vcompany=#{vcompany, jdbcType=VARCHAR},
+        </if>
+        <if test='signInOpName != null and signInOpName != "" and  signInOpName != "null"'>
+            signInOpName=#{signInOpName,jdbcType=VARCHAR},
+        </if>
+        <if test='signInGate != null and signInGate != "" and  signInGate != "null"'>
+            signInGate=#{signInGate,jdbcType=VARCHAR},
+        </if>
+        <if test='extendCol != null and extendCol != "" and  extendCol != "null"'>
+            extendCol=#{extendCol,jdbcType=VARCHAR},
+        </if>
+        <if test='remark != null and remark != "" and  remark != "null"'>
+            remark= #{remark},
+        </if>
+        visitdate= #{visitdate}
+        WHERE vid = #{vid}
+    </insert>
+
+    <insert id="batchUpdateVisitorAppointment" parameterType="Visitor">
+        UPDATE qcv_visitor
+        SET
+        <if test='vphoto != null and vphoto != "" and  vphoto != "null"'>
+            vphoto= #{vphoto,jdbcType=VARCHAR},
+        </if>
+        <if test='cardId != null and cardId != "" and  cardId != "null"'>
+            cardId=#{cardId, jdbcType=CHAR},
+        </if>
+        <if test='plateNum != null and plateNum != "" and  plateNum != "null"'>
+            plateNum=#{plateNum, jdbcType=VARCHAR},
+        </if>
+        <if test='vcompany != null and vcompany != "" and  vcompany != "null"'>
+            vcompany=#{vcompany, jdbcType=VARCHAR},
+        </if>
+        <if test='signInOpName != null and signInOpName != "" and  signInOpName != "null"'>
+            signInOpName=#{signInOpName,jdbcType=VARCHAR},
+        </if>
+        <if test='signInGate != null and signInGate != "" and  signInGate != "null"'>
+            signInGate=#{signInGate,jdbcType=VARCHAR},
+        </if>
+        <if test='extendCol != null and extendCol != "" and  extendCol != "null"'>
+            extendCol=#{extendCol,jdbcType=VARCHAR},
+        </if>
+        <if test='remark != null and remark != "" and  remark != "null"'>
+            remark= #{remark},
+        </if>
+        visitdate= #{visitdate}
+        WHERE visitdate is null
+          and (vid = #{vid} or vgroup = #{vid})
+    </insert>
+
+    <insert id="updateSigninByAppClient" parameterType="Visitor">
+        UPDATE qcv_visitor
+        SET visitdate= #{visitdate},
+            signInOpName=#{signInOpName,jdbcType=VARCHAR},
+            signInGate=#{signInGate,jdbcType=VARCHAR},
+            extendCol=#{extendCol,jdbcType=VARCHAR},
+            remark= #{remark}
+        WHERE vid = #{vid}
+    </insert>
+
+    <insert id="updateVisitorExtendCol" parameterType="Visitor">
+        UPDATE qcv_visitor
+        SET extendCol=#{extendCol,jdbcType=VARCHAR}
+        WHERE vid = #{vid}
+    </insert>
+
+    <insert id="updateVisitorSms" parameterType="Visitor">
+        UPDATE qcv_visitor
+        SET smsStatus= 1
+        WHERE vid = #{vid}
+    </insert>
+
+
+    <insert id="updateCardNo" parameterType="Visitor">
+        UPDATE qcv_visitor SET
+        <if test='cardOpName != null and cardOpName != "" and  cardOpName != "null"'>
+            cardOpName=#{cardOpName},
+        </if>
+        cardNo=#{cardNo}
+        WHERE vid = #{vid}
+    </insert>
+
+    <insert id="updatePermission" parameterType="Visitor">
+        UPDATE qcv_visitor SET
+        <if test='extendCol != null and extendCol != "" and  extendCol != "null"'>
+        extendCol=#{extendCol},
+        </if>
+        <if test='tid != 0'>
+        tid=#{tid},
+        </if>
+        <if test='vType != null and vType != "" and  vType != "null"'>
+        vType=#{vType},
+        </if>
+        <if test='area != null and area != "" and  area != "null"'>
+        area=#{area},
+        </if>
+        <if test='gid != null and gid != "" and  gid != "null"'>
+        gid=#{gid},
+        </if>
+        <if test='remark != null and remark != "" and  remark != "null"'>
+            remark=#{remark},
+        </if>
+        <if test='permissionName != null and permissionName != "" and  permissionName != "null"'>
+        permissionName=#{empName},
+        </if>
+        <if test='meetingPoint != null and meetingPoint != "" and  meetingPoint != "null"'>
+        meetingPoint=#{meetingPoint},
+        </if>
+        <if test='floors != null and floors != "" and  floors != "null"'>
+        floors=#{floors},
+        </if>
+        <if test='waitPermissionSeconds != null and waitPermissionSeconds != "" and  waitPermissionSeconds != "null"'>
+        waitPermissionSeconds=#{waitPermissionSeconds},
+        </if>
+        permission= #{permission}
+        WHERE vid = #{vid}
+    </insert>
+
+    <insert id="updateGroupPermission" parameterType="Visitor">
+        UPDATE qcv_visitor SET
+        <if test='extendCol != null and extendCol != "" and  extendCol != "null"'>
+            extendCol=#{extendCol},
+        </if>
+        <if test='tid != 0'>
+            tid=#{tid},
+        </if>
+        <if test='vType != null and vType != "" and  vType != "null"'>
+            vType=#{vType},
+        </if>
+        <if test='area != null and area != "" and  area != "null"'>
+            area=#{area},
+        </if>
+        <if test='gid != null and gid != "" and  gid != "null"'>
+            gid=#{gid},
+        </if>
+        <if test='remark != null and remark != "" and  remark != "null"'>
+            remark=#{remark},
+        </if>
+        <if test='permissionName != null and permissionName != "" and  permissionName != "null"'>
+            permissionName=#{empName},
+        </if>
+        <if test='meetingPoint != null and meetingPoint != "" and  meetingPoint != "null"'>
+            meetingPoint=#{meetingPoint},
+        </if>
+        <if test='floors != null and floors != "" and  floors != "null"'>
+            floors=#{floors},
+        </if>
+        <if test='waitPermissionSeconds != null and waitPermissionSeconds != "" and  waitPermissionSeconds != "null"'>
+            waitPermissionSeconds=#{waitPermissionSeconds},
+        </if>
+        permission= #{permission}
+        WHERE vid = #{vid} or vgroup=#{vid}
+    </insert>
+
+    <insert id="updateSignOut" parameterType="Visitor">
+        UPDATE qcv_visitor
+        SET signOutDate   = #{signOutDate},
+            signOutOpName = #{signOutOpName},
+            signOutGate   = #{signOutGate}
+        WHERE vphone = #{vphone}
+          and signOutDate is null
+          and visitdate is not null
+          and userid = #{userid}
+    </insert>
+
+    <update id="batchSignOut" parameterType="java.util.List">
+        <foreach collection="list" item="vlist" index="index" open="" close="" separator=";">
+            UPDATE qcv_visitor
+            <set>
+                signOutDate = NOW(),
+                signOutOpName = #{vlist.signOutOpName},
+                signOutGate = #{vlist.signOutGate}
+            </set>
+            WHERE vid = #{vlist.vid} and userid = #{vlist.userid}
+        </foreach>
+    </update>
+
+    <insert id="updateSignOutByVid" parameterType="Visitor">
+        UPDATE qcv_visitor
+        SET signOutDate   = #{signOutDate},
+            signOutOpName = #{signOutOpName},
+            signOutGate   = #{signOutGate}
+        WHERE vid = #{vid}
+    </insert>
+
+    <insert id="updateVisitRemark" parameterType="Visitor">
+        UPDATE qcv_visitor
+        SET remark  = #{remark},
+            plateNum= #{plateNum}
+        WHERE vid = #{vid}
+    </insert>
+
+    <insert id="updateVisitInfo" parameterType="Visitor">
+        UPDATE qcv_visitor
+        SET visitReason= #{visitReason},
+            aid=#{aid},
+            area= #{area},
+            remark= #{remark}
+        WHERE vid = #{vid}
+           or vgroup = #{vid}
+    </insert>
+
+    <insert id="finishQuestionnaire" parameterType="Visitor">
+        UPDATE qcv_visitor
+        SET overallScore= #{overallScore},
+            scoreDetail=#{scoreDetail}
+        WHERE vid = #{vid}
+    </insert>
+
+    <insert id="updateSignPdf" parameterType="Visitor">
+        UPDATE qcv_visitor
+        SET signPdf= #{signPdf}
+        WHERE vid = #{vid}
+          and userid = #{userid}
+    </insert>
+
+    <insert id="updateLeaveTime" parameterType="Visitor">
+        UPDATE qcv_visitor
+        SET leaveTime= #{leaveTime}
+        WHERE (vid = #{vid} or vgroup = #{vid})
+          and userid = #{userid}
+    </insert>
+
+    <select id="checkSignOutRecords" parameterType="Visitor" resultType="RespVisitor">
+        SELECT
+        <include refid="select_clause"/>
+        FROM
+        qcv_visitor a where a.signOutDate is null and a.visitdate is not null and a.userid=#{userid}
+
+        <if test='vphone != null and vphone != "" and  vphone != "null"'>
+            and a.vphone= #{vphone}
+        </if>
+
+        <if test='vname != null and vname != "" and  vname != "null"'>
+            and a.vname =#{vname}
+        </if>
+
+        <if test='cardId != null and cardId != "" and  cardId != "null"'>
+            and a.cardId= #{cardId}
+        </if>
+
+        <if test='gid != null and gid != "" and  gid != "null"'>
+            and FIND_IN_SET(#{gid},a.gid)
+        </if>
+    </select>
+
+    <select id="getVisitor" parameterType="Visitor" resultType="Visitor">
+        SELECT
+        <include refid="select_clause"/>
+        FROM
+        qcv_visitor a where a.userid=#{userid} and a.visitdate IS NOt NULL
+
+        <if test='vphone != null and vphone != "" and  vphone != "null"'>
+            and a.vphone= #{vphone}
+        </if>
+
+        <if test='vname != null and vname != "" and  vname != "null"'>
+            and a.vname =#{vname}
+        </if>
+
+        order by a.vid desc limit 0,1
+    </select>
+
+    <select id="getVisitorByCardID" resultType="Visitor">
+        SELECT
+        <include refid="select_clause"/>
+        FROM
+        qcv_visitor a where a.cardId=#{cardId} AND a.userid=#{userid} order by a.vid desc limit 0,1
+    </select>
+
+    <select id="getVisitorById" resultType="Visitor">
+        SELECT
+        <include refid="select_clause"/>
+        FROM
+        qcv_visitor a where a.vid=#{vid}
+    </select>
+
+    <select id="getTodayVisitorById" resultType="Visitor">
+        SELECT
+        <include refid="select_clause"/>
+        FROM
+        qcv_visitor a where a.vid=#{vid} and TO_DAYS(appointmentDate)=TO_DAYS(NOW())
+    </select>
+
+    <select id="getTodayVisitorByPhone" resultType="Visitor">
+        SELECT
+        <include refid="select_clause"/>
+        FROM
+        qcv_visitor a where TO_DAYS(a.visitdate)=TO_DAYS(NOW()) and a.vphone = #{vphone} and a.userid=#{userid}
+        limit 0,1
+    </select>
+
+    <select id="getTodayAppointmentByPhone" parameterType="Visitor" resultType="Visitor">
+        SELECT
+        <include refid="select_clause"/>
+        FROM
+        qcv_visitor a where TO_DAYS(a.visitdate)=TO_DAYS(NOW())
+        <if test='vphone != null and vphone != "" and  vphone != "null"'>
+            and a.vphone= #{vphone}
+        </if>
+
+        <if test='vemail != null and vemail != "" and  vemail != "null"'>
+            and a.vemail =#{vemail}
+        </if>
+
+        and a.userid=#{userid} and signinType=1 order by vid desc limit 0,1
+    </select>
+
+    <select id="getLastestVisitor" parameterType="java.util.Map" resultType="Visitor">
+        SELECT
+        <include refid="select_clause"/>
+        FROM
+        qcv_visitor a where a.vphone = #{phone}
+        group by a.vgroup
+        order by a.vid desc limit 0,#{requestedCount}
+    </select>
+
+    <select id="getVisitorCount" resultType="Integer">
+        SELECT count(1)
+        FROM qcv_visitor a
+        where a.userid = #{userid}
+    </select>
+
+
+    <select id="getVisitorList" resultType="RespVisitor">
+        SELECT
+        <include refid="select_clause2"/>
+        FROM
+        qcv_visitor a WHERE a.userid=#{userid} and
+        DATE_FORMAT(a.visitdate, '%Y-%m-%d') =#{visitdate} order by a.visitdate desc
+    </select>
+
+    <select id="getVisitorListByEmpids" resultType="RespVisitor">
+        SELECT
+        <include refid="select_clause2"/>
+        FROM
+        qcv_visitor a WHERE a.empid in
+        <foreach collection="list" index="index" item="empids" open="(" separator="," close=")">
+            #{empids}
+        </foreach>
+        order by a.visitdate desc
+    </select>
+
+    <select id="getVisitorListByEmpid" resultType="RespVisitor">
+        SELECT a.company,
+               a.empName,
+               a.vphone,
+               a.visitdate,
+               a.vname,
+               a.vphoto,
+               a.visitType,
+               a.cardNo,
+               a.plateNum,
+               a.vcompany,
+               a.tid,
+               a.vType,
+               a.extendCol,
+               a.remark,
+               'V' as SigninType,
+               a.gid
+        FROM qcv_visitor a
+        WHERE a.empid = #{empid}
+          and a.signinType = 0
+        UNION ALL
+        SELECT v.company,
+               v.empName,
+               v.phone,
+               v.visitDate,
+               v.name,
+               v.photoUrl,
+               v.visitType,
+               v.cardNo,
+               v.plateNum,
+               v.vcompany,
+               v.tid,
+               v.vType,
+               v.appExtendCol AS extendCol,
+               v.remark,
+               'A'            as SigninType,
+               v.gid
+        FROM `qcv_appointment` v
+        WHERE v.empid = #{empid}
+          and v.status = 1
+        order by visitdate desc
+    </select>
+
+    <select id="getVistorAppListByEmpPhone" resultType="RespVisitor">
+        SELECT
+        <include refid="select_respVisitor"/>
+        FROM qcv_visitor a
+        WHERE DATE_FORMAT(a.appointmentDate, '%Y-%m-%d') &gt;= #{startDate}
+        and DATE_FORMAT(a.appointmentDate, '%Y-%m-%d') &lt;= #{endDate}
+        <choose>
+            <when test='empPhone != null and empPhone != "" and  empPhone != "null"'>
+                AND (a.empPhone = #{empPhone} or a.empid = #{empid})
+            </when>
+            <when test='empid != 0 '>
+                AND a.empid = #{empid}
+            </when>
+        </choose>
+        and a.signinType = 2
+        and a.permission in (0,4,5)
+        group by a.vgroup
+        UNION
+        SELECT
+        <include refid="select_respVisitor"/>
+        FROM qcv_visitor a
+        WHERE DATE_FORMAT(a.appointmentDate, '%Y-%m-%d') &gt;= #{startDate}
+        and DATE_FORMAT(a.appointmentDate, '%Y-%m-%d') &lt;= #{endDate}
+        <choose>
+            <when test='empPhone != null and empPhone != "" and  empPhone != "null"'>
+                AND (a.empPhone = #{empPhone} or a.empid = #{empid})
+            </when>
+            <when test='empid != 0 '>
+                AND a.empid = #{empid}
+            </when>
+        </choose>
+        and a.signinType = 2
+        and a.permission not in (0,4,5)
+        UNION ALL
+        SELECT
+        <include refid="select_respVisitor"/>
+        FROM qcv_visitor a
+        WHERE DATE_FORMAT(a.visitdate, '%Y-%m-%d') &gt;= #{startDate}
+        and DATE_FORMAT(a.visitdate, '%Y-%m-%d') &lt;= #{endDate}
+        <choose>
+            <when test='empPhone != null and empPhone != "" and  empPhone != "null"'>
+                AND (a.empPhone = #{empPhone} or a.empid = #{empid})
+            </when>
+            <when test='empid != 0 '>
+                AND a.empid = #{empid}
+            </when>
+        </choose>
+        and a.signinType = 0
+        and a.vgroup = 0
+        order by vid desc
+    </select>
+
+    <select id="getVistorProxyListByEmpPhone" resultType="RespVisitor">
+        SELECT a.vid,
+               a.company,
+               a.empPhone,
+               a.empName,
+               a.vphone,
+               a.vemail,
+               a.visitdate,
+               a.leaveTime,
+               a.appointmentDate,
+               a.gid,
+               a.memberName,
+               a.cardNo,
+               a.plateNum,
+               a.vname,
+               a.tid,
+               a.vType,
+               a.signOutDate,
+               a.vphoto,
+               a.visitType,
+               a.remark,
+               a.vcompany,
+               a.permission,
+               a.peopleCount,
+               a.signinType,
+               a.vgroup
+        FROM qcv_visitor a
+        WHERE DATE_FORMAT(a.appointmentDate, '%Y-%m-%d') &gt;= #{startDate}
+          and DATE_FORMAT(a.appointmentDate, '%Y-%m-%d') &lt;= #{endDate}
+          and a.empPhone = #{empPhone}
+          and a.signinType = 2
+          group by a.vgroup
+    </select>
+
+    <select id="getAppointmentListByEmpPhone" resultType="RespVisitor">
+        SELECT a.id           AS vid,
+               a.company,
+               a.empPhone,
+               a.empName,
+               a.phone        AS vphone,
+               a.vemail,
+               a.leaveTime,
+               a.vcompany,
+               a.appExtendCol AS extendCol,
+               a.cardNo,
+               a.remark,
+               a.visitDate,
+               a.tid,
+               a.vType,
+               a.status,
+               a.appointmentDate,
+               a.name         AS vname,
+               a.photoUrl     AS vphoto,
+               a.visitType,
+               ''             AS memberName,
+               a.plateNum,
+               (case   when count(*) = 1 then a.peopleCount  ELSE  count(*) END ) AS peopleCount,
+               a.permission   AS permission,
+               '1'            AS signinType,
+               NULL           AS signOutDate,
+               ''             AS meetingPoint,
+               a.gid,
+               a.sex,
+               a.healthDeclaration,
+               a.createTime   as createTime,
+               a.agroup       as vgroup
+        FROM qcv_appointment a
+        WHERE DATE_FORMAT(a.appointmentDate, '%Y-%m-%d') &gt;= #{startDate}
+          and DATE_FORMAT(a.appointmentDate, '%Y-%m-%d') &lt;= #{endDate}
+          and a.empPhone = #{empPhone}
+          and a.visitdate IS NULL
+          and a.permission in (0,4,5) group by a.agroup
+        UNION
+              SELECT a.id           AS vid,
+               a.company,
+               a.empPhone,
+               a.empName,
+               a.phone        AS vphone,
+               a.vemail,
+               a.leaveTime,
+               a.vcompany,
+               a.appExtendCol AS extendCol,
+               a.cardNo,
+               a.remark,
+               a.visitDate,
+               a.tid,
+               a.vType,
+               a.status,
+               a.appointmentDate,
+               a.name         AS vname,
+               a.photoUrl     AS vphoto,
+               a.visitType,
+               ''             AS memberName,
+               a.plateNum,
+               a.peopleCount,
+               a.permission   AS permission,
+               '1'            AS signinType,
+               NULL           AS signOutDate,
+               ''             AS meetingPoint,
+               a.gid,
+               a.sex,
+               a.healthDeclaration,
+               a.createTime   as createTime,
+               a.agroup       as vgroup
+        FROM qcv_appointment a
+        WHERE DATE_FORMAT(a.appointmentDate, '%Y-%m-%d') &gt;= #{startDate}
+          and DATE_FORMAT(a.appointmentDate, '%Y-%m-%d') &lt;= #{endDate}
+          and a.empPhone = #{empPhone}
+          and a.permission not in (0,4,5)
+          and a.visitdate IS NULL
+        UNION ALL
+        SELECT v.appid      as vid,
+               v.company,
+               v.empPhone,
+               v.empName,
+               v.vphone,
+               v.vemail,
+               v.leaveTime,
+               v.vcompany,
+               v.extendCol,
+               v.cardNo,
+               v.remark,
+               v.visitdate,
+               v.tid,
+               v.vType,
+               '1'          AS STATUS,
+               v.appointmentDate,
+               v.vname,
+               v.vphoto,
+               v.visitType,
+               v.memberName,
+               v.plateNum,
+               v.peopleCount,
+               v.permission,
+               v.signinType,
+               v.signOutDate,
+               v.meetingPoint,
+               v.gid,
+               v.sex,
+               v.healthDeclaration,
+               v.createTime as createTime,
+               v.vgroup
+        FROM qcv_visitor v
+        WHERE v.visitdate IS NOT NULL
+          AND DATE_FORMAT(v.appointmentDate, '%Y-%m-%d') &gt;= #{startDate}
+          AND DATE_FORMAT(v.appointmentDate, '%Y-%m-%d') &lt;= #{endDate}
+          and v.signinType = 1
+          AND v.empPhone = #{empPhone}
+        ORDER BY vid DESC
+    </select>
+
+    <select id="getAppointmentListByEmpId" resultType="RespVisitor">
+        SELECT a.id as vid,a.company,a.empPhone,a.empName,a.phone as
+        vphone,a.vemail,a.vcompany,a.remark,a.leaveTime,a.visitDate,a.tid,a.vType,a.gid,a.cardNo,
+        a.plateNum,a.status,a.appointmentDate,a.name as vname,a.photoUrl as vphoto,a.visitType,'0' as
+        peopleCount,a.permission,'1'as signinType,a.sex,a.createTime,a.qrcodeConf
+        FROM qcv_appointment a WHERE DATE_FORMAT(a.appointmentDate, '%Y-%m-%d') &gt;= #{startDate}
+        and DATE_FORMAT(a.appointmentDate, '%Y-%m-%d') &lt;= #{endDate} and a.empid =#{empid}
+        <if test='vname != null and vname != "" and  vname != "null"'>
+            and a.name like "%"#{vname}"%"
+        </if>
+        order by a.id desc
+    </select>
+
+    <select id="getAppointmentListByVPhone" parameterType="RespVisitor" resultType="RespVisitor">
+        SELECT
+         <include refid="select_respVisitor"></include>
+        FROM qcv_visitor a
+        WHERE a.vphone = #{vphone}
+          and a.signinType = 2
+          and DATE_FORMAT(a.appointmentDate, '%Y-%m-%d') &gt;= #{startDate}
+          and DATE_FORMAT(a.appointmentDate, '%Y-%m-%d') &lt;= #{endDate}
+          group by a.vgroup
+        order by a.vid desc
+    </select>
+
+    <select id="getVisitorAppointmentByPhone" parameterType="java.util.Map" resultType="RespVisitor">
+        SELECT
+        a.vid,a.company,a.empid,a.empPhone,a.empName,a.visitdate,a.leaveTime,a.appointmentDate,a.vphone,a.vemail,a.vname,a.vphoto,a.visitType,a.tid,a.vType,a.remark,a.vcompany,
+        a.subaccountId,a.peopleCount,a.vgroup,a.permission,a.signinType,a.memberName,a.extendCol,'0' as mid
+        ,a.cardNo,a.cardOpName,
+        a.plateNum,'0' as qrcodeConf,'0' as qrcodeType,a.meetingPoint,a.gid,a.clientNo,a.cardNo,a.sex,a.status FROM qcv_visitor a
+        WHERE a.visitdate IS NULL
+        AND TO_DAYS(appointmentDate)=TO_DAYS(NOW())
+        AND a.userid= #{userid}
+        <if test='permission != "0"'>
+            and a.permission=#{permission}
+        </if>
+        <if test='vphone != null and vphone != "" and  vphone != "null"'>
+            and a.vphone=#{vphone}
+        </if>
+        <if test='vemail != null and vemail != "" and  vemail != "null"'>
+            and a.vemail =#{vemail}
+        </if>
+        <if test='plateNum != null and plateNum != "" and  plateNum != "null"'>
+            and  a.plateNum=#{plateNum}
+        </if>
+        <if test='gid != null and gid != "" and  gid != "null"'>
+            and FIND_IN_SET(#{gid},a.gid)
+        </if>
+        UNION ALL
+        SELECT
+        v.id,v.company,v.empid,v.empPhone,v.empName,v.visitdate,v.leaveTime,v.appointmentDate,v.phone,v.vemail,v.name,v.photoUrl,v.visitType,v.tid,v.vType,v.remark,v.vcompany,
+        v.subaccountId,v.peopleCount,"0" AS vgroup,v.permission,'1' AS signinType,'' AS
+        memberName,v.appExtendCol AS extendCol,v.mid,v.cardNo,'' AS cardOpName,
+        v.plateNum,v.qrcodeConf,v.qrcodeType,'' AS meetingPoint,v.gid,v.clientNo,v.cardNo,v.sex,v.status FROM `qcv_appointment` v
+        WHERE v.status IN (0,1,2,3,6) AND
+        CASE v.qrcodeType
+        WHEN 0 THEN TO_DAYS(NOW())&lt;=TO_DAYS(v.appointmentDate)+v.qrcodeConf-1
+        WHEN 1 THEN TO_DAYS(v.appointmentDate)=TO_DAYS(NOW())
+        END
+        AND v.userid= #{userid}
+        <if test='vphone != null and vphone != "" and  vphone != "null"'>
+            and v.phone=#{vphone}
+        </if>
+        <if test='vemail != null and vemail != "" and  vemail != "null"'>
+            and v.vemail =#{vemail}
+        </if>
+        <if test='plateNum != null and plateNum != "" and  plateNum != "null"'>
+            and  v.plateNum=#{plateNum}
+        </if>
+        <if test='gid != null and gid != "" and  gid != "null"'>
+            and CONCAT(',',v.gid, ',') REGEXP concat(',(',replace(#{gid},',','|'),'),')>0
+        </if>
+        ORDER BY appointmentDate ASC
+    </select>
+
+    <select id="getVisitorAppointmentByVname" parameterType="java.util.Map" resultType="RespVisitor">
+        SELECT
+        a.vid,a.company,a.empid,a.empName,a.empPhone,a.visitdate,a.leaveTime,a.appointmentDate,a.vphone,a.vname,a.vphoto,a.tid,a.vType,a.visitType,a.remark,a.vcompany,a.vemail,
+        a.subaccountId,a.peopleCount,a.vgroup,a.signOutDate,a.permission,a.signinType,a.memberName,a.extendCol,a.cardNo,a.cardOpName,
+        a.plateNum,'0' as qrcodeConf,'0' as qrcodeType,a.meetingPoint,a.gid,a.clientNo FROM
+        qcv_visitor a WHERE a.visitdate IS NULL AND TO_DAYS(appointmentDate)=TO_DAYS(NOW())  AND
+        a.userid= #{userid}
+        <if test='vname != null and vname != "" and  vname != "null"'>
+            <choose>
+                <when test='ctype == "passport"'>
+                    and a.vname like "%"#{vname}"%"
+                </when>
+                <otherwise>
+                    and a.vname=#{vname}
+                </otherwise>
+            </choose>
+        </if>
+        <if test='cardId != null and cardId != "" and  cardId != "null"'>
+            and a.cardId=#{cardId}
+        </if>
+        <if test='permission != "0"'>
+            and a.permission=#{permission}
+        </if>
+        <if test='gid != null and gid != "" and  gid != "null"'>
+            and FIND_IN_SET(#{gid},a.gid)
+        </if>
+        UNION ALL
+        SELECT
+        v.id,v.company,v.empid,v.empName,v.empPhone,v.visitdate,v.leaveTime,v.appointmentDate,v.phone,v.name,v.photoUrl,v.tid,v.vType,v.visitType,v.remark,v.vcompany,v.vemail,
+        v.subaccountId,v.peopleCount,"0" AS vgroup,NULL AS signOutDate,v.permission,'1' AS
+        signinType,'' AS memberName,v.appExtendCol AS extendCol,v.cardNo,'' AS cardOpName,
+        v.plateNum,v.qrcodeConf,v.qrcodeType,'' AS meetingPoint,v.gid,v.clientNo FROM `qcv_appointment` v
+        WHERE v.status IN (0,1,2,3,6)
+        <if test='cardId != null and cardId != "" and  cardId != "null"'>
+            and v.cardId=#{cardId}
+        </if>
+        AND
+        CASE v.qrcodeType
+        WHEN 0 THEN (TO_DAYS(NOW()) &gt;= TO_DAYS(v.appointmentDate) and TO_DAYS(NOW()) &lt;=
+        TO_DAYS(v.appointmentDate)+v.qrcodeConf-1 )
+        WHEN 1 THEN TO_DAYS(v.appointmentDate)=TO_DAYS(NOW())
+        END
+        <if test="vname!=null and vname!='' and vname!='null'">
+            AND v.name=#{vname}
+        </if>
+        AND v.userid= #{userid}
+        <if test='gid != null and gid != "" and  gid != "null"'>
+            and CONCAT(',',v.gid, ',') REGEXP concat(',(',replace(#{gid},',','|'),'),')>0
+        </if>
+
+        ORDER BY appointmentDate ASC
+    </select>
+
+    <select id="getExamVisitList" parameterType="java.util.Map" resultType="RespVisitor">
+        SELECT
+        a.vid,a.company,a.empid,a.empName,a.empPhone,a.visitdate,a.leaveTime,a.appointmentDate,a.vphone,a.vname,a.vphoto,a.tid,a.vType,a.visitType,a.remark,a.vcompany,a.vemail,
+        a.subaccountId,a.peopleCount,a.vgroup,a.signOutDate,a.permission,a.signinType,a.memberName,a.cardNo,a.cardOpName,
+        a.plateNum,a.extendCol,'0' as qrcodeConf,'0' as qrcodeType,a.gid,a.sex FROM
+        qcv_visitor a WHERE TO_DAYS(appointmentDate)&gt;=TO_DAYS(NOW()) AND a.userid= #{userid}
+        <if test='permission != "0"'>
+            and a.permission=#{permission}
+        </if>
+        <if test='cardId != null and cardId != "" and  cardId != "null"'>
+            and a.cardId=#{cardId}
+        </if>
+        <if test='vphone != null and vphone != "" and  vphone != "null"'>
+            and a.vphone=#{vphone}
+        </if>
+        <if test='gid != null and gid != "" and  gid != "null"'>
+            and FIND_IN_SET(#{gid},a.gid)
+        </if>
+        <if test='vemail != null and vemail != "" and  vemail != "null"'>
+            and a.vemail=#{vemail}
+        </if>
+        UNION ALL
+        SELECT
+        v.id,v.company,v.empid,v.empName,v.empPhone,v.visitdate,v.leaveTime,v.appointmentDate,v.phone,v.name,v.photoUrl,v.tid,v.vType,v.visitType,v.remark,v.vcompany,v.vemail,
+        v.subaccountId,v.peopleCount,"0" AS vgroup,NULL AS signOutDate,v.permission,'1' AS
+        signinType,'' AS memberName,v.cardNo,'' AS cardOpName,
+        v.plateNum,v.appExtendCol AS extendCol,v.qrcodeConf,v.qrcodeType,v.gid FROM `qcv_appointment` v
+        WHERE v.status IN (0,1,2,3,6) AND
+        CASE v.qrcodeType
+        WHEN 0 THEN TO_DAYS(NOW())&lt;=TO_DAYS(v.appointmentDate)+v.qrcodeConf-1
+        WHEN 1 THEN TO_DAYS(v.appointmentDate)&gt;=TO_DAYS(NOW())
+        END
+        AND v.userid= #{userid}
+        <if test='cardId != null and cardId != "" and  cardId != "null"'>
+            and v.cardId=#{cardId}
+        </if>
+        <if test='gid != null and gid != "" and  gid != "null"'>
+            and CONCAT(',',v.gid, ',') REGEXP concat(',(',replace(#{gid},',','|'),'),')>0
+        </if>
+        <if test='vphone != null and vphone != "" and  vphone != "null"'>
+            and v.phone=#{vphone}
+        </if>
+        <if test='vemail != null and vemail != "" and  vemail != "null"'>
+            and v.vemail=#{vemail}
+        </if>
+        ORDER BY appointmentDate ASC
+    </select>
+
+    <select id="getVisitorAppointmentList" parameterType="Visitor" resultType="RespVisitor">
+        SELECT a.company,
+               a.empName,
+               a.vphone,
+               a.visitdate,
+               a.leaveTime,
+               a.vname,
+               a.vphoto,
+               a.cardOpName,
+               a.remark,
+               a.vcompany,
+               a.cardNo,
+               a.tid,
+               a.vType,
+               a.signOutDate,
+               a.visitType,
+               a.meetingPoint,
+               a.gid,
+               a.sex,
+               a.clientNo
+        FROM qcv_visitor a
+        WHERE TO_DAYS(appointmentDate) = TO_DAYS(#{appointmentDate})
+          AND a.userid = #{userid}
+          AND a.vphone = #{vphone}
+          and a.signinType = 2
+          group by a.vgroup
+    </select>
+
+    <select id="searchVisitByCondition" parameterType="java.util.Map" resultType="RespVisitor">
+        SELECT
+        a.vid,a.`empdeptid`,a.company,a.empName,a.empPhone,a.cardId,a.vphone,a.vemail,a.visitdate,a.leaveTime,a.appointmentDate,a.vname,a.vphoto,a.visitType,a.vcompany,a.tid,a.vType,
+        a.permission,a.peopleCount,a.memberName,a.vgroup,a.extendCol,a.signOutDate,a.signInOpName,a.signOutOpName,a.cardNo,a.cardOpName,
+        a.plateNum,a.signInGate,a.signOutGate,a.remark,a.signinType,a.signPdf,a.appid,a.meetingPoint,a.gid,a.sex,a.clientNo,a.qrcodeConf,a.overallScore,a.scoreDetail,a.healthDeclaration,a.createTime
+        FROM qcv_visitor a WHERE a.userid= #{userid}
+        <choose>
+            <when test='svcType == "0"'>
+
+            </when>
+            <when test='svcType == "1"'>
+                and a.visitdate is not null
+            </when>
+            <when test='svcType == "2"'>
+                and a.visitdate is null
+            </when>
+        </choose>
+
+        <if test='startDate != null and startDate != "" and  startDate != "null" and endDate != null and endDate != "" and  endDate != "null"'>
+            and
+            ((a.`visitdate` IS NULL and DATE_FORMAT(a.appointmentDate, '%Y-%m-%d') &gt;= #{startDate} and DATE_FORMAT(a.appointmentDate, '%Y-%m-%d') &lt;= #{endDate} )
+            or (DATE_FORMAT(a.visitdate, '%Y-%m-%d') &gt;= #{startDate} and DATE_FORMAT(a.visitdate, '%Y-%m-%d') &lt;= #{endDate}))
+        </if>
+
+        <if test='empName != null and empName != "" and  empName != "null"'>
+            and a.empName like "%"#{empName}"%"
+        </if>
+
+        <if test='empPhone != null and empPhone != "" and  empPhone != "null"'>
+            and a.empPhone =#{empPhone}
+        </if>
+
+        <if test='vcompany != null and vcompany != "" and  vcompany != "null"'>
+            and a.vcompany like "%"#{vcompany}"%"
+        </if>
+
+        <if test='company != null and company != "" and  company != "null"'>
+            and a.company like "%"#{company}"%"
+        </if>
+
+        <if test='name != null and name != "" and  name != "null"'>
+            and a.vname like "%"#{name}"%"
+        </if>
+
+        <if test='visitType != null and visitType != "" and  visitType != "null"'>
+            and a.visitType= #{visitType}
+        </if>
+
+        <if test='vType != null and vType != "" and  vType != "null"'>
+            and a.vType= #{vType}
+        </if>
+
+        <if test='email != null and email != "" and  email != "null"'>
+            and a.vemail= #{email}
+        </if>
+
+        <if test='phone != null and phone != "" and  phone != "null"'>
+            and a.vphone= #{phone}
+        </if>
+
+        <if test='signInGate != null and signInGate != "" and  signInGate != "null"'>
+            and a.signInGate like "%"#{signInGate}"%"
+        </if>
+
+        <if test='team != null and team != "" and  team != "null"'>
+            and a.peopleCount > 0
+        </if>
+
+        <if test='subaccountId != "0"'>
+            and a.subaccountId= #{subaccountId}
+        </if>
+
+        <if test='gid != null and gid != "" and  gid != "null"'>
+            and CONCAT(',',a.gid, ',') REGEXP concat(',(',replace(#{gid},',','|'),'),')>0
+        </if>
+
+        <if test='plateNum != null and plateNum != "" and  plateNum != "null"'>
+            and a.plateNum like "%"#{plateNum}"%"
+        </if>
+        <if test='vtExtendCol != null'>
+            <foreach collection="vtExtendCol" item="jsonValue" index="jsonKey">
+                <if test='jsonValue != null and jsonValue != "" and  jsonValue != "null"'>
+                    and replace(json_extract(a.extendCol,CONCAT('$.',#{jsonKey})),'\"', '') like CONCAT('%',#{jsonValue},'%')
+                </if>
+            </foreach>
+        </if>
+        UNION ALL
+
+        SELECT ''AS vid,b.`empdeptid`,b.`company` ,b.`empName`,b.`empPhone`,b.`cardId` AS cardid,b.`phone` AS
+        vphone,b.`vemail` AS vemail,b.`visitDate` AS visitdate,b.`leaveTime` AS leaveTime,b.`appointmentDate` AS
+        appointmentDate,
+        b.`name` AS vname,b.`photoUrl`AS vphoto,b.`visitType` AS visitType,b.`vcompany` AS vcompany,b.`tid` AS
+        tid,b.`vType`AS vType,b.permission,b.`peopleCount`AS peopleCount,'' AS memberName,''AS vgroup,
+        b.`appExtendCol` AS extendCol,NULL AS signOutDate,'' AS signInOpName, ''AS signOutOpName,b.`cardNo` AS cardNo,''
+        AS cardOpName,b.`plateNum` AS plateNum,''AS signInGate,'' AS signOutGate,b.`remark` AS remark,
+        '1' AS signinType,'' AS signPdf,b.`id` AS appid,'' AS meetingPoint,b.`gid` AS gid,b.`sex` AS sex,b.`clientNo` AS
+        clientNo,b.`qrcodeConf` AS qrcodeConf,"" as overallScore,"" as scoreDetail,b.healthDeclaration as healthDeclaration,b.`createTime` AS createTime
+        FROM
+        qcv_appointment b
+
+        WHERE b.userid= #{userid}
+        <choose>
+            <when test='svcType == "0"'>
+                AND b.`visitDate` IS NULL
+            </when>
+            <when test='svcType == "1"'>
+                and 0=1
+            </when>
+            <when test='svcType == "2"'>
+                and b.visitdate is null
+            </when>
+        </choose>
+
+        <if test='startDate != null and startDate != "" and  startDate != "null"'>
+            and DATE_FORMAT(b.appointmentDate, '%Y-%m-%d') &gt;= #{startDate}
+        </if>
+
+        <if test='endDate != null and endDate != "" and  endDate != "null"'>
+            and DATE_FORMAT(b.appointmentDate, '%Y-%m-%d') &lt;= #{endDate}
+        </if>
+
+        <if test='empid != 0 and empid != null and empid != "" and  empid != "null"'>
+            and b.empid = #{empid}
+        </if>
+
+        <if test='empName != null and empName != "" and  empName != "null"'>
+            and b.empName like "%"#{empName}"%"
+        </if>
+
+        <if test='empPhone != null and empPhone != "" and  empPhone != "null"'>
+            and b.empPhone =#{empPhone}
+        </if>
+
+        <if test='vcompany != null and vcompany != "" and  vcompany != "null"'>
+            and b.vcompany like "%"#{vcompany}"%"
+        </if>
+
+        <if test='company != null and company != "" and  company != "null"'>
+            and b.company like "%"#{company}"%"
+        </if>
+
+        <if test='name != null and name != "" and  name != "null"'>
+            and b.name like "%"#{name}"%"
+        </if>
+
+        <if test='visitType != null and visitType != "" and  visitType != "null"'>
+            and b.visitType= #{visitType}
+        </if>
+
+        <if test='vType != null and vType != "" and  vType != "null"'>
+            and b.vType= #{vType}
+        </if>
+
+        <if test='email != null and email != "" and  email != "null"'>
+            and b.vemail= #{email}
+        </if>
+
+        <if test='phone != null and phone != "" and  phone != "null"'>
+            and b.phone= #{phone}
+        </if>
+
+        <if test='signInGate != null and signInGate != "" and  signInGate != "null"'>
+            and 1 = -1
+        </if>
+
+        <if test='team != null and team != "" and  team != "null"'>
+            and b.peopleCount > 0
+        </if>
+
+        <if test='subaccountId != "0"'>
+            and b.subaccountId= #{subaccountId}
+        </if>
+
+        <if test='gid != null and gid != "" and  gid != "null"'>
+            and CONCAT(',',b.gid, ',') REGEXP concat(',(',replace(#{gid},',','|'),'),')>0
+        </if>
+
+        <if test='plateNum != null and plateNum != "" and  plateNum != "null"'>
+            and b.plateNum like "%"#{plateNum}"%"
+        </if>
+
+        <if test='vtExtendCol != null'>
+            <foreach collection="vtExtendCol" item="jsonValue" index="jsonKey">
+                <if test='jsonValue != null and jsonValue != "" and  jsonValue != "null"'>
+                    and replace(json_extract(b.appExtendCol,CONCAT('$.',#{jsonKey})),'\"', '') like CONCAT('%',#{jsonValue},'%')
+                </if>
+            </foreach>
+        </if>
+
+        <choose>
+            <when test='svcType == "0"'>
+                order by appointmentDate desc
+            </when>
+            <when test='svcType == "1"'>
+                order by visitdate desc
+            </when>
+            <when test='svcType == "2"'>
+                order by appointmentDate desc
+            </when>
+        </choose>
+
+    </select>
+
+    <select id="searchVisitByConditionPage" parameterType="RequestVisit" resultType="RespVisitor">
+        SELECT
+        a.vid,a.company,a.empName,a.empPhone,a.cardid,a.vphone,a.vemail,a.visitdate,a.leaveTime,a.appointmentDate,a.vname,a.vphoto,a.visitType,a.vcompany,a.tid,a.vType,
+        a.permission,a.peopleCount,a.memberName,a.vgroup,a.extendCol,a.signOutDate,a.signInOpName,a.signOutOpName,a.cardNo,a.cardOpName,
+        a.plateNum,a.signInGate,a.signOutGate,a.remark,a.signinType,a.signPdf,a.appid,a.meetingPoint,a.gid,a.sex,a.clientNo,a.qrcodeConf
+        FROM
+        qcv_visitor a WHERE
+        a.userid= #{userid}
+        <if test='searchType == "1"'>
+            and a.visitdate is not null and a.signOutDate is null
+        </if>
+
+        <if test='searchType == "2"'>
+            and a.visitdate is null
+        </if>
+
+        <if test='searchType == "3"'>
+            and a.signOutDate is not null
+        </if>
+
+        <if test='date != null and date != "" and  date != "null"'>
+            and DATE_FORMAT(a.visitdate, '%Y-%m-%d') &gt;= #{date}
+        </if>
+
+        <if test='endDate != null and endDate != "" and  endDate != "null"'>
+            and DATE_FORMAT(a.visitdate, '%Y-%m-%d') &lt;= #{endDate}
+        </if>
+
+        <if test='empName != null and empName != "" and  empName != "null"'>
+            and a.empName like "%"#{empName}"%"
+        </if>
+
+        <if test='empPhone != null and empPhone != "" and  empPhone != "null"'>
+            and a.empPhone =#{empPhone}
+        </if>
+
+        <if test='vcompany != null and vcompany != "" and  vcompany != "null"'>
+            and a.vcompany like "%"#{vcompany}"%"
+        </if>
+
+        <if test='company != null and company != "" and  company != "null"'>
+            and a.company like "%"#{company}"%"
+        </if>
+
+        <if test='name != null and name != "" and  name != "null"'>
+            and a.vname like "%"#{name}"%"
+        </if>
+
+        <if test='visitType != null and visitType != "" and  visitType != "null"'>
+            and a.visitType= #{visitType}
+        </if>
+
+        <if test='vType != null and vType != "" and  vType != "null"'>
+            and a.vType= #{vType}
+        </if>
+
+        <if test='email != null and email != "" and  email != "null"'>
+            and a.vemail= #{email}
+        </if>
+
+        <if test='phone != null and phone != "" and  phone != "null"'>
+            and a.vphone= #{phone}
+        </if>
+
+        <if test='signInGate != null and signInGate != "" and  signInGate != "null"'>
+            and a.signInGate like "%"#{signInGate}"%"
+        </if>
+
+        <if test='team != null and team != "" and  team != "null"'>
+            and a.peopleCount > 0
+        </if>
+
+        <if test='subaccountId != "0"'>
+            and a.subaccountId= #{subaccountId}
+        </if>
+
+        <if test='signinType!= "0" and signinType!=  null and signinType!=  "" and  signinType!=  "null"'>
+            and a.signinType= #{signinType}
+        </if>
+
+        <if test='gid != null and gid != "" and  gid != "null"'>
+            and CONCAT(',',a.gid, ',') REGEXP concat(',(',replace(#{gid},',','|'),'),')>0
+        </if>
+
+        <if test='reception != null and reception != "" and  reception != "null"'>
+            and (a.vname like "%"#{reception}"%" or a.vphone like "%"#{reception}"%" or a.company like
+            "%"#{reception}"%" or a.vcompany like "%"#{reception}"%" or a.empName like "%"#{reception}"%"
+            or a.visitType like "%"#{reception}"%")
+        </if>
+
+        order by visitdate desc
+
+    </select>
+
+
+    <select id="searchAppByCondition" parameterType="java.util.Map" resultType="RespVisitor">
+        SELECT
+        a.vid,a.company,a.empName,a.empPhone,a.vphone,a.visitdate,a.cardId,a.leaveTime,a.appointmentDate,a.vname,a.vphoto,a.visitType,a.vcompany,a.tid,a.vType,a.permission,a.peopleCount,
+        a.memberName,a.vgroup,a.extendCol,a.signOutDate,a.signInOpName,a.signOutOpName,a.signInGate,a.signOutGate,a.remark,a.cardNo,a.cardOpName,
+        a.plateNum,a.signinType,a.signPdf,a.appid,a.meetingPoint,a.gid,a.sex,a.clientNo FROM qcv_visitor a WHERE
+        a.signinType=2 and a.userid= #{userid} and a.permission in (0,1)
+
+
+        <if test='startDate != null and startDate != "" and  startDate != "null"'>
+            and DATE_FORMAT(a.appointmentDate, '%Y-%m-%d') &gt;= #{startDate}
+        </if>
+
+        <if test='endDate != null and endDate != "" and  endDate != "null"'>
+            and DATE_FORMAT(a.appointmentDate, '%Y-%m-%d') &lt;= #{endDate}
+        </if>
+
+        <if test='empName != null and empName != "" and  empName != "null"'>
+            and a.empName like "%"#{empName}"%"
+        </if>
+
+        <if test='empPhone != null and empPhone != "" and  empPhone != "null"'>
+            and a.empPhone =#{empPhone}
+        </if>
+
+        <if test='name != null and name != "" and  name != "null"'>
+            and a.vname like "%"#{name}"%"
+        </if>
+
+        <if test='visitType != null and visitType != "" and  visitType != "null"'>
+            and a.visitType= #{visitType}
+        </if>
+
+        <if test='phone != null and phone != "" and  phone != "null"'>
+            and a.vphone= #{phone}
+        </if>
+
+        <if test='team != null and team != "" and  team != "null"'>
+            and a.peopleCount > 0
+        </if>
+
+        <if test='gid != null and gid != "" and  gid != "null"'>
+            and FIND_IN_SET(#{gid},a.gid)
+        </if>
+
+        <if test='subaccountId != "0"'>
+            and a.subaccountId= #{subaccountId}
+        </if>
+
+        order by vid desc
+
+    </select>
+
+    <select id="searchAppByConditionPage" parameterType="RequestVisit" resultType="RespVisitor">
+        SELECT
+        a.vid,a.company,a.empName,a.empPhone,a.vphone,a.visitdate,a.cardId,a.leaveTime,a.appointmentDate,a.vname,a.vphoto,a.visitType,a.vcompany,a.tid,a.vType,a.permission,a.peopleCount,
+        a.memberName,a.vgroup,a.extendCol,a.signOutDate,a.signInOpName,a.signOutOpName,a.signInGate,a.signOutGate,a.remark,a.cardNo,a.cardOpName,
+        a.plateNum,a.signinType,a.signPdf,a.appid,a.meetingPoint,a.gid,a.sex,a.clientNo,a.qrcodeConf FROM qcv_visitor a WHERE
+        a.signinType=2 and a.userid= #{userid}
+
+        <if test='searchType == "4"'>
+            and a.visitdate is not null
+        </if>
+
+        <if test='searchType == "2"'>
+            and a.visitdate is null
+        </if>
+
+        <if test='date != null and date != "" and  date != "null"'>
+            and DATE_FORMAT(a.appointmentDate, '%Y-%m-%d') &gt;= #{date}
+        </if>
+
+        <if test='endDate != null and endDate != "" and  endDate != "null"'>
+            and DATE_FORMAT(a.appointmentDate, '%Y-%m-%d') &lt;= #{endDate}
+        </if>
+
+        <if test='empName != null and empName != "" and  empName != "null"'>
+            and a.empName like "%"#{empName}"%"
+        </if>
+
+        <if test='empid != 0'>
+            and a.empid =#{empid}
+        </if>
+
+        <if test='empPhone != null and empPhone != "" and  empPhone != "null"'>
+            and a.empPhone =#{empPhone}
+        </if>
+
+        <if test='name != null and name != "" and  name != "null"'>
+            and a.vname like "%"#{name}"%"
+        </if>
+
+        <if test='visitType != null and visitType != "" and  visitType != "null"'>
+            and a.visitType= #{visitType}
+        </if>
+
+        <if test='phone != null and phone != "" and  phone != "null"'>
+            and a.vphone= #{phone}
+        </if>
+
+        <if test='team != null and team != "" and  team != "null"'>
+            and a.peopleCount > 0
+        </if>
+
+        <if test='gid != null and gid != "" and  gid != "null"'>
+            and CONCAT(',',a.gid, ',') REGEXP concat(',(',replace(#{gid},',','|'),'),')>0
+        </if>
+
+        <if test='subaccountId != "0"'>
+            and a.subaccountId= #{subaccountId}
+        </if>
+
+        <if test='reception != null and reception != "" and  reception != "null"'>
+            and (a.vname like "%"#{reception}"%" or a.vphone like "%"#{reception}"%" or a.company like
+            "%"#{reception}"%" or a.vcompany like "%"#{reception}"%" or a.empName like "%"#{reception}"%"
+            or a.visitType like "%"#{reception}"%")
+        </if>
+
+        order by vid desc
+
+    </select>
+
+    <select id="SearchRVisitorByCondition" parameterType="java.util.Map" resultType="RespVisitor">
+        SELECT
+        a.vid,a.company,a.empName,a.empPhone,a.vphone,a.visitdate,a.leaveTime,a.appointmentDate,a.vname,a.vphoto,a.visitType,a.vcompany,a.permission,a.peopleCount,
+        a.signInOpName,a.signOutOpName,a.signInGate,a.signOutGate,a.vgroup,a.extendCol,a.signOutDate,a.cardNo,a.cardOpName,
+        a.plateNum,a.remark,a.signinType,a.signPdf,a.appid,a.meetingPoint,a.gid,a.clientNo FROM qcv_visitor a WHERE
+        a.signinType=3 and a.userid= #{userid}
+
+
+        <if test='startDate != null and startDate != "" and  startDate != "null"'>
+            and DATE_FORMAT(a.visitdate, '%Y-%m-%d') &gt;= #{startDate}
+        </if>
+
+        <if test='endDate != null and endDate != "" and  endDate != "null"'>
+            and DATE_FORMAT(a.visitdate, '%Y-%m-%d') &lt;= #{endDate}
+        </if>
+
+        <if test='name != null and name != "" and  name != "null"'>
+            and a.vname like "%"#{name}"%"
+        </if>
+
+        <if test='gid != null and gid != "" and  gid != "null"'>
+            and FIND_IN_SET(#{gid},a.gid)
+        </if>
+
+        order by vid desc
+
+    </select>
+
+    <select id="SearchRVisitorByConditionPage" parameterType="RequestVisit" resultType="RespVisitor">
+        SELECT
+        a.vid,a.company,a.empName,a.empPhone,a.vphone,a.visitdate,a.leaveTime,a.appointmentDate,a.vname,a.vphoto,a.visitType,a.vcompany,a.permission,a.peopleCount,
+        a.signInOpName,a.signOutOpName,a.signInGate,a.signOutGate,a.vgroup,a.extendCol,a.signOutDate,a.cardNo,a.cardOpName,
+        a.plateNum,a.remark,a.signinType,a.signPdf,a.appid,a.meetingPoint,a.gid,a.clientNo FROM qcv_visitor a WHERE
+        a.signinType=3 and a.userid= #{userid}
+
+
+        <if test='date != null and date != "" and  date != "null"'>
+            and DATE_FORMAT(a.visitdate, '%Y-%m-%d') &gt;= #{date}
+        </if>
+
+        <if test='endDate != null and endDate != "" and  endDate != "null"'>
+            and DATE_FORMAT(a.visitdate, '%Y-%m-%d') &lt;= #{endDate}
+        </if>
+
+        <if test='name != null and name != "" and  name != "null"'>
+            and a.vname like "%"#{name}"%"
+        </if>
+
+        <if test='gid != null and gid != "" and  gid != "null"'>
+            and FIND_IN_SET(#{gid},a.gid)
+        </if>
+
+        <if test='reception != null and reception != "" and  reception != "null"'>
+            and (a.vname like "%"#{reception}"%" or a.vphone like "%"#{reception}"%" or a.company like
+            "%"#{reception}"%" or a.vcompany like "%"#{reception}"%" or a.empName like "%"#{reception}"%"
+            or a.visitType like "%"#{reception}"%")
+        </if>
+
+        order by vid desc
+
+    </select>
+
+    <select id="searchVisitForApp" parameterType="java.util.Map" resultType="RespVisitor">
+        SELECT a.vid,
+               a.empName,
+               a.vphone,
+               a.visitdate,
+               a.appointmentDate,
+               a.vname,
+               a.vphoto,
+               a.visitType,
+               a.vcompany,
+               a.remark,
+               a.permission,
+               a.peopleCount,
+               a.vgroup,
+               a.extendCol,
+               a.signOutDate,
+               a.signinType,
+               a.signInOpName,
+               a.signOutOpName,
+               a.signInGate,
+               a.signOutGate,
+               a.signPdf,
+               a.cardNo,
+               a.plateNum,
+               a.appid,
+               a.meetingPoint,
+               gid,
+               clientNo
+        FROM qcv_visitor a
+        WHERE a.visitdate is not null
+          and a.userid = #{userid}
+          and a.permission = 1
+          and DATE_FORMAT(a.visitdate, '%Y-%m-%d') &gt;= #{startDate}
+          and DATE_FORMAT(a.visitdate, '%Y-%m-%d') &lt;= #{endDate}
+        order by visitdate desc
+    </select>
+
+    <select id="getGroupVistorList" resultType="Visitor">
+        SELECT a.vid,
+               a.userid,
+               a.empPhone,
+               a.empName,
+               a.empid,
+               a.vphone,
+               a.visitdate,
+               a.appointmentDate,
+               a.vname,
+               a.cardNo,
+               a.plateNum,
+               a.vphoto,
+               a.visitType,
+               a.remark,
+               a.permission,
+               a.peopleCount,
+               a.signinType,
+               a.vgroup,
+               a.appid,
+               a.meetingPoint,
+               gid,
+               a.qrcodeConf
+        FROM qcv_visitor a
+        WHERE a.vgroup = #{vid}
+    </select>
+
+    <select id="getVisitorByAppId" parameterType="Visitor" resultType="Visitor">
+        SELECT
+        <include refid="select_clause"/>
+        FROM
+        qcv_visitor a where a.appid=#{appid} order by vid desc limit 0,1
+    </select>
+
+    <select id="getVisitorByPlateNum" parameterType="Visitor" resultType="Visitor">
+        SELECT
+        <include refid="select_clause"/>
+        FROM
+        qcv_visitor a where a.plateNum=#{plateNum} and a.userid= #{userid} and TO_DAYS(a.visitdate)=TO_DAYS(NOW()) order
+        by a.vid desc limit 0,1
+    </select>
+
+    <select id="getVisitorByexpireDate" resultType="Visitor">
+        SELECT
+        <include refid="select_clause"></include>
+        FROM qcv_visitor a WHERE
+        a.userid = #{userid} AND a.appointmentDate &lt;= #{expireDate}
+    </select>
+
+    <delete id="deleteVisitByVids" parameterType="list">
+        delete from qcv_visitor
+        where vid in
+        <foreach collection="list" item="vid" index="index" open="(" separator="," close=")">
+            #{vid}
+        </foreach>
+    </delete>
+
+    <select id="getSignInVisitorByDept" parameterType="RequestVisit" resultType="VisitorChart">
+        SELECT
+        <if test='chartStatus == "0"'>
+            DATE_FORMAT(a.`visitdate`,'%Y-%m') AS month ,
+        </if>
+        <if test='chartStatus == "1"'>
+            DATE_FORMAT(a.`visitdate`,'%Y-%m-%d') AS day,
+        </if>
+        <if test='chartStatus == "2"'>
+            DATE_FORMAT(a.`visitdate`,'%H') AS hour,
+        </if>
+        b.`deptid` as deptId,a.userid , COUNT(a.`empid`)AS COUNT
+        FROM
+        qcv_visitor a,
+        qcv_emp_dept b
+        WHERE
+        DATE_FORMAT(a.`visitdate`,'%Y-%m-%d') &gt;= #{date}
+        AND
+        DATE_FORMAT(a.`visitdate`,'%Y-%m-%d') &lt;=#{endDate}
+        AND a.`userid` = #{userid} AND b.`userid` = #{userid} AND b.`empid` = a.`empid`
+        <if test='signinType != null  and signinType != "" and  signinType != "null"'>
+            and a.signinType = #{signinType}
+        </if>
+        <if test='gid != null and gid != "" and  gid != "null"'>
+            and CONCAT(',',a.gid, ',') REGEXP concat(',(',replace(#{gid},',','|'),'),')>0
+        </if>
+
+        GROUP BY
+        <if test='chartStatus == "0"'>
+            month,
+        </if>
+        <if test='chartStatus == "1"'>
+            day,
+        </if>
+        <if test='chartStatus == "2"'>
+            hour,
+        </if>
+        deptid
+    </select>
+
+    <select id="getDeptVisitByAppDate" parameterType="RequestVisit" resultType="VisitorChart">
+        SELECT
+        <if test='chartStatus == "0"'>
+            DATE_FORMAT(a.`appointmentDate`,'%Y-%m') AS month ,
+        </if>
+        <if test='chartStatus == "1"'>
+            DATE_FORMAT(a.`appointmentDate`,'%Y-%m-%d') AS day,
+        </if>
+        <if test='chartStatus == "2"'>
+            DATE_FORMAT(a.`appointmentDate`,'%H') AS hour,
+        </if>
+        b.`deptid` as deptId,a.userid , COUNT(a.`empid`)AS COUNT
+        FROM
+        qcv_visitor a,
+        qcv_emp_dept b
+        WHERE
+        DATE_FORMAT(a.`appointmentDate`,'%Y-%m-%d') &gt;= #{date}
+        AND
+        DATE_FORMAT(a.`appointmentDate`,'%Y-%m-%d') &lt;=#{endDate}
+        AND a.`userid` = #{userid} AND b.`userid` = #{userid} AND b.`empid` = a.`empid`
+        <if test='gid != null and gid != "" and  gid != "null"'>
+            and CONCAT(',',a.gid, ',') REGEXP concat(',(',replace(#{gid},',','|'),'),')>0
+        </if>
+
+        <if test='signinType != null  and signinType != "" and  signinType != "null"'>
+            and a.signinType = #{signinType}
+        </if>
+        GROUP BY
+        <if test='chartStatus == "0"'>
+            month,
+        </if>
+        <if test='chartStatus == "1"'>
+            day,
+        </if>
+        <if test='chartStatus == "2"'>
+            hour,
+        </if>
+        deptid
+    </select>
+
+    <select id="getArrivedVisitorChart" parameterType="RequestVisit" resultType="VisitorChart">
+        SELECT
+        <if test='type == "sex"'>
+            IFNULL(a.`sex`,'other') AS sex,
+        </if>
+        <if test='type == "vType"'>
+            vType,
+        </if>
+        <if test='type == "visitType"'>
+            visitType,
+        </if>
+        <if test='type == "clientNo"'>
+            clientNo,
+        </if>
+        COUNT(1) AS COUNT FROM qcv_visitor a
+        WHERE
+        a.`userid` = #{userid}
+        <if test='date != null and date != "" and  date != "null"'>
+            and DATE_FORMAT(visitdate, '%Y-%m-%d') &gt;= #{date}
+        </if>
+
+        <if test='endDate != null and endDate != "" and  endDate != "null"'>
+            and DATE_FORMAT(visitdate, '%Y-%m-%d') &lt;= #{endDate}
+        </if>
+
+        <if test='type == "sex"'>
+            GROUP BY sex
+        </if>
+        <if test='type == "vType"'>
+            GROUP BY vType
+        </if>
+        <if test='type == "visitType"'>
+            GROUP BY visitType
+        </if>
+
+        <if test='type == "clientNo"'>
+            GROUP BY clientNo
+        </if>
+    </select>
+
+    <select id="getAllArrivedVisitorChart" parameterType="RequestVisit" resultType="VisitorChart">
+        SELECT
+        <if test='type == "sex"'>c.sex,SUM(COUNT) AS COUNT</if>
+        <if test='type == "vType"'>c.vType,SUM(COUNT) AS COUNT</if>
+        <if test='type == "visitType"'>c.visitType,SUM(COUNT) AS COUNT</if>
+        <if test='type == "clientNo"'>c.clientNo,SUM(COUNT) AS COUNT</if>
+        FROM (
+        SELECT
+        <if test='type == "sex"'>IFNULL(a.sex,'other') AS sex,COUNT(1) AS count</if>
+        <if test='type == "vType"'>a.vType,COUNT(1) AS count</if>
+        <if test='type == "visitType"'>a.visitType,COUNT(1) AS count</if>
+        <if test='type == "clientNo"'>a.clientNo,COUNT(1) AS count</if>
+        FROM qcv_visitor a
+        WHERE a.userid = #{userid} and a.permission != '2'
+        <if test='date != null and date != "" and  date != "null" and signinType == "2"'>
+            and DATE_FORMAT(a.appointmentDate, '%Y-%m-%d') &gt;= #{date}
+        </if>
+
+        <if test='endDate != null and endDate != "" and  endDate != "null" and signinType == "2"'>
+            and DATE_FORMAT(a.appointmentDate, '%Y-%m-%d') &lt;= #{endDate}
+        </if>
+
+        <if test='date != null and date != "" and  date != "null" and signinType != "2"'>
+            and DATE_FORMAT(a.visitDate, '%Y-%m-%d') &gt;= #{date}
+        </if>
+
+        <if test='endDate != null and endDate != "" and  endDate != "null" and signinType != "2"'>
+            and DATE_FORMAT(a.visitDate, '%Y-%m-%d') &lt;= #{endDate}
+        </if>
+
+        <if test='gid != null and gid != "" and  gid != "null"'>
+            and CONCAT(',',a.gid, ',') REGEXP concat(',(',replace(#{gid},',','|'),'),')>0
+        </if>
+
+        <if test='signinType == "0"'>
+            and a.visitDate is not null
+        </if>
+        <if test='signinType == "1"'>
+            and signinType=1
+        </if>
+        <if test='signinType == "2"'>
+            and signinType=2
+        </if>
+
+        <if test='type == "sex"'>GROUP BY a.sex</if>
+        <if test='type == "vType"'>GROUP BY a.vType</if>
+        <if test='type == "visitType"'>GROUP BY a.visitType</if>
+        <if test='type == "clientNo"'>GROUP BY a.clientNo</if>
+
+        UNION ALL
+        SELECT
+        <if test='type == "sex"'>IFNULL(b.sex,'other') AS sex,COUNT(1) AS count</if>
+        <if test='type == "vType"'>b.vType,COUNT(1) AS count</if>
+        <if test='type == "visitType"'>b.visitType,COUNT(1) AS count</if>
+        <if test='type == "clientNo"'>b.clientNo,COUNT(1) AS count</if>
+        FROM qcv_appointment b
+        WHERE b.userid = #{userid}
+        <if test='date != null and date != "" and  date != "null" and endDate != date '>
+            and DATE_FORMAT(b.appointmentDate, '%Y-%m-%d') &gt;= #{date}
+        </if>
+
+        <if test='endDate != null and endDate != "" and  endDate != "null" and endDate != date '>
+            and DATE_FORMAT(b.appointmentDate, '%Y-%m-%d') &lt;= #{endDate}
+        </if>
+
+        <if test='endDate == date'>
+            and (TO_DAYS(#{date}) &gt;= TO_DAYS(b.appointmentDate) and TO_DAYS(#{date}) &lt;=
+            TO_DAYS(b.appointmentDate)+b.qrcodeConf-1 )
+            and (b.visitdate is null or b.id not in (select v.appid from qcv_visitor v where (DATE_FORMAT(v.visitdate,
+            '%Y-%m-%d')=#{date}) and v.signinType=1))
+        </if>
+
+        <if test='gid != null and gid != "" and  gid != "null"'>
+            and CONCAT(',',b.gid, ',') REGEXP concat(',(',replace(#{gid},',','|'),'),')>0
+        </if>
+
+        <if test='signinType == "0"'>
+            and 1!=1
+        </if>
+        <if test='signinType == "2"'>
+            and 1!=1
+        </if>
+        <if test='type == "sex"'>GROUP BY b.sex</if>
+        <if test='type == "vType"'>GROUP BY b.vType</if>
+        <if test='type == "visitType"'>GROUP BY b.visitType</if>
+        <if test='type == "clientNo"'>GROUP BY b.clientNo</if>
+        ) c
+        <if test='type == "sex"'>GROUP BY c.sex</if>
+        <if test='type == "vType"'>GROUP BY c.vType</if>
+        <if test='type == "visitType"'>GROUP BY c.visitType</if>
+        <if test='type == "clientNo"'>GROUP BY c.clientNo</if>
+    </select>
+
+    <select id="getAllArrivedVisitorChartSmart" parameterType="RequestVisit" resultType="VisitorChart">
+        SELECT
+        <if test='type == "sex"'>c.sex,SUM(COUNT) AS COUNT</if>
+        <if test='type == "vType"'>c.vType,SUM(COUNT) AS COUNT</if>
+        <if test='type == "visitType"'>c.visitType,SUM(COUNT) AS COUNT</if>
+        <if test='type == "clientNo"'>c.clientNo,SUM(COUNT) AS COUNT</if>
+        FROM (
+        SELECT
+        <if test='type == "sex"'>IFNULL(a.sex,'other') AS sex,COUNT(1) AS count</if>
+        <if test='type == "vType"'>a.vType,COUNT(1) AS count</if>
+        <if test='type == "visitType"'>a.visitType,COUNT(1) AS count</if>
+        <if test='type == "clientNo"'>a.clientNo,COUNT(1) AS count</if>
+        FROM qcv_visitor a
+        WHERE a.userid = #{userid} and a.permission != '2'
+        <if test='date != null and date != "" and  date != "null" and signinType == "2"'>
+            and DATE_FORMAT(a.appointmentDate, '%Y-%m-%d') &gt;= #{date}
+        </if>
+
+        <if test='endDate != null and endDate != "" and  endDate != "null" and signinType == "2"'>
+            and DATE_FORMAT(a.appointmentDate, '%Y-%m-%d') &lt;= #{endDate}
+        </if>
+
+        <if test='date != null and date != "" and  date != "null" and signinType != "2"'>
+            and DATE_FORMAT(a.visitDate, '%Y-%m-%d') &gt;= #{date}
+        </if>
+
+        <if test='endDate != null and endDate != "" and  endDate != "null" and signinType != "2"'>
+            and DATE_FORMAT(a.visitDate, '%Y-%m-%d') &lt;= #{endDate}
+        </if>
+
+        <if test='gid != null and gid != "" and  gid != "null"'>
+            and CONCAT(',',a.gid, ',') REGEXP concat(',(',replace(#{gid},',','|'),'),')>0
+        </if>
+
+        <if test='signinType == "0"'>
+            and a.visitDate is not null and a.signOutDate is null
+        </if>
+        <if test='signinType == "1"'>
+            and a.visitDate is not null and a.signOutDate is not null
+        </if>
+
+        <if test='type == "sex"'>GROUP BY a.sex</if>
+        <if test='type == "vType"'>GROUP BY a.vType</if>
+        <if test='type == "visitType"'>GROUP BY a.visitType</if>
+        <if test='type == "clientNo"'>GROUP BY a.clientNo</if>
+
+        UNION ALL
+        SELECT
+        <if test='type == "sex"'>IFNULL(b.sex,'other') AS sex,COUNT(1) AS count</if>
+        <if test='type == "vType"'>b.vType,COUNT(1) AS count</if>
+        <if test='type == "visitType"'>b.visitType,COUNT(1) AS count</if>
+        <if test='type == "clientNo"'>b.clientNo,COUNT(1) AS count</if>
+        FROM qcv_appointment b
+        WHERE b.userid = #{userid}
+        <if test='date != null and date != "" and  date != "null" and endDate != date '>
+            and DATE_FORMAT(b.appointmentDate, '%Y-%m-%d') &gt;= #{date}
+        </if>
+
+        <if test='endDate != null and endDate != "" and  endDate != "null" and endDate != date '>
+            and DATE_FORMAT(b.appointmentDate, '%Y-%m-%d') &lt;= #{endDate}
+        </if>
+
+        <if test='endDate == date'>
+            and (TO_DAYS(#{date}) &gt;= TO_DAYS(b.appointmentDate) and TO_DAYS(#{date}) &lt;=
+            TO_DAYS(b.appointmentDate)+b.qrcodeConf-1 )
+            and (b.visitdate is null or b.id not in (select v.appid from qcv_visitor v where (DATE_FORMAT(v.visitdate,
+            '%Y-%m-%d')=#{date}) and v.signinType=1))
+        </if>
+
+        <if test='gid != null and gid != "" and  gid != "null"'>
+            and CONCAT(',',b.gid, ',') REGEXP concat(',(',replace(#{gid},',','|'),'),')>0
+        </if>
+
+        <if test='signinType == "0"'>
+            and 1!=1
+        </if>
+        <if test='signinType == "1"'>
+            and 1!=1
+        </if>
+        <if test='type == "sex"'>GROUP BY b.sex</if>
+        <if test='type == "vType"'>GROUP BY b.vType</if>
+        <if test='type == "visitType"'>GROUP BY b.visitType</if>
+        <if test='type == "clientNo"'>GROUP BY b.clientNo</if>
+        ) c
+        <if test='type == "sex"'>GROUP BY c.sex</if>
+        <if test='type == "vType"'>GROUP BY c.vType</if>
+        <if test='type == "visitType"'>GROUP BY c.visitType</if>
+        <if test='type == "clientNo"'>GROUP BY c.clientNo</if>
+    </select>
+
+    <select id="getNoArrivedVCount" parameterType="RequestVisit" resultType="VisitorChart">
+        select sum(count) as count from (
+        SELECT count(1) as count FROM qcv_visitor
+        where userid=#{userid} and FIND_IN_SET(#{gid},gid) and permission != '2'
+        <if test='date != null and date != "" and  date != "null"'>
+            and DATE_FORMAT(appointmentDate, '%Y-%m-%d') &gt;= #{date}
+        </if>
+
+        <if test='endDate != null and endDate != "" and  endDate != "null"'>
+            and DATE_FORMAT(appointmentDate, '%Y-%m-%d') &lt;= #{endDate}
+        </if>
+        UNION ALL
+        SELECT count(1) as count FROM qcv_appointment b where userid=#{userid} and gid=#{gid}
+        <if test='date != null and date != "" and  date != "null"'>
+            and DATE_FORMAT(appointmentDate, '%Y-%m-%d') &gt;= #{date}
+        </if>
+
+        <if test='endDate != null and endDate != "" and  endDate != "null"'>
+            and DATE_FORMAT(appointmentDate, '%Y-%m-%d') &lt;= #{endDate}
+        </if>
+        ) t
+
+    </select>
+
+    <select id="getNoArrivedLineChart" parameterType="RequestVisit" resultType="VisitorChart">
+        SELECT
+        <if test='chartStatus == "0"'>
+            month,
+        </if>
+        <if test='chartStatus == "1"'>
+            day,
+        </if>
+        <if test='chartStatus == "2"'>
+            hour,
+        </if>
+        SUM(`count`) AS count FROM (SELECT
+        <if test='chartStatus == "0"'>
+            DATE_FORMAT(a.`appointmentDate`,'%Y-%m') AS month,
+        </if>
+        <if test='chartStatus == "1"'>
+            DATE_FORMAT(a.`appointmentDate`,'%Y-%m-%d') AS day,
+        </if>
+        <if test='chartStatus == "2"'>
+            DATE_FORMAT(a.`appointmentDate`,'%H') AS hour,
+        </if>
+        COUNT(1) AS COUNT FROM qcv_visitor a
+        WHERE a.`userid`= #{userid} AND FIND_IN_SET(#{gid},gid)
+        <if test='date != null and date != "" and  date != "null"'>
+            and DATE_FORMAT(appointmentDate, '%Y-%m-%d') &gt;= #{date}
+        </if>
+
+        <if test='endDate != null and endDate != "" and  endDate != "null"'>
+            and DATE_FORMAT(appointmentDate, '%Y-%m-%d') &lt;= #{endDate}
+        </if>
+        GROUP BY
+        <if test='chartStatus == "0"'>
+            month
+        </if>
+        <if test='chartStatus == "1"'>
+            day
+        </if>
+        <if test='chartStatus == "2"'>
+            hour
+        </if>
+        UNION ALL
+        SELECT
+        <if test='chartStatus == "0"'>
+            DATE_FORMAT(a.`appointmentDate`,'%Y-%m') AS month,
+        </if>
+        <if test='chartStatus == "1"'>
+            DATE_FORMAT(a.`appointmentDate`,'%Y-%m-%d') AS day,
+        </if>
+        <if test='chartStatus == "2"'>
+            DATE_FORMAT(a.`appointmentDate`,'%H') AS hour,
+        </if>
+        COUNT(1) AS COUNT FROM qcv_appointment a
+        WHERE a.`userid`= #{userid} AND gid=#{gid}
+        <if test='date != null and date != "" and  date != "null"'>
+            and DATE_FORMAT(appointmentDate, '%Y-%m-%d') &gt;= #{date}
+        </if>
+
+        <if test='endDate != null and endDate != "" and  endDate != "null"'>
+            and DATE_FORMAT(appointmentDate, '%Y-%m-%d') &lt;= #{endDate}
+        </if>
+        GROUP BY
+        <if test='chartStatus == "0"'>
+            month
+        </if>
+        <if test='chartStatus == "1"'>
+            day
+        </if>
+        <if test='chartStatus == "2"'>
+            hour
+        </if>
+        ) t GROUP BY
+        <if test='chartStatus == "0"'>
+            month
+        </if>
+        <if test='chartStatus == "1"'>
+            day
+        </if>
+        <if test='chartStatus == "2"'>
+            hour
+        </if>
+    </select>
+
+    <select id="getAllVisitorLineChart" parameterType="RequestVisit" resultType="VisitorChart">
+        SELECT
+        <if test='chartStatus == "0"'>
+            month,
+        </if>
+        <if test='chartStatus == "1"'>
+            day,
+        </if>
+        <if test='chartStatus == "2"'>
+            hour,
+        </if>
+        SUM(`count`) AS count FROM (SELECT
+        <if test='chartStatus == "0"'>
+            DATE_FORMAT(a.`appointmentDate`,'%Y-%m') AS month,
+        </if>
+        <if test='chartStatus == "1"'>
+            DATE_FORMAT(a.`appointmentDate`,'%Y-%m-%d') AS day,
+        </if>
+        <if test='chartStatus == "2"'>
+            DATE_FORMAT(a.`appointmentDate`,'%H') AS hour,
+        </if>
+        COUNT(1) AS COUNT FROM qcv_visitor a
+        WHERE a.`userid`= #{userid}
+        <if test='date != null and date != "" and  date != "null" and signinType == "2"'>
+            and DATE_FORMAT(a.appointmentDate, '%Y-%m-%d') &gt;= #{date}
+        </if>
+
+        <if test='endDate != null and endDate != "" and  endDate != "null" and signinType == "2"'>
+            and DATE_FORMAT(a.appointmentDate, '%Y-%m-%d') &lt;= #{endDate}
+        </if>
+
+        <if test='date != null and date != "" and  date != "null" and signinType != "2"'>
+            and DATE_FORMAT(a.visitDate, '%Y-%m-%d') &gt;= #{date}
+        </if>
+
+        <if test='endDate != null and endDate != "" and  endDate != "null" and signinType != "2"'>
+            and DATE_FORMAT(a.visitDate, '%Y-%m-%d') &lt;= #{endDate}
+        </if>
+
+        <if test='gid != null and gid != "" and  gid != "null"'>
+            and CONCAT(',',a.gid, ',') REGEXP concat(',(',replace(#{gid},',','|'),'),')>0
+        </if>
+
+        <if test='signinType == "0"'>
+            and a.visitDate is not null
+        </if>
+        <if test='signinType == "1"'>
+            and signinType=1
+        </if>
+        <if test='signinType == "2"'>
+            and signinType=2
+        </if>
+
+        GROUP BY
+        <if test='chartStatus == "0"'>
+            month
+        </if>
+        <if test='chartStatus == "1"'>
+            day
+        </if>
+        <if test='chartStatus == "2"'>
+            hour
+        </if>
+        UNION ALL
+        SELECT
+        <if test='chartStatus == "0"'>
+            DATE_FORMAT(a.`appointmentDate`,'%Y-%m') AS month,
+        </if>
+        <if test='chartStatus == "1"'>
+            DATE_FORMAT(a.`appointmentDate`,'%Y-%m-%d') AS day,
+        </if>
+        <if test='chartStatus == "2"'>
+            DATE_FORMAT(a.`appointmentDate`,'%H') AS hour,
+        </if>
+        COUNT(1) AS COUNT FROM qcv_appointment a
+        WHERE a.`userid`= #{userid}
+        <if test='date != null and date != "" and  date != "null" and endDate != date '>
+            and DATE_FORMAT(a.appointmentDate, '%Y-%m-%d') &gt;= #{date}
+        </if>
+
+        <if test='endDate != null and endDate != "" and  endDate != "null" and endDate != date '>
+            and DATE_FORMAT(a.appointmentDate, '%Y-%m-%d') &lt;= #{endDate}
+        </if>
+
+        <if test='endDate == date'>
+            and (TO_DAYS(#{date}) &gt;= TO_DAYS(a.appointmentDate) and TO_DAYS(#{date}) &lt;=
+            TO_DAYS(a.appointmentDate)+a.qrcodeConf-1 )
+            and (a.visitdate is null or a.id not in (select v.appid from qcv_visitor v where (DATE_FORMAT(v.visitdate,
+            '%Y-%m-%d')=#{date}) and v.signinType=1))
+        </if>
+        <if test='gid != null and gid != "" and  gid != "null"'>
+            and CONCAT(',',a.gid, ',') REGEXP concat(',(',replace(#{gid},',','|'),'),')>0
+        </if>
+        <if test='signinType == "0"'>
+            and 1!=1
+        </if>
+        <if test='signinType == "2"'>
+            and 1!=1
+        </if>
+        GROUP BY
+        <if test='chartStatus == "0"'>
+            month
+        </if>
+        <if test='chartStatus == "1"'>
+            day
+        </if>
+        <if test='chartStatus == "2"'>
+            hour
+        </if>
+        ) t GROUP BY
+        <if test='chartStatus == "0"'>
+            month
+        </if>
+        <if test='chartStatus == "1"'>
+            day
+        </if>
+        <if test='chartStatus == "2"'>
+            hour
+        </if>
+    </select>
+
+
+    <select id="newSearchVisitorByCondition1" parameterType="java.util.Map" resultType="VisitorRecord">
+        SELECT
+        DATE_FORMAT(a.`appointmentDate`,'%Y-%m-%d') AS appDate,DATE_FORMAT(a.`appointmentDate`,'%H:%i') AS
+        appVisitTime,a.`waitPermissionSeconds` AS waitPermissionSeconds,
+        a.`floors` AS floors,a.`company` AS company,a.`vname`AS vname,a.`vphone` AS vphone ,a.`visitType` AS visitType,
+        (CASE WHEN a.bCompany IS NULL THEN '' ELSE '是' END) AS isBlackList,a.`bCompany` AS
+        bCompany,DATE_FORMAT(a.`visitdate`,'%H:%i') AS visitdate,
+        a.clientNo AS clientNo,a.sex AS sex,a.`peopleCount` AS peopleCount,a.`visitorCount` AS visitorCount
+        ,a.`permissionName` AS permissionName,
+        (CASE WHEN a.`cardNo` IS NULL THEN '否' ELSE '是' END) AS isTakeCard,a.`cardNo` AS cardNo,a.`gid` AS gid,
+        a.isWeekendVisitor AS isWeekendVisitor,a.`isHolidayVisitor` AS isHolidayVisitor,a.`isSCTimeVisitor` AS
+        isSCTimeVisitor,a.`isDaysOffVisitor` AS isDaysOffVisitor,
+        a.`appointmentDate` as appointmentDate,DATE_FORMAT(a.createTime,'%Y-%m-%d %H:%m:%s') AS createTime,a.empName as
+        empName
+        FROM
+        qcv_visitor a
+        WHERE
+        a.userid =#{userid} and a.permission != '2'
+        <if test='startDate != null and startDate != "" and  startDate != "null"'>
+            and DATE_FORMAT(a.appointmentDate, '%Y-%m-%d') &gt;= #{startDate}
+        </if>
+        <if test='endDate != null and endDate != "" and  endDate != "null"'>
+            and DATE_FORMAT(a.appointmentDate, '%Y-%m-%d') &lt;= #{endDate}
+        </if>
+        <if test='empName != null and empName != "" and  empName != "null"'>
+            and a.empName = #{empName}
+        </if>
+        <if test='empPhone != null and empPhone != "" and  empPhone != "null"'>
+            and a.empPhone =#{empPhone}
+        </if>
+        <if test='name != null and name != "" and  name != "null"'>
+            and a.vname like "%"#{name}"%"
+        </if>
+        <if test='visitType != null and visitType != "" and  visitType != "null"'>
+            and a.visitType= #{visitType}
+        </if>
+        <if test='vemail != null and vemail != "" and  vemail != "null"'>
+            and a.vemail= #{vemail}
+        </if>
+        <if test='phone != null and phone != "" and  phone != "null"'>
+            and a.vphone= #{phone}
+        </if>
+        <if test='signInGate != null and signInGate != "" and  signInGate != "null"'>
+            and a.signInGate like "%"#{signInGate}"%"
+        </if>
+        <if test='vcompany != null and vcompany != "" and  vcompany != "null"'>
+            and a.vcompany like "%"#{vcompany}"%"
+        </if>
+        <if test='vType != null and vType != "" and  vType != "null"'>
+            and a.vType= #{vType}
+        </if>
+        <if test='gid != null'>
+            and a.gid in
+            <foreach collection="gid" index="index" item="index" open="(" separator="," close=")">
+                #{index}
+            </foreach>
+        </if>
+        <if test='company != null and company != "" and  company != "null"'>
+            and a.company like "%"#{company}"%"
+        </if>
+        <if test='isBlackList != null and isBlackList != "" and  isBlackList != "null"'>
+            and a.isBlackList = #{isBlackList}
+        </if>
+        <if test='bCompany != null and bCompany != "" and  bCompany != "null"'>
+            and a.bCompany = #{bCompany}
+        </if>
+        <if test='clientNo != null and clientNo != "" and  clientNo != "null"'>
+            and a.clientNo = #{clientNo}
+        </if>
+        <if test='sex != null and sex != "" and  sex != "null"'>
+            and a.sex = #{sex}
+        </if>
+        <if test='isWeekendVisitor != null and isWeekendVisitor != "" and  isWeekendVisitor != "null"'>
+            and a.isWeekendVisitor = #{isWeekendVisitor}
+        </if>
+        <if test='isHolidayVisitor != null and isHolidayVisitor != "" and  isHolidayVisitor != "null"'>
+            and a.isHolidayVisitor = #{isHolidayVisitor}
+        </if>
+        <if test='isSCTimeVisitor != null and isSCTimeVisitor != "" and  isSCTimeVisitor != "null"'>
+            and a.isSCTimeVisitor = #{isSCTimeVisitor}
+        </if>
+        <if test='isDaysOffVisitor != null and isDaysOffVisitor != "" and  isDaysOffVisitor != "null"'>
+            and a.isDaysOffVisitor = #{isDaysOffVisitor}
+        </if>
+        <if test='isTakeCard != null and isTakeCard != "" and  isTakeCard != "null"'>
+            <choose>
+                <when test='isTakeCard == "0"'>
+                    and a.cardNo is not null
+                </when>
+                <when test='isTakeCard == "1"'>
+                    and a.cardNo is null
+                </when>
+            </choose>
+        </if>
+
+        <if test='category != null and category != "" and  category != "null"'>
+            <choose>
+                <when test='category == "0"'>
+
+                </when>
+                <when test='category == "1"'>
+                    and a.visitdate is not null
+                </when>
+            </choose>
+        </if>
+
+        <if test='subaccountId != null and subaccountId != "" and  subaccountId != "null"'>
+            and a.subaccountId = #{subaccountId}
+        </if>
+        <if test='cardNo != null and cardNo != "" and  cardNo != "null"'>
+            and a.cardNo = #{cardNo}
+        </if>
+        <if test='permissionName != null and permissionName != "" and  permissionName != "null"'>
+            and a.permissionName = #{permissionName}
+        </if>
+        UNION ALL
+        SELECT
+        DATE_FORMAT(b.`appointmentDate`,'%Y-%m-%d') AS appDate,DATE_FORMAT(b.`appointmentDate`,'%H:%i') AS
+        appVisitTime,'0' AS waitPermissionSeconds,
+        b.`floors` AS floors,b.`company` AS company,b.`name` AS vname ,b.`phone` AS vphone, b.`visitType` AS visitType,
+        (CASE WHEN b.bCompany IS NULL THEN '' ELSE '是' END) AS isBlackList,b.`bCompany` AS
+        bCompany,DATE_FORMAT(b.`visitdate`,'%H:%i') AS visitdate,
+        b.`clientNo` AS clientNo,b.`sex` AS sex,b.`peopleCount` AS peopleCount,b.`visitorCount` AS
+        visitorCount,b.`empName` AS permissionName,
+        (CASE WHEN b.`cardNo` IS NULL THEN '否' ELSE '是' END) AS isTakeCard,b.`cardNo` AS cardNo,b.`gid` AS gid,
+        b.isWeekendVisitor AS isWeekendVisitor,b.`isHolidayVisitor` AS isHolidayVisitor,b.`isSCTimeVisitor` AS
+        isSCTimeVisitor,b.`isDaysOffVisitor` AS isDaysOffVisitor,
+        b.`appointmentDate` as appointmentDate,DATE_FORMAT(b.createTime,'%Y-%m-%d %H:%m:%s') AS createTime,b.empName as
+        empName
+        FROM
+        qcv_appointment b
+        WHERE
+        b.userid =#{userid}
+        <if test='startDate != null and startDate != "" and  startDate != "null"'>
+            and DATE_FORMAT(b.appointmentDate, '%Y-%m-%d') &gt;= #{startDate}
+        </if>
+        <if test='endDate != null and endDate != "" and  endDate != "null"'>
+            and DATE_FORMAT(b.appointmentDate, '%Y-%m-%d') &lt;= #{endDate}
+        </if>
+        <if test='empName != null and empName != "" and  empName != "null"'>
+            and b.empName = #{empName}
+        </if>
+        <if test='empPhone != null and empPhone != "" and  empPhone != "null"'>
+            and b.empPhone =#{empPhone}
+        </if>
+        <if test='name != null and name != "" and  name != "null"'>
+            and b.name like "%"#{name}"%"
+        </if>
+        <if test='visitType != null and visitType != "" and  visitType != "null"'>
+            and b.visitType= #{visitType}
+        </if>
+        <if test='vemail != null and vemail != "" and  vemail != "null"'>
+            and b.vemail= #{vemail}
+        </if>
+        <if test='phone != null and phone != "" and  phone != "null"'>
+            and b.phone= #{phone}
+        </if>
+        <if test='vcompany != null and vcompany != "" and  vcompany != "null"'>
+            and b.vcompany like "%"#{vcompany}"%"
+        </if>
+        <if test='vType != null and vType != "" and  vType != "null"'>
+            and b.vType= #{vType}
+        </if>
+        <if test='gid != null'>
+            and b.gid in
+            <foreach collection="gid" index="index" item="index" open="(" separator="," close=")">
+                #{index}
+            </foreach>
+        </if>
+        <if test='company != null and company != "" and  company != "null"'>
+            and b.company like "%"#{company}"%"
+        </if>
+        <if test='isBlackList != null and isBlackList != "" and  isBlackList != "null"'>
+            and b.isBlackList = #{isBlackList}
+        </if>
+        <if test='bCompany != null and bCompany != "" and  bCompany != "null"'>
+            and b.bCompany = #{bCompany}
+        </if>
+        <if test='clientNo != null and clientNo != "" and  clientNo != "null"'>
+            and b.clientNo = #{clientNo}
+        </if>
+        <if test='sex != null and sex != "" and  sex != "null"'>
+            and b.sex = #{sex}
+        </if>
+        <if test='isWeekendVisitor != null and isWeekendVisitor != "" and  isWeekendVisitor != "null"'>
+            and b.isWeekendVisitor = #{isWeekendVisitor}
+        </if>
+        <if test='isHolidayVisitor != null and isHolidayVisitor != "" and  isHolidayVisitor != "null"'>
+            and b.isHolidayVisitor = #{isHolidayVisitor}
+        </if>
+        <if test='isSCTimeVisitor != null and isSCTimeVisitor != "" and  isSCTimeVisitor != "null"'>
+            and b.isSCTimeVisitor = #{isSCTimeVisitor}
+        </if>
+        <if test='isDaysOffVisitor != null and isDaysOffVisitor != "" and  isDaysOffVisitor != "null"'>
+            and b.isDaysOffVisitor = #{isDaysOffVisitor}
+        </if>
+        <if test='isTakeCard != null and isTakeCard != "" and  isTakeCard != "null"'>
+            <choose>
+                <when test='isTakeCard == "0"'>
+                    and b.cardNo is not null
+                </when>
+                <when test='isTakeCard == "1"'>
+                    and b.cardNo is null
+                </when>
+            </choose>
+        </if>
+        <if test='category != null and category != "" and  category != "null"'>
+            <choose>
+                <when test='category == "0"'>
+                    and b.visitdate is null
+                </when>
+                <when test='category == "1"'>
+                    AND 1 != 1
+                </when>
+            </choose>
+        </if>
+        <if test='subaccountId != null and subaccountId != "" and  subaccountId != "null"'>
+            and b.subaccountId = #{subaccountId}
+        </if>
+        <if test='cardNo != null and cardNo != "" and  cardNo != "null"'>
+            and b.cardNo = #{cardNo}
+        </if>
+        <if test='permissionName != null and permissionName != "" and  permissionName != "null"'>
+            and b.empName = #{empName}
+        </if>
+
+        order by appointmentDate desc
+    </select>
+
+    <select id="newSearchVisitorByCondition1Page" parameterType="ReqVisitorRecord" resultType="VisitorRecord">
+        SELECT
+        DATE_FORMAT(a.`appointmentDate`,'%Y-%m-%d') AS appDate,DATE_FORMAT(a.`appointmentDate`,'%H:%i') AS
+        appVisitTime,a.`waitPermissionSeconds` AS waitPermissionSeconds,
+        a.`floors` AS floors,a.`company` AS company,a.`vname`AS vname,a.`vphone` AS vphone ,a.`visitType` AS visitType,
+        (CASE WHEN a.bCompany IS NULL THEN '' ELSE '是' END) AS isBlackList,a.`bCompany` AS
+        bCompany,DATE_FORMAT(a.`visitdate`,'%H:%i') AS visitdate,
+        a.clientNo AS clientNo,a.sex AS sex,a.`peopleCount` AS peopleCount,a.`visitorCount` AS visitorCount
+        ,a.`permissionName` AS permissionName,
+        (CASE WHEN a.`cardNo` IS NULL THEN '否' ELSE '是' END) AS isTakeCard,a.`cardNo` AS cardNo,a.`gid` AS gid,
+        a.isWeekendVisitor AS isWeekendVisitor,a.`isHolidayVisitor` AS isHolidayVisitor,a.`isSCTimeVisitor` AS
+        isSCTimeVisitor,a.`isDaysOffVisitor` AS isDaysOffVisitor,
+        a.`appointmentDate` as appointmentDate,DATE_FORMAT(a.createTime,'%Y-%m-%d %H:%m:%s') AS createTime,a.empName as
+        empName
+        FROM
+        qcv_visitor a
+        WHERE
+        a.userid =#{userid} and a.permission != '2'
+        <if test='date != null and date != "" and  date != "null"'>
+            and DATE_FORMAT(a.appointmentDate, '%Y-%m-%d') &gt;= #{date}
+        </if>
+        <if test='endDate != null and endDate != "" and  endDate != "null"'>
+            and DATE_FORMAT(a.appointmentDate, '%Y-%m-%d') &lt;= #{endDate}
+        </if>
+        <if test='empName != null and empName != "" and  empName != "null"'>
+            and a.empName = #{empName}
+        </if>
+        <if test='empPhone != null and empPhone != "" and  empPhone != "null"'>
+            and a.empPhone =#{empPhone}
+        </if>
+        <if test='name != null and name != "" and  name != "null"'>
+            and a.vname like "%"#{name}"%"
+        </if>
+        <if test='visitType != null and visitType != "" and  visitType != "null"'>
+            and a.visitType= #{visitType}
+        </if>
+        <if test='email != null and email != "" and  email != "null"'>
+            and a.vemail= #{vemail}
+        </if>
+        <if test='phone != null and phone != "" and  phone != "null"'>
+            and a.vphone= #{phone}
+        </if>
+        <if test='signInGate != null and signInGate != "" and  signInGate != "null"'>
+            and a.signInGate like "%"#{signInGate}"%"
+        </if>
+        <if test='vcompany != null and vcompany != "" and  vcompany != "null"'>
+            and a.vcompany like "%"#{vcompany}"%"
+        </if>
+        <if test='vType != null and vType != "" and  vType != "null"'>
+            and a.vType= #{vType}
+        </if>
+        <if test='gid != null'>
+            and a.gid in
+            <foreach collection="gid" index="index" item="index" open="(" separator="," close=")">
+                #{index}
+            </foreach>
+        </if>
+        <if test='company != null and company != "" and  company != "null"'>
+            and a.company like "%"#{company}"%"
+        </if>
+        <if test='isBlackList != null and isBlackList != "" and  isBlackList != "null"'>
+            and a.isBlackList = #{isBlackList}
+        </if>
+        <if test='bCompany != null and bCompany != "" and  bCompany != "null"'>
+            and a.bCompany = #{bCompany}
+        </if>
+        <if test='clientNo != null and clientNo != "" and  clientNo != "null"'>
+            and a.clientNo = #{clientNo}
+        </if>
+        <if test='sex != null and sex != "" and  sex != "null"'>
+            and a.sex = #{sex}
+        </if>
+        <if test='isWeekendVisitor != null and isWeekendVisitor != "" and  isWeekendVisitor != "null"'>
+            and a.isWeekendVisitor = #{isWeekendVisitor}
+        </if>
+        <if test='isHolidayVisitor != null and isHolidayVisitor != "" and  isHolidayVisitor != "null"'>
+            and a.isHolidayVisitor = #{isHolidayVisitor}
+        </if>
+        <if test='isSCTimeVisitor != null and isSCTimeVisitor != "" and  isSCTimeVisitor != "null"'>
+            and a.isSCTimeVisitor = #{isSCTimeVisitor}
+        </if>
+        <if test='isDaysOffVisitor != null and isDaysOffVisitor != "" and  isDaysOffVisitor != "null"'>
+            and a.isDaysOffVisitor = #{isDaysOffVisitor}
+        </if>
+        <if test='isTakeCard != null and isTakeCard != "" and  isTakeCard != "null"'>
+            <choose>
+                <when test='isTakeCard == "0"'>
+                    and a.cardNo is not null
+                </when>
+                <when test='isTakeCard == "1"'>
+                    and a.cardNo is null
+                </when>
+            </choose>
+        </if>
+
+        <if test='category != null '>
+            <choose>
+                <when test='category == "0"'>
+
+                </when>
+                <when test='category == "1"'>
+                    and a.visitdate is not null
+                </when>
+            </choose>
+        </if>
+
+        <if test='subaccountId > 0 '>
+            and a.subaccountId = #{subaccountId}
+        </if>
+
+        <if test='cardNo != null and cardNo != "" and  cardNo != "null"'>
+            and a.cardNo = #{cardNo}
+        </if>
+        <if test='permissionName != null and permissionName != "" and  permissionName != "null"'>
+            and a.permissionName = #{permissionName}
+        </if>
+        UNION ALL
+        SELECT
+        DATE_FORMAT(b.`appointmentDate`,'%Y-%m-%d') AS appDate,DATE_FORMAT(b.`appointmentDate`,'%H:%i') AS
+        appVisitTime,'0' AS waitPermissionSeconds,
+        b.`floors` AS floors,b.`company` AS company,b.`name` AS vname ,b.`phone` AS vphone, b.`visitType` AS visitType,
+        (CASE WHEN b.bCompany IS NULL THEN '' ELSE '是' END) AS isBlackList,b.`bCompany` AS
+        bCompany,DATE_FORMAT(b.`visitdate`,'%H:%i') AS visitdate,
+        b.`clientNo` AS clientNo,b.`sex` AS sex,b.`peopleCount` AS peopleCount,b.`visitorCount` AS
+        visitorCount,b.`empName` AS permissionName,
+        (CASE WHEN b.`cardNo` IS NULL THEN '否' ELSE '是' END) AS isTakeCard,b.`cardNo` AS cardNo,b.`gid` AS gid,
+        b.isWeekendVisitor AS isWeekendVisitor,b.`isHolidayVisitor` AS isHolidayVisitor,b.`isSCTimeVisitor` AS
+        isSCTimeVisitor,b.`isDaysOffVisitor` AS isDaysOffVisitor,
+        b.`appointmentDate` as appointmentDate,DATE_FORMAT(b.createTime,'%Y-%m-%d %H:%m:%s') AS createTime,b.empName as
+        empName
+        FROM
+        qcv_appointment b
+        WHERE
+        b.userid =#{userid}
+        <if test='date != null and date != "" and  date != "null"'>
+            and DATE_FORMAT(b.appointmentDate, '%Y-%m-%d') &gt;= #{date}
+        </if>
+        <if test='endDate != null and endDate != "" and  endDate != "null"'>
+            and DATE_FORMAT(b.appointmentDate, '%Y-%m-%d') &lt;= #{endDate}
+        </if>
+        <if test='empName != null and empName != "" and  empName != "null"'>
+            and b.empName = #{empName}
+        </if>
+        <if test='empPhone != null and empPhone != "" and  empPhone != "null"'>
+            and b.empPhone =#{empPhone}
+        </if>
+        <if test='name != null and name != "" and  name != "null"'>
+            and b.name like "%"#{name}"%"
+        </if>
+        <if test='visitType != null and visitType != "" and  visitType != "null"'>
+            and b.visitType= #{visitType}
+        </if>
+        <if test='email != null and email != "" and  email != "null"'>
+            and b.vemail= #{email}
+        </if>
+        <if test='phone != null and phone != "" and  phone != "null"'>
+            and b.phone= #{phone}
+        </if>
+        <if test='vcompany != null and vcompany != "" and  vcompany != "null"'>
+            and b.vcompany like "%"#{vcompany}"%"
+        </if>
+        <if test='vType != null and vType != "" and  vType != "null"'>
+            and b.vType= #{vType}
+        </if>
+        <if test='gid != null'>
+            and b.gid in
+            <foreach collection="gid" index="index" item="index" open="(" separator="," close=")">
+                #{index}
+            </foreach>
+        </if>
+        <if test='company != null and company != "" and  company != "null"'>
+            and b.company like "%"#{company}"%"
+        </if>
+        <if test='isBlackList != null and isBlackList != "" and  isBlackList != "null"'>
+            and b.isBlackList = #{isBlackList}
+        </if>
+        <if test='bCompany != null and bCompany != "" and  bCompany != "null"'>
+            and b.bCompany = #{bCompany}
+        </if>
+        <if test='clientNo != null and clientNo != "" and  clientNo != "null"'>
+            and b.clientNo = #{clientNo}
+        </if>
+        <if test='sex != null and sex != "" and  sex != "null"'>
+            and b.sex = #{sex}
+        </if>
+        <if test='isWeekendVisitor != null and isWeekendVisitor != "" and  isWeekendVisitor != "null"'>
+            and b.isWeekendVisitor = #{isWeekendVisitor}
+        </if>
+        <if test='isHolidayVisitor != null and isHolidayVisitor != "" and  isHolidayVisitor != "null"'>
+            and b.isHolidayVisitor = #{isHolidayVisitor}
+        </if>
+        <if test='isSCTimeVisitor != null and isSCTimeVisitor != "" and  isSCTimeVisitor != "null"'>
+            and b.isSCTimeVisitor = #{isSCTimeVisitor}
+        </if>
+        <if test='isDaysOffVisitor != null and isDaysOffVisitor != "" and  isDaysOffVisitor != "null"'>
+            and b.isDaysOffVisitor = #{isDaysOffVisitor}
+        </if>
+        <if test='isTakeCard != null and isTakeCard != "" and  isTakeCard != "null"'>
+            <choose>
+                <when test='isTakeCard == "0"'>
+                    and b.cardNo is not null
+                </when>
+                <when test='isTakeCard == "1"'>
+                    and b.cardNo is null
+                </when>
+            </choose>
+        </if>
+        <if test='category != null '>
+            <choose>
+                <when test='category == "0"'>
+                    and b.visitdate is null
+                </when>
+                <when test='category == "1"'>
+                    AND 1 != 1
+                </when>
+            </choose>
+        </if>
+        <if test='subaccountId >0'>
+            and b.subaccountId = #{subaccountId}
+        </if>
+        <if test='cardNo != null and cardNo != "" and  cardNo != "null"'>
+            and b.cardNo = #{cardNo}
+        </if>
+        <if test='permissionName != null and permissionName != "" and  permissionName != "null"'>
+            and b.empName = #{empName}
+        </if>
+
+        order by appointmentDate desc
+    </select>
+
+    <select id="getVisitSaCountByVphone" parameterType="RequestVisit" resultType="VisitorChart">
+        select count(1) as count
+        from qcv_visitor a
+        where a.userid =#{userid}
+          and
+            a.vphone= #{phone}
+          and subaccountId= #{subaccountId}
+          and a.visitdate IS Not NULL
+    </select>
+
+    <select id="getArrivedVCount" parameterType="RequestVisit" resultType="VisitorChart">
+        SELECT
+        a.`gid` as gid,COUNT(1) as count
+        FROM
+        qcv_visitor a
+        WHERE
+        a.userid = #{userid}
+        <if test='date != null and date != "" and  date != "null"'>
+            AND DATE_FORMAT(a.`visitdate`, '%Y-%m-%d') >= #{date}
+        </if>
+        <if test='endDate != null and endDate != "" and  endDate != "null"'>
+            AND DATE_FORMAT(a.visitdate, '%Y-%m-%d') &lt;= #{endDate}
+        </if>
+        GROUP BY a.`gid`
+    </select>
+
+    <select id="getVListBySubAccountId" resultType="Visitor">
+        SELECT a.`vid`             AS vid,
+               a.`empid`           AS empid,
+               a.`empName`         AS empName,
+               a.`empPhone`        AS empPhone,
+               a.`vphone`          AS vphone,
+               a.`visitType`       AS visitType,
+               a.`appointmentDate` AS appointmentDate,
+               ''                  as appid,
+               a.clientNo          as clientNo
+        FROM qcv_visitor a
+        WHERE a.`userid` = #{userid}
+          AND a.`appointmentDate` >= NOW()
+          AND a.`visitdate` IS NULL
+          AND a.`permission` = 1
+          AND a.`empid` = #{empid}
+          AND a.signinType = 2
+        UNION ALL
+        SELECT ''                  AS vid,
+               b.`empid`           AS empid,
+               b.`empName`         AS empName,
+               b.`empPhone`        AS empPhone,
+               b.phone             AS vphone,
+               b.`visitType`       AS visitType,
+               b.`appointmentDate` AS appointmentDate,
+               b.id                as appid,
+               b.clientNo          as clientNo
+        FROM qcv_appointment b
+        WHERE b.userid = #{userid}
+          AND b.`visitDate` IS NULL
+          AND b.`appointmentDate` >= NOW()
+          AND b.`empid` = #{empid}
+    </select>
+
+    <select id="getSignedCount" parameterType="RequestVisit" resultType="DataStatistics">
+        SELECT COUNT(1) as totalVisitor,COUNT(CASE WHEN a.signOutDate IS NULL THEN 1 ELSE NULL END) AS nowVCount,
+        COUNT(CASE WHEN a.signOutDate IS NOT NULL THEN 1 ELSE NULL END) AS signOutCount FROM qcv_visitor a WHERE
+        a.visitDate IS NOT NULL and
+        a.userid =#{userid}
+        <if test='date != null and date != "" and  date != "null"'>
+            and DATE_FORMAT(a.visitDate, '%Y-%m-%d') &gt;= #{date}
+        </if>
+        <if test='endDate != null and endDate != "" and  endDate != "null"'>
+            and DATE_FORMAT(a.visitDate, '%Y-%m-%d') &lt;= #{endDate}
+        </if>
+        <if test='gid != null and gid != "" and  gid != "null"'>
+            and CONCAT(',',a.gid, ',') REGEXP concat(',(',replace(#{gid},',','|'),'),')>0
+        </if>
+    </select>
+
+    <select id="getAppointmentCount" parameterType="RequestVisit" resultType="DataStatistics">
+        SELECT COUNT(1) as totalVisitor,COUNT(CASE WHEN a.visitdate IS NOT NULL THEN 1 ELSE NULL END) AS arrivedCount,
+        COUNT(CASE WHEN a.visitdate IS NULL THEN 1 ELSE NULL END) AS noArrivedCount FROM qcv_visitor a WHERE
+        signinType=2 and
+        a.userid =#{userid}
+        <if test='date != null and date != "" and  date != "null"'>
+            and DATE_FORMAT(a.appointmentDate, '%Y-%m-%d') &gt;= #{date}
+        </if>
+        <if test='endDate != null and endDate != "" and  endDate != "null"'>
+            and DATE_FORMAT(a.appointmentDate, '%Y-%m-%d') &lt;= #{endDate}
+        </if>
+        <if test='gid != null and gid != "" and  gid != "null"'>
+            and CONCAT(',',a.gid, ',') REGEXP concat(',(',replace(#{gid},',','|'),'),')>0
+        </if>
+    </select>
+
+    <select id="getRvSignedCount" parameterType="RequestVisit" resultType="DataStatistics">
+        SELECT COUNT(1) as totalVisitor,COUNT(CASE WHEN a.signOutDate IS NULL THEN 1 ELSE NULL END) AS nowVCount,
+        COUNT(CASE WHEN a.signOutDate IS NOT NULL THEN 1 ELSE NULL END) AS signOutCount FROM qcv_visitor a WHERE
+        a.visitDate IS NOT NULL and
+        a.userid =#{userid} and signinType=3
+        <if test='date != null and date != "" and  date != "null"'>
+            and DATE_FORMAT(a.visitDate, '%Y-%m-%d') &gt;= #{date}
+        </if>
+        <if test='endDate != null and endDate != "" and  endDate != "null"'>
+            and DATE_FORMAT(a.visitDate, '%Y-%m-%d') &lt;= #{endDate}
+        </if>
+        <if test='gid != null and gid != "" and  gid != "null"'>
+            and CONCAT(',',a.gid, ',') REGEXP concat(',(',replace(#{gid},',','|'),'),')>0
+        </if>
+    </select>
+
+    <select id="searchLeaveTimeVisitByCondition" resultType="Visitor">
+        SELECT
+            a.`vid`,a.`empid`,a.`empName`,a.`vname`,a.`vphone`,a.`visitdate`,a.`appointmentDate`,a.`leaveTime`,a.`signOutDate`,a.`qrcodeConf`,a.`overallScore`,a.`scoreDetail`
+        FROM
+            qcv_visitor a
+        WHERE
+            a.`userid` = #{userid}
+          AND
+            a.`visitdate` IS NOT NULL
+          AND
+            a.`overallScore` = 0
+          AND
+            CASE qrcodeConf
+                WHEN 1 THEN TO_DAYS(NOW())=TO_DAYS(a.`appointmentDate`)+a.qrcodeConf
+                ELSE TO_DAYS(NOW())=TO_DAYS(a.`appointmentDate`)+a.qrcodeConf
+                END
+    </select>
+
+    <select id="getScoreChartByVisitor" parameterType="RequestVisit" resultType="Visitor">
+        SELECT
+        <include refid="select_clause"></include>
+        FROM
+        qcv_visitor a
+        WHERE
+        a.`userid` = #{userid}
+        and a.scoreDetail is not null
+        and DATE_FORMAT(a.visitDate, '%Y-%m-%d') &gt;= #{startDate}
+        and DATE_FORMAT(a.visitDate, '%Y-%m-%d') &lt;= #{endDate}
+        <if test='gid != null and gid != "" and  gid != "null"'>
+            and CONCAT(',',a.gid, ',') REGEXP concat(',(',replace(#{gid},',','|'),'),')>0
+        </if>
+
+    </select>
+
+
+
+    <select id="searchVisitors" parameterType="java.util.Map" resultType="RespVisitor">
+        SELECT
+        a.vid,a.`empdeptid`,a.company,a.empName,a.empPhone,a.cardId,a.vphone,a.vemail,a.visitdate,a.leaveTime,a.appointmentDate,a.vname,a.vphoto,a.visitType,a.vcompany,a.tid,a.vType,
+        a.permission,a.peopleCount,a.memberName,a.vgroup,a.extendCol,a.signOutDate,a.signInOpName,a.signOutOpName,a.cardNo,a.cardOpName,
+        a.plateNum,a.signInGate,a.signOutGate,a.remark,a.signinType,a.signPdf,a.appid,a.meetingPoint,a.gid,a.sex,a.clientNo,a.qrcodeConf,a.overallScore,a.scoreDetail,a.healthDeclaration,a.createTime
+        FROM qcv_visitor a WHERE a.userid= #{userid}
+        <choose>
+            <when test='svcType == "0"'>
+                <if test='startDate != null and startDate != "" and  startDate != "null"'>
+                    and (TO_DAYS(a.appointmentDate)+a.qrcodeConf-1) &gt;= TO_DAYS(#{startDate})
+                </if>
+
+                <if test='endDate != null and endDate != "" and  endDate != "null"'>
+                    and TO_DAYS(a.appointmentDate) &lt;= TO_DAYS(#{endDate})
+                </if>
+                <if test='startDate != null and startDate != "" and  startDate != "null"
+                            and endDate != null and endDate != "" and  endDate != "null"'>
+                    and(a.visitdate is null or (TO_DAYS(a.visitdate) &gt;= TO_DAYS(#{startDate}) and TO_DAYS(a.visitdate) &lt;= TO_DAYS(#{endDate})))
+                </if>
+            </when>
+            <when test='svcType == "1"'>
+                <if test='startDate != null and startDate != "" and  startDate != "null"'>
+                    and TO_DAYS(a.visitdate) &gt;= TO_DAYS(#{startDate})
+                </if>
+
+                <if test='endDate != null and endDate != "" and  endDate != "null"'>
+                    and TO_DAYS(a.visitdate) &lt;= TO_DAYS(#{endDate})
+                </if>
+            </when>
+            <when test='svcType == "2"'>
+                <if test='startDate != null and startDate != "" and  startDate != "null"
+                            and endDate != null and endDate != "" and  endDate != "null"'>
+                    <if test='startDate == endDate'>
+                        and (a.visitdate is null)
+                    </if>
+                    <if test='startDate != endDate'>
+                        and a.visitdate is null
+                    </if>
+                </if>
+                <if test='startDate != null and startDate != "" and  startDate != "null"'>
+                    and (TO_DAYS(a.appointmentDate)+a.qrcodeConf-1) &gt;= TO_DAYS(#{startDate})
+                </if>
+
+                <if test='endDate != null and endDate != "" and  endDate != "null"'>
+                    and TO_DAYS(a.appointmentDate) &lt;= TO_DAYS(#{endDate})
+                </if>
+            </when>
+        </choose>
+
+
+
+        <if test='name != null and name != "" and  name != "null"'>
+            and(a.empName like "%"#{name}"%"
+            or a.empPhone =#{name}
+            or a.vcompany like "%"#{name}"%"
+            or a.vname like "%"#{name}"%"
+            or a.vphone= #{name}
+            or a.vemail= #{name}
+            <if test='empdeptid != null and empdeptid != "" and  empdeptid != "null"'>
+                or a.empdeptid = #{empdeptid}
+            </if>
+            )
+        </if>
+
+
+        <if test='company != null and company != "" and  company != "null"'>
+            and a.company like "%"#{company}"%"
+        </if>
+
+
+        <if test='visitType != null and visitType != "" and  visitType != "null"'>
+            and a.visitType= #{visitType}
+        </if>
+
+        <if test='vType != null and vType != "" and  vType != "null"'>
+            and a.vType= #{vType}
+        </if>
+        <if test='signinType != null and signinType != "" and signinType != "0" and  signinType != "null"'>
+            and a.signinType= #{signinType}
+        </if>
+
+        <if test='signInGate != null and signInGate != "" and  signInGate != "null"'>
+            and a.signInGate like "%"#{signInGate}"%"
+        </if>
+
+        <if test='team != null and team != "" and  team != "null"'>
+            and a.peopleCount > 0
+        </if>
+
+        <if test='subaccountId != 0'>
+            and a.subaccountId= #{subaccountId}
+        </if>
+
+        <if test='gid != null and gid != "" and  gid != "null"'>
+            and CONCAT(',',a.gid, ',') REGEXP concat(',(',replace(#{gid},',','|'),'),')>0
+        </if>
+        <if test='vtExtendCol != null and vtExtendCol != "" and  vtExtendCol != "null"'>
+            <foreach collection="vtExtendCol" item="jsonValue" index="jsonKey">
+                <if test='jsonValue != null and jsonValue != "" and  jsonValue != "null"'>
+                    and replace(json_extract(a.extendCol,CONCAT('$.',#{jsonKey})),'\"', '') like CONCAT('%',#{jsonValue},'%')
+                </if>
+            </foreach>
+        </if>
+        UNION ALL
+
+        SELECT ''AS vid,b.`empdeptid`,b.`company` ,b.`empName`,b.`empPhone`,b.`cardId` AS cardid,b.`phone` AS
+        vphone,b.`vemail` AS vemail,b.`visitDate` AS visitdate,b.`leaveTime` AS leaveTime,b.`appointmentDate` AS
+        appointmentDate,
+        b.`name` AS vname,b.`photoUrl`AS vphoto,b.`visitType` AS visitType,b.`vcompany` AS vcompany,b.`tid` AS
+        tid,b.`vType`AS vType,b.permission,b.`peopleCount`AS peopleCount,'' AS memberName,''AS vgroup,
+        b.`appExtendCol` AS extendCol,NULL AS signOutDate,'' AS signInOpName, ''AS signOutOpName,b.`cardNo` AS cardNo,''
+        AS cardOpName,b.`plateNum` AS plateNum,''AS signInGate,'' AS signOutGate,b.`remark` AS remark,
+        '1' AS signinType,'' AS signPdf,b.`id` AS appid,'' AS meetingPoint,b.`gid` AS gid,b.`sex` AS sex,b.`clientNo` AS
+        clientNo,b.`qrcodeConf` AS qrcodeConf,"" as overallScore,"" as scoreDetail,b.healthDeclaration as healthDeclaration,b.`createTime` AS createTime
+        FROM
+        qcv_appointment b
+
+        WHERE b.userid= #{userid}
+        <choose>
+            <when test='svcType == "0"'>
+                <if test='startDate != null and startDate != "" and  startDate != "null"
+                            and endDate != null and endDate != "" and  endDate != "null"'>
+                    <if test='startDate == endDate'>
+                        and (b.visitdate is null or TO_DAYS(b.visitdate) &lt;&gt; TO_DAYS(#{startDate}))
+                    </if>
+                    <if test='startDate != endDate'>
+                        and b.visitdate is null or (TO_DAYS(b.visitdate) &lt; TO_DAYS(#{startDate}) and TO_DAYS(b.visitdate) &gt; TO_DAYS(#{endDate}))
+                    </if>
+                </if>
+            </when>
+            <when test='svcType == "1"'>
+                and 0=1
+            </when>
+            <when test='svcType == "2"'>
+                <if test='startDate != null and startDate != "" and  startDate != "null"
+                            and endDate != null and endDate != "" and  endDate != "null"'>
+                    <if test='startDate == endDate'>
+                        and (b.visitdate is null or TO_DAYS(b.visitdate) &lt;&gt; TO_DAYS(#{startDate}))
+                    </if>
+                    <if test='startDate != endDate'>
+                        and b.visitdate is null or (TO_DAYS(b.visitdate) &lt; TO_DAYS(#{startDate}) and TO_DAYS(b.visitdate) &gt; TO_DAYS(#{endDate}))
+                    </if>
+                </if>
+            </when>
+        </choose>
+
+        <if test='signinType != null and signinType != "" and  signinType != "null"'>
+            and 1= #{signinType}
+        </if>
+
+        <if test='startDate != null and startDate != "" and  startDate != "null"'>
+            and (TO_DAYS(b.appointmentDate)+b.qrcodeConf-1) &gt;= TO_DAYS(#{startDate})
+        </if>
+
+        <if test='endDate != null and endDate != "" and  endDate != "null"'>
+            and TO_DAYS(b.appointmentDate) &lt;= TO_DAYS(#{endDate})
+        </if>
+
+        <if test='name != null and name != "" and  name != "null"'>
+            and(b.empName like "%"#{name}"%"
+            or b.empPhone =#{name}
+            or b.vcompany like "%"#{name}"%"
+            or b.name like "%"#{name}"%"
+            or b.phone= #{name}
+            or b.vemail= #{name}
+            <if test='empdeptid != null and empdeptid != "" and  empdeptid != "null"'>
+                or b.empdeptid = #{empdeptid}
+            </if>
+            )
+        </if>
+
+
+        <if test='company != null and company != "" and  company != "null"'>
+            and b.company like "%"#{company}"%"
+        </if>
+
+
+        <if test='visitType != null and visitType != "" and  visitType != "null"'>
+            and b.visitType= #{visitType}
+        </if>
+
+        <if test='vType != null and vType != "" and  vType != "null"'>
+            and b.vType= #{vType}
+        </if>
+
+        <if test='signInGate != null and signInGate != "" and  signInGate != "null"'>
+            and 1 = -1
+        </if>
+
+        <if test='team != null and team != "" and  team != "null"'>
+            and b.peopleCount > 0
+        </if>
+
+        <if test='subaccountId != "0"'>
+            and b.subaccountId= #{subaccountId}
+        </if>
+
+        <if test='gid != null and gid != "" and  gid != "null"'>
+            and CONCAT(',',b.gid, ',') REGEXP concat(',(',replace(#{gid},',','|'),'),')>0
+        </if>
+        <if test='vtExtendCol != null and vtExtendCol != "" and  vtExtendCol != "null"'>
+            <foreach collection="vtExtendCol" item="jsonValue" index="jsonKey">
+                <if test='jsonValue != null and jsonValue != "" and  jsonValue != "null"'>
+                    and replace(json_extract(b.appExtendCol,CONCAT('$.',#{jsonKey})),'\"', '') like CONCAT('%',#{jsonValue},'%')
+                </if>
+            </foreach>
+        </if>
+        <choose>
+            <when test='svcType == "0"'>
+                order by appointmentDate desc
+            </when>
+            <when test='svcType == "1"'>
+                order by visitdate desc
+            </when>
+            <when test='svcType == "2"'>
+                order by appointmentDate desc
+            </when>
+        </choose>
+
+    </select>
+
+    <update id="batchUpdateExtendCol" parameterType="java.util.List">
+        <foreach collection="list" item="atlist" index="index" open="" close="" separator=";">
+            update qcv_visitor
+            set extendCol=#{atlist.extendCol,jdbcType=VARCHAR}
+            where vid = #{atlist.vid,jdbcType=INTEGER}
+        </foreach>
+    </update>
+
+    <insert id="VisitorReply" parameterType="Visitor">
+        UPDATE qcv_visitor
+        SET status=#{status}
+        WHERE vid = #{vid}
+    </insert>
+</mapper>

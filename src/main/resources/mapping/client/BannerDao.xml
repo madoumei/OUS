@@ -1,0 +1,45 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.client.dao.BannerDao">
+    <sql id="select_clause">
+		 a.bid,
+		 a.bname,
+		 a.bannerUrl,
+		 a.goodsUrl,
+		 a.status
+    </sql>
+    
+    
+       <insert id="addBanner" useGeneratedKeys="true" keyProperty="bid"  parameterType="Banner">
+		INSERT INTO qcv_banner (
+			bname,
+			bannerUrl,
+			goodsUrl
+		) VALUES (
+			#{bname,jdbcType=VARCHAR},
+			#{bannerUrl,jdbcType=VARCHAR},
+			#{goodsUrl,jdbcType=VARCHAR}
+			
+		)
+    </insert>
+    
+      <select id="getBanners"  resultType="Banner">
+        SELECT 
+         <include refid="select_clause"/>
+        FROM  
+        	qcv_banner a 
+      </select>
+      
+      <insert id="updateBanner"  parameterType="Banner">
+        update qcv_banner set 
+          bannerUrl=#{bannerUrl},
+          goodsUrl=#{goodsUrl},
+          status=#{status}
+           where bid = #{bid}
+      </insert>
+      
+     <delete id="delBanner" parameterType="Integer">
+        DELETE FROM qcv_banner where bid = #{bid}
+     </delete>
+      
+      
+</mapper>

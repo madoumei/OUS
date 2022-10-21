@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpm code="bpm.autoCheckout" name="bpm.autoCheckout" type="process" description="签出流程">
+  <var name="vt" description="签到数据" dataType="com.client.bean.Visitor" contextVarName="vt" inOutType="param"></var>
+  <var name="userinfo" dataType="com.web.bean.UserInfo" contextVarName="userinfo" inOutType="param"></var>
+  <var name="eq" description="出门设备" dataType="com.client.bean.Equipment" contextVarName="eq" inOutType="param"></var>
+  <var name="autoSignout" dataType="java.lang.Integer" inOutType="inner"></var>
+  <note id="1650352446819" name="删除权限" comment="删除权限" visible="false" g="205,370,90,50">
+    <transition to="11"></transition>
+  </note>
+  <decision id="1650351955560" name="是否结束拜访判断" g="200,105,90,50">
+    <transition to="1650352032222" priority="1" name="要自动签出" expression="autoSignout == 1"></transition>
+    <transition to="11"></transition>
+    <action type="spring-bean">
+      <actionHandle bean="visitorService" clazz="com.client.service.VisitorService" method="autoSignoutRouter">
+        <var name="vt" dataType="com.client.bean.Visitor" contextVarName="vt" inOutType="param"></var>
+        <var name="autoSignout" dataType="java.lang.Integer" contextVarName="autoSignout" inOutType="return"></var>
+      </actionHandle>
+    </action>
+  </decision>
+  <start id="1" name="开始" g="115,16,30,30">
+    <transition to="1650351955560"></transition>
+  </start>
+  <end id="11" name="结束" g="115,411,30,30"></end>
+  <autoTask id="1650352032222" name="签出" g="205,210,90,50">
+    <transition to="1650352446819"></transition>
+    <action type="spring-bean">
+      <actionHandle bean="visitorService" clazz="com.client.service.VisitorService" method="autoSignoutTask">
+        <var name="vt" dataType="com.client.bean.Visitor" contextVarName="vt" inOutType="param"></var>
+        <var name="equipment" dataType="com.client.bean.Equipment" contextVarName="eq" inOutType="param"></var>
+      </actionHandle>
+    </action>
+  </autoTask>
+</bpm>

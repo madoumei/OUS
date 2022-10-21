@@ -1,0 +1,81 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.dao.VisitProxyDao">
+    <sql id="select_clause">
+      a.userid,
+	  a.empid,
+	  a.empName,
+	  a.proxyId,
+	  a.proxyName,
+	  a.proxyType,
+	  a.proxyStatus,
+	  a.startDate,
+	  a.endDate	  
+    </sql>    
+   
+    
+    <insert id="addProxy"  keyProperty="empid" parameterType="EmpVisitProxy">
+		INSERT INTO qcv_visit_proxy (
+			  userid,
+			  empid,
+			  empName,
+			  proxyId,
+			  proxyName,
+			  proxyType,
+			  proxyStatus,
+			  startDate,
+			  endDate	  	  
+		) VALUES (
+			  #{userid,jdbcType=INTEGER},
+			  #{empid,jdbcType=INTEGER},
+			  #{empName,jdbcType=VARCHAR},
+			  #{proxyId,jdbcType=INTEGER},
+			  #{proxyName,jdbcType=VARCHAR},
+			  #{proxyType,jdbcType=INTEGER},
+			  #{proxyStatus,jdbcType=INTEGER},
+			  #{startDate},
+			  #{endDate}
+			  	
+		)
+    </insert>
+    
+	 <select id="getProxyInfoByEid" parameterType="EmpVisitProxy" resultType="EmpVisitProxy">
+        SELECT
+           <include refid="select_clause"/>
+        FROM
+            qcv_visit_proxy a ,qcv_employee e WHERE a.proxyId=e.empid and  a.empid=#{empid}  and a.userid=#{userid}
+      </select>
+      
+      <select id="checkProxy" parameterType="EmpVisitProxy" resultType="EmpVisitProxy">
+        SELECT
+           <include refid="select_clause"/>
+        FROM
+            qcv_visit_proxy a WHERE a.empid=#{empid}  and a.userid=#{userid}
+            
+            <if test='startDate != null and startDate != "" and  startDate != "null"'>
+               and NOW() &gt;= #{startDate}
+             </if>
+             
+             <if test='endDate != null and endDate != "" and  endDate != "null"'>
+               and NOW()  &lt;= #{endDate}
+             </if>
+      </select>
+      
+       <select id="getProxyInfoByPId" parameterType="EmpVisitProxy" resultType="EmpVisitProxy">
+        SELECT
+           <include refid="select_clause"/>
+        FROM
+            qcv_visit_proxy a ,qcv_employee e WHERE a.empid=e.empid and a.proxyId=#{proxyId} and a.userid=#{userid}
+      </select>
+      
+    <insert id="updateProxy" parameterType="EmpVisitProxy">
+       UPDATE qcv_visit_proxy SET     
+            proxyId=#{proxyId,jdbcType=INTEGER},
+			proxyName=#{proxyName,jdbcType=VARCHAR},
+       		proxyType = #{proxyType,jdbcType=INTEGER}, 		
+       		proxyStatus = #{proxyStatus,jdbcType=INTEGER},
+       		startDate = #{startDate},
+       		endDate = #{endDate}
+         WHERE empid=#{empid} and userid=#{userid}
+    </insert>
+    
+</mapper>

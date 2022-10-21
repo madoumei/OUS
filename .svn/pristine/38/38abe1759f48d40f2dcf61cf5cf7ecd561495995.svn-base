@@ -1,0 +1,180 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.client.dao.EGRelationDao">
+    <sql id="select_clause">
+        a.userid,
+		a.eid,
+		a.egid,
+		a.status
+    </sql>
+
+    <sql id="select_clause2">
+        a.eid,
+		a.userid,
+		a.deviceName,
+		a.deviceCode,
+		a.extendCode,
+		a.roomNum,
+		a.deviceIp,
+		a.devicePort,
+		a.deviceQrcode,
+		a.status,
+		a.eType,
+		a.enterStatus,
+		a.onlineStatus
+    </sql>
+
+    <sql id="select_clause3">
+        a.egid,
+		a.userid,
+		a.egname,
+		a.status
+    </sql>
+
+    <insert id="addEGRelation"   useGeneratedKeys="true" parameterType="java.util.List">
+        INSERT INTO qcv_eqptgroup_relation (
+        userid,
+        eid,
+        egid,
+        status
+        ) VALUES
+        <foreach collection="list" item="rlist" index="index"  separator="," >
+            (#{rlist.userid},#{rlist.eid},#{rlist.egid},#{rlist.status})
+        </foreach>
+    </insert>
+
+    <select id="getEquipmentByEgid"  resultType="Equipment">
+        SELECT
+        <include refid="select_clause2"/>
+        FROM
+        qcv_eqpt a,qcv_eqptgroup_relation e where a.eid=e.eid <if test="egid!=0">and e.egid=#{egid}</if> and e.userid=#{userid}
+    </select>
+
+    <select id="getEquipmentByEgids" parameterType="java.util.List" resultType="String">
+        SELECT
+        deviceCode
+        FROM
+        qcv_eqpt a,qcv_eqptgroup_relation e where a.eid=e.eid and e.status=1 and e.egid in
+        <foreach collection="list" index="index" item="egids" open="(" separator="," close=")">
+            #{egids}
+        </foreach>
+        group by deviceCode
+    </select>
+
+    <select id="getEGroupByEid"  resultType="EquipmentGroup">
+        SELECT
+        <include refid="select_clause3"/>
+        FROM
+        qcv_eqpt_group a , qcv_eqptgroup_relation e where  a.egid=e.egid and e.eid=#{eid} and e.userid=#{userid}
+    </select>
+
+    <select id="getEGroupList"  resultType="EquipmentGroupResp">
+        SELECT
+            a.egid, a.userid, a.egname, a.status ,e.eid,et.`eType`
+        FROM
+            qcv_eqpt_group a , qcv_eqptgroup_relation e ,qcv_eqpt et WHERE  a.egid=e.egid AND e.userid=#{userid} AND et.`eid` = e.`eid`;
+    </select>
+
+    <select id="getVisitorEquipment"  resultType="Equipment">
+        SELECT
+        <include refid="select_clause2"/>
+        FROM
+        qcv_eqpt a where a.eid in (SELECT q.eid FROM qcv_eqptgroup_relation q ,qcv_eqpt_group e WHERE q.egid=e.egid and e.userid=#{userid} AND  e.status=#{status})
+        and  a.status=1
+    </select>
+
+    <select id="getEquipmentByDq"  resultType="Equipment">
+        SELECT
+        <include refid="select_clause2"/>
+        FROM
+        qcv_eqpt a WHERE a.deviceQrcode=#{deviceQrcode}
+        <if test='egids != null and egids != "" and  egids != "null"'>
+            AND a.eid IN (SELECT t.eid FROM qcv_eqptgroup_relation t WHERE CONCAT(',',t.egid, ',') REGEXP concat(',(',replace(#{egids},',','|'),'),')>0)
+        </if>
+    </select>
+
+
+    <select id="getEquipmentByDc"  resultType="Equipment">
+        SELECT
+        <include refid="select_clause2"/>
+        FROM
+        qcv_eqpt a WHERE a.deviceCode=#{deviceCode}
+        <if test='roomNum != null and roomNum != "" and  roomNum != "null"'>
+            and a.roomNum=#{roomNum}
+        </if>
+        <if test='egids != null and egids != "" and  egids != "null"'>
+            AND a.eid IN (SELECT t.eid FROM qcv_eqptgroup_relation t WHERE CONCAT(',',t.egid, ',') REGEXP concat(',(',replace(#{egids},',','|'),'),')>0)
+        </if>
+    </select>
+
+    <select id="getEquipmentByEtype" resultType="Equipment">
+        SELECT
+        <include refid="select_clause2"/>
+        FROM
+        qcv_eqpt a WHERE  a.eid IN (SELECT q.eid FROM qcv_eqptgroup_relation q ,qcv_eqpt_group e WHERE q.egid=e.egid and e.userid=#{userid} AND CONCAT(',',e.etype, ',') REGEXP concat(',(',replace(#{etype},',','|'),'),')>0 AND  e.status=1)
+    </select>
+
+    <select id="getEquipmentsByEgids"  resultType="Equipment">
+        SELECT
+        <include refid="select_clause2"/>
+        FROM
+        qcv_eqpt a WHERE  a.eid IN (SELECT t.eid FROM qcv_eqptgroup_relation t WHERE CONCAT(',',t.egid, ',') REGEXP concat(',(',replace(#{egids},',','|'),'),')>0)
+    </select>
+
+    <insert id="updateRelationByEgid"  parameterType="EGRelation">
+        update qcv_eqptgroup_relation set
+            status=#{status}
+        where egid = #{egid}
+    </insert>
+
+    <insert id="updateRelationByEid"  parameterType="EGRelation">
+        update qcv_eqptgroup_relation set
+            status=#{status}
+        where eid = #{eid}
+    </insert>
+
+    <delete id="delRelationByEgid" parameterType="Integer">
+        DELETE FROM qcv_eqptgroup_relation WHERE egid = #{egid}
+    </delete>
+
+    <delete id="delRelationByEid" parameterType="Integer">
+        DELETE FROM qcv_eqptgroup_relation WHERE eid = #{eid}
+    </delete>
+
+    <select id="getEquipmentGroupByGid"  resultType="Equipment">
+        select
+        <include refid="select_clause2"></include>
+        FROM
+        qcv_eqpt a
+        WHERE
+        a.deviceQrcode=#{deviceQrcode}
+        AND
+        a.eid IN(
+        SELECT a.`eid` FROM `qcv_eqptgroup_relation` a WHERE egid IN(
+        SELECT egid as egid FROM qcv_eqpt_group a WHERE gids = #{gid} AND userid = #{userid}
+        )
+        )
+    </select>
+    <select id="getEGRelationList" resultType="com.client.bean.EGRelation">
+        SELECT *,group_concat(e.`eid`) as eids
+        FROM
+        qcv_eqptgroup_relation e join `qcv_eqpt_group` g on g.egid = e.egid where e.userid=#{userid}
+        <if test="egid!=0">
+            and e.egid=#{egid}
+        </if>
+        and g.status=3 and e.status=1 group by e.egid
+    </select>
+
+    <select id="getEGRelationByEgid" resultType="com.client.bean.EGRelation">
+        SELECT *,group_concat(e.`eid`) as eids
+        FROM
+            qcv_eqptgroup_relation e where e.userid=#{userid} and e.egid=#{egid} and e.status=1 group by e.egid
+    </select>
+    <select id="getEGroupByEgid" resultType="com.client.bean.EquipmentGroup">
+        SELECT
+        <include refid="select_clause3"/>
+        FROM
+        qcv_eqpt_group a where  a.egid=#{egid} and a.userid=#{userid}
+    </select>
+
+
+</mapper>

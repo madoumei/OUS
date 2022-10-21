@@ -1,0 +1,79 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.dao.VisitorTypeDao">
+    <sql id="select_clause">
+		a.tid,
+		a.userid,
+		a.vType,
+		a.povDays,
+		a.qid,
+		a.category,
+		a.gateType
+    </sql>
+    
+    
+       <insert id="addVisitorType" useGeneratedKeys="true" keyProperty="tid"  parameterType="VisitorType">
+		INSERT INTO qcv_visitor_type (
+			userid,
+			vType,
+			povDays,
+			qid,
+			category,
+			gateType
+		) VALUES (
+			#{userid,jdbcType=INTEGER},
+			#{vType,jdbcType=VARCHAR},
+			#{povDays,jdbcType=INTEGER},
+			#{qid,jdbcType=VARCHAR},
+			#{category,jdbcType=INTEGER},
+			#{gateType,jdbcType=VARCHAR}
+		)
+    </insert>
+   
+      
+      <select id="getVisitorType"  resultType="VisitorType">
+        SELECT 
+         <include refid="select_clause"/>
+        FROM  
+        	qcv_visitor_type a where userid=#{userid} 
+        	<if test='category != "0"'>
+	       		and	category=#{category}
+	       	</if>
+	       	<if test='vType != null and vType != "" and  vType != "null"'>
+	       	    and vType=#{vType}
+	       	</if>
+      </select>
+      
+	    <insert id="updateVisitorType" parameterType="VisitorType">
+	       UPDATE qcv_visitor_type SET   
+	       		<if test='vType != null and vType != "" and  vType != "null"'>
+	       			vType=#{vType,jdbcType=VARCHAR},
+	       		</if>
+	       		<if test='qid != null'>
+	       			qid=#{qid,jdbcType=VARCHAR},
+	       		</if>
+	       		<if test='gateType != null and gateType != "" and  gateType != "null"'>
+	       			gateType=#{gateType,jdbcType=VARCHAR},
+	       		</if>
+	       		
+	       		povDays=#{povDays,jdbcType=INTEGER}
+	         WHERE tid = #{tid} and userid=#{userid}
+	    </insert>
+	    
+	   <insert id="updateVisitorTypeQid" parameterType="VisitorType">
+	       UPDATE qcv_visitor_type SET   
+	       			qid='' 
+	         WHERE qid = #{qid}
+	    </insert>
+      
+     <delete id="delVisitorType" parameterType="VisitorType">
+        DELETE FROM qcv_visitor_type WHERE tid = #{tid} and userid=#{userid}
+     </delete>
+      
+      <!-- 通过tid查询访客类型明细 -->
+      <select id="getVisitorTypeByTid"  resultType="VisitorType" parameterType ="VisitorType">
+        SELECT 
+         <include refid="select_clause"/>
+        FROM  
+        	qcv_visitor_type a where a.tid = #{tid}  and a.userid=#{userid}
+      </select>
+</mapper>

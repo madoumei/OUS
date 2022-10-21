@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>来访通</title>
+	<link href="https://www.coolvisit.top/visitor/assets/img/favicon.png" rel="icon">
+	<link rel="stylesheet" type="text/css" media="all" href="https://www.coolvisit.top/visitor/assets/css/invitaion.css" />
+	<script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=feFZOo3dDQ6v4aeguiW6jGFV&s=1"></script>
+	<script type="text/javascript" src="https://www.coolvisit.top/visitor/assets/js/jquery-2.1.3.min.js"></script>
+	<script type="text/javascript" src="https://www.coolvisit.top/visitor/assets/js/qc_common.js"></script>
+	<script type="text/javascript" src="https://www.coolvisit.top/visitor/assets/js/exif.js"></script>
+	<script type="text/javascript">		
+		function setFixedButtonGroup() {
+			var appointmentStatus = $status;
+			var appid=$id;
+			var strqrcode="$qrcode";
+			var fixedButtongGroup = document.getElementById("fixed-buttonGroup");
+			switch (appointmentStatus) {
+				case 0:			
+					fixedButtongGroup.style.display = "block";
+					break;
+				case 2:
+					fixedButtongGroup.style.display = "block";
+					break;
+				default:
+			}
+		}
+	</script>
+	<script type="text/javascript" src="https://www.coolvisit.top/visitor/assets/js/qc_invitation.js"></script>
+	<script type="text/javascript" src="https://www.coolvisit.top/visitor/assets/js/qrcode.js"></script>
+	<script type="text/javascript" src="https://www.coolvisit.top/visitor/assets/js/sha1.js"></script>
+</head>
+<body onload="setFixedButtonGroup()">
+	<div class="container">
+		<div id="fixed-buttonGroup" style="display: none;">
+			<button id="blueGradients">接受邀请</button>
+			<button  id="redGradients">拒绝邀请</button>
+		</div>
+		<header class="header">
+			<img src="https://www.coolvisit.top/visitor/assets/img/intop.jpg" alt=""></header>
+		<section class="s1"  id="header">
+			<div class="con1">
+			<p>$inviteContent</p>
+			</div>
+			<div style="width: 80%; margin:0 auto;">
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<img src="https://www.coolvisit.top/visitor/assets/img/clock.png" alt="" style="margin-top: 1em;">
+				<span style="position: absolute; margin: 1em; font-size: 0.9em;" class="timecon">$appointmentDate</span>
+		  </div>
+		  <p style="text-indent:24px;"><i style="margin-right:10px">Step1</i>在前台使用iPad点击"已经预约"</p>
+		  <p style="text-indent:24px"><i style="margin-right:10px">Step2</i>输入手机尾号后四位 or 刷脸签到</p>
+		  <p style="text-indent:24px"><i style="margin-right:10px">Step3</i>系统自动通知HR,请等待HR接待</p>
+		</section>
+		 
+		<section class="s2" style="margin-top: 3em;">
+			<h2>公司地址</h2>
+			<p>$address</p>
+		    <div class="mapwrap" id="mapwrap">
+				<div class="mapcon">
+					<div class="map" id="map" ></div>
+				</div>
+			</div>
+		</section>
+		#if($traffic&&$traffic!="")
+		<section class="s3" style="margin-top: 3em;">
+			<h2>交通信息</h2>
+			<p style="text-align: center;">$traffic</p>
+		</section>
+		#end
+		
+		<section class="s3" style="margin-top: 3em;">
+			#if($companyProfile&&$companyProfile!="")
+			<h2>公司简介</h2>
+			<p class="compro">
+				$companyProfile
+			</p>
+			#end
+			
+			#if($status!="1"&&$status!="4"&&$scaner=="1")	
+			<section class="s3" style="margin-top: 3em;">
+				<div>
+					<h2>专属扫码快速登记</h2>
+					<p style="text-align: center;">下方二维码为您的登记专属二维码，长按可保存至手机相册<br/>
+					在前台直接出示，1秒完成登记，快速通行
+					</p>
+				</div>		
+				<div id="qrContent" align="center" style="width: 100%; height: 300px; margin-top: 3em;">		
+				</div>
+			</section>
+			#end
+
+			#if($status!="1"&&$status!="4"&&$face==1)
+			<div id="add_person" class="s3" style="background-color: #F2F5F6; width:80%; margin: 0 auto; margin-top: 3em;" align="center">
+				<h2 style="padding-top: 1em;">面部识别签到</h2>
+				<p class="compro" style="text-align: center">我们已经支持面部识别签到，请您拍照发送给我们</p>
+				<img id="img_head" src="https://www.coolvisit.top/visitor/assets/img/table.png" style="margin-top: 3em; width: 15em; height: auto;" onclick="upload_click()">
+				<br/>
+				<p id="tips">上传进度</p>
+				<img class="s3" src="https://www.coolvisit.top/visitor/assets/img/undo.png" style="margin-top: 1em;" onclick="undo()">
+				<img class="s3" src="https://www.coolvisit.top/visitor/assets/img/plane.png" style="margin-left: 1em;" onclick="send()">
+				<form role="form" id="upload_form" enctype="multipart/form-data" method="post">
+					<input id='upload_image' type="file" accept="image/*;capture=camera" onchange="upload_change()" style="visibility:hidden;  padding-bottom: 5em;">
+				</form>
+			</div>
+			#end
+		</section>
+		
+		<footer class="footer" style="margin-top: 3em;">
+			<img src="https://www.coolvisit.top/visitor/assets/img/infooter.jpg" alt=""></footer>
+
+	</div>
+	<p class="pdetail">网页由来访通智能访客管理系统提供</p>
+	<script type = "text/javascript">
+		function addMoveControl(map) {
+			var top_right_navigation = new BMap.NavigationControl({
+					anchor : BMAP_ANCHOR_BOTTOM_RIGHT,
+					type : BMAP_NAVIGATION_CONTROL_ZOOM
+				});
+			map.addControl(top_right_navigation);
+		}
+
+		function addLocalControl(map) {
+			var geolocationControl = new BMap.GeolocationControl({
+					anchor : BMAP_ANCHOR_TOP_RIGHT
+				});
+			geolocationControl.addEventListener("locationSuccess", function (e) {
+				var address = '';
+				address += e.addressComponent.province;
+				address += e.addressComponent.city;
+				address += e.addressComponent.district;
+				address += e.addressComponent.street;
+				address += e.addressComponent.streetNumber;
+				console.log("当前定位地址为：" + address);
+			});
+			geolocationControl.addEventListener("locationError", function (e) {
+				alert(e.message);
+			});
+			map.addControl(geolocationControl);
+		}
+
+		function createMap(city, dom, type, lon, lat) {
+			var localCity = city;
+			var map = new BMap.Map(dom);
+			if (type == 0) {
+				map.centerAndZoom(localCity, 12);
+				map.addEventListener('load', function () {
+					var point = new BMap.Point(map.getCenter().lng, map.getCenter().lat);
+					window.setTimeout(function () {
+						map.panTo(point);
+					}, 2000);
+				});
+			} else if (type == 1) {
+				var point = new BMap.Point(lon, lat);
+				map.centerAndZoom(localCity, 15);
+				map.addEventListener('load', function () {
+					window.setTimeout(function () {
+						map.panTo(point);
+					}, 2000);
+				});
+				var marker = new BMap.Marker(new BMap.Point(lon, lat)); // 创建标注
+				map.addOverlay(marker); // 将标注添加到地图中
+				marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+			}
+
+		}
+		createMap("南京","map",1,$longitude,$latitude);
+		var alink = document.createElement("a");
+		var str = "$address";
+		var href = "http://api.map.baidu.com/geocoder?address="+str+"&output=html";
+		alink.setAttribute("class","gohere");
+		alink.setAttribute("href", href);
+		var map_obj = document.getElementById("mapwrap");
+		map_obj.appendChild(alink);
+	</script>
+</body>
+</html>

@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_10dp5w1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.4.0">
+  <bpmn:process id="visitorApprove" name="访客审批" isExecutable="true">
+    <bpmn:userTask id="Activity_114efq8" name="区域负责人审批">
+      <bpmn:extensionElements>
+        <camunda:taskListener class="com.camunda.CommonsProcessListener" event="create" id="">
+          <camunda:field name="group">
+            <camunda:expression>${gname}</camunda:expression>
+          </camunda:field>
+          <camunda:field name="roles">
+            <camunda:expression>${area}</camunda:expression>
+          </camunda:field>
+        </camunda:taskListener>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="notifyType">区域负责人审批</camunda:inputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_14aia9a</bpmn:incoming>
+      <bpmn:outgoing>Flow_0sj961m</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_0kavtwj" default="Flow_1cm5h3t">
+      <bpmn:incoming>Flow_1upprpq</bpmn:incoming>
+      <bpmn:outgoing>Flow_14aia9a</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1cm5h3t</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:endEvent id="Event_129m34e">
+      <bpmn:extensionElements>
+        <camunda:executionListener class="com.camunda.ApproveCompleteListener" event="start" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0sj961m</bpmn:incoming>
+      <bpmn:incoming>Flow_1cm5h3t</bpmn:incoming>
+      <bpmn:incoming>Flow_08zd2pg</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:serviceTask id="Activity_1mej1vw" name="获取区域审批人" camunda:class="com.camunda.GetCandidateUsersListener">
+      <bpmn:extensionElements>
+        <camunda:field name="group">
+          <camunda:expression>${gname}</camunda:expression>
+        </camunda:field>
+        <camunda:field name="roles">
+          <camunda:expression>${area}</camunda:expression>
+        </camunda:field>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_093jo2r</bpmn:incoming>
+      <bpmn:outgoing>Flow_1upprpq</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:startEvent id="StartEvent_1" name="流程审批开始">
+      <bpmn:outgoing>Flow_1hwgkyc</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:exclusiveGateway id="Gateway_10wqfwo">
+      <bpmn:incoming>Flow_0gehq8x</bpmn:incoming>
+      <bpmn:outgoing>Flow_093jo2r</bpmn:outgoing>
+      <bpmn:outgoing>Flow_08zd2pg</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Activity_0tmskyk" name="部门领导审批" camunda:assignee="${leader}">
+      <bpmn:extensionElements>
+        <camunda:taskListener class="com.camunda.CommonsProcessListener" event="create" />
+        <camunda:inputOutput>
+          <camunda:inputParameter name="notifyType">部门领导审批</camunda:inputParameter>
+        </camunda:inputOutput>
+        <camunda:formData>
+          <camunda:formField id="permission" type="long" />
+          <camunda:formField id="reason" type="string" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1dxb3gd</bpmn:incoming>
+      <bpmn:outgoing>Flow_0gehq8x</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Activity_1uqlbd3" name="员工审批" camunda:assignee="${employee}">
+      <bpmn:extensionElements>
+        <camunda:taskListener class="com.camunda.CommonsProcessListener" event="assignment" />
+        <camunda:inputOutput>
+          <camunda:inputParameter name="notifyType">员工审批</camunda:inputParameter>
+        </camunda:inputOutput>
+        <camunda:formData>
+          <camunda:formField id="permission" type="long" />
+          <camunda:formField id="reason" type="string" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1hwgkyc</bpmn:incoming>
+      <bpmn:outgoing>Flow_1dxb3gd</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_1upprpq" sourceRef="Activity_1mej1vw" targetRef="Gateway_0kavtwj" />
+    <bpmn:sequenceFlow id="Flow_1cm5h3t" sourceRef="Gateway_0kavtwj" targetRef="Event_129m34e" />
+    <bpmn:sequenceFlow id="Flow_0sj961m" sourceRef="Activity_114efq8" targetRef="Event_129m34e" />
+    <bpmn:sequenceFlow id="Flow_14aia9a" name="特殊区域" sourceRef="Gateway_0kavtwj" targetRef="Activity_114efq8">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${hasCdtUsers==true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1hwgkyc" sourceRef="StartEvent_1" targetRef="Activity_1uqlbd3" />
+    <bpmn:sequenceFlow id="Flow_08zd2pg" name="拒绝" sourceRef="Gateway_10wqfwo" targetRef="Event_129m34e">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${status==2}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_093jo2r" name="同意" sourceRef="Gateway_10wqfwo" targetRef="Activity_1mej1vw">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${status==1}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0gehq8x" sourceRef="Activity_0tmskyk" targetRef="Gateway_10wqfwo" />
+    <bpmn:sequenceFlow id="Flow_1dxb3gd" sourceRef="Activity_1uqlbd3" targetRef="Activity_0tmskyk" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="visitorApprove">
+      <bpmndi:BPMNEdge id="Flow_1upprpq_di" bpmnElement="Flow_1upprpq">
+        <di:waypoint x="842" y="310" />
+        <di:waypoint x="895" y="310" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1cm5h3t_di" bpmnElement="Flow_1cm5h3t">
+        <di:waypoint x="920" y="285" />
+        <di:waypoint x="920" y="200" />
+        <di:waypoint x="1202" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0sj961m_di" bpmnElement="Flow_0sj961m">
+        <di:waypoint x="1140" y="310" />
+        <di:waypoint x="1220" y="310" />
+        <di:waypoint x="1220" y="218" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_14aia9a_di" bpmnElement="Flow_14aia9a">
+        <di:waypoint x="945" y="310" />
+        <di:waypoint x="1040" y="310" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="958" y="313" width="44" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1hwgkyc_di" bpmnElement="Flow_1hwgkyc">
+        <di:waypoint x="208" y="310" />
+        <di:waypoint x="260" y="310" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_08zd2pg_di" bpmnElement="Flow_08zd2pg">
+        <di:waypoint x="640" y="285" />
+        <di:waypoint x="640" y="100" />
+        <di:waypoint x="1220" y="100" />
+        <di:waypoint x="1220" y="182" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1051" y="77" width="22" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_093jo2r_di" bpmnElement="Flow_093jo2r">
+        <di:waypoint x="665" y="310" />
+        <di:waypoint x="742" y="310" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="670" y="293" width="22" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0gehq8x_di" bpmnElement="Flow_0gehq8x">
+        <di:waypoint x="550" y="310" />
+        <di:waypoint x="615" y="310" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1dxb3gd_di" bpmnElement="Flow_1dxb3gd">
+        <di:waypoint x="360" y="310" />
+        <di:waypoint x="450" y="310" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_114efq8_di" bpmnElement="Activity_114efq8">
+        <dc:Bounds x="1040" y="270" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0kavtwj_di" bpmnElement="Gateway_0kavtwj" isMarkerVisible="true">
+        <dc:Bounds x="895" y="285" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_129m34e_di" bpmnElement="Event_129m34e">
+        <dc:Bounds x="1202" y="182" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0sxxh1o_di" bpmnElement="Activity_1mej1vw">
+        <dc:Bounds x="742" y="270" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="172" y="292" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="157" y="335" width="66" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_10wqfwo_di" bpmnElement="Gateway_10wqfwo" isMarkerVisible="true">
+        <dc:Bounds x="615" y="285" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0tmskyk_di" bpmnElement="Activity_0tmskyk">
+        <dc:Bounds x="450" y="270" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1uqlbd3_di" bpmnElement="Activity_1uqlbd3">
+        <dc:Bounds x="260" y="270" width="100" height="80" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

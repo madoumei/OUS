@@ -1,0 +1,144 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.dao.DepartmentDao">
+    <sql id="select_clause">
+		a.deptid,
+		a.userid,
+		a.deptName,
+		a.parentId,
+		a.deptManagerEmpid,
+		a.defaultReceiver,
+		a.strDeptId
+    </sql>
+    
+    <insert id="addDepartment" useGeneratedKeys="true" keyProperty="deptid"  parameterType="Department">
+		INSERT INTO qcv_department (
+			userid,
+		    deptName,
+		    parentId,
+		    strDeptId
+		) VALUES (
+			#{userid,jdbcType=INTEGER},
+			#{deptName,jdbcType=VARCHAR},
+			#{parentId,jdbcType=INTEGER},
+			#{parentId,jdbcType=VARCHAR}
+		) 
+	 
+    </insert>
+    
+      <insert id="addDepartmentList"   parameterType="java.util.List">
+		INSERT INTO qcv_department (
+			deptid,
+			userid,
+		    deptName,
+		    strDeptId,
+		    parentId,
+          deptManagerEmpid
+		) VALUES 
+		<foreach collection="list" item="deptlist" index="index"  separator="," > 
+	        (#{deptlist.deptid},#{deptlist.userid},#{deptlist.deptName},#{deptlist.strDeptId},#{deptlist.parentId},#{deptlist.deptManagerEmpid})
+	    </foreach> 
+	 
+    </insert>
+    
+    <insert id="addDeptEmpRelation"  parameterType="java.util.List">
+		INSERT INTO qcv_emp_dept (
+			userid,
+			deptid,
+		    empid
+		) VALUES 
+		<foreach collection="list" item="emplist" index="index"  separator="," > 
+	        (#{emplist.userid},#{emplist.deptid},#{emplist.empid}) 
+	    </foreach> 
+    </insert>
+    
+           <select id="getAllDepartmentList"  resultType="Department">
+        SELECT 
+         <include refid="select_clause"/>
+        FROM  
+        	qcv_department a where a.userid=#{userid}
+     </select>
+      
+     <select id="getDepartmentList"  resultType="Department">
+        SELECT 
+         <include refid="select_clause"/>
+        FROM  
+        	qcv_department a where a.userid=#{userid} and parentId=0
+     </select>
+
+		<select id="getDepartment" resultType="Department">
+			SELECT
+			<include refid="select_clause" />
+			FROM
+			qcv_department a where a.deptid=#{deptid} and a.userid=#{userid}
+		</select>
+	     
+       <select id="getDepartmentByDeptName" parameterType="Department"  resultType="Department">
+        SELECT 
+         <include refid="select_clause"/>
+        FROM  
+        	qcv_department a where a.userid=#{userid} and a.deptName=#{deptName} and a.parentId=#{parentId} limit 0,1
+     </select>
+     
+      <select id="getDeptByEmpid"  resultType="Department">
+        SELECT 
+         <include refid="select_clause"/>
+        FROM  
+        	qcv_department a where a.deptid in (select e.deptid from qcv_emp_dept e where e.empid=#{empid}) and a.userid=#{userid}
+     </select>
+     
+       <select id="getChildDeptList"  resultType="Department">
+        SELECT 
+         <include refid="select_clause"/>
+        FROM  
+        	qcv_department a where a.parentId=#{deptid} and  a.userid=#{userid}
+     </select>
+     
+      <select id="getChildDeptCount"  parameterType="Department" resultType="Department">
+        SELECT 
+          count(1) as empCount 
+        FROM  
+        	qcv_emp_dept a where a.deptid=#{deptid} and a.userid=#{userid}
+     </select>
+      
+     <insert id="updateDepartment" parameterType="Department">
+       UPDATE qcv_department SET   
+       		deptName=#{deptName,jdbcType=VARCHAR},
+       		parentId=#{parentId,jdbcType=INTEGER},
+			deptManagerEmpid=#{deptManagerEmpid,jdbcType=VARCHAR},
+			defaultReceiver=#{defaultReceiver,jdbcType=VARCHAR}
+         WHERE deptid = #{deptid} and  userid=#{userid}
+     </insert>
+     
+      <insert id="updateEmpDept" parameterType="Employee">
+       UPDATE qcv_emp_dept SET   
+       		deptid=#{deptid,jdbcType=INTEGER}
+         WHERE empid = #{empid}
+     </insert>
+      
+     <delete id="delDepartment" parameterType="Integer">
+        DELETE FROM qcv_department WHERE deptid = #{deptid} and  userid=#{userid}
+     </delete>
+     
+      <delete id="delRelationByDept" parameterType="Integer">
+        DELETE FROM qcv_emp_dept WHERE deptid = #{deptid} and  userid=#{userid}
+     </delete>
+     
+      <delete id="delRelationByEmp" parameterType="Integer">
+        DELETE FROM qcv_emp_dept WHERE empid = #{empid}
+     </delete>
+     
+     <delete id="delAllDepartment" parameterType="Integer">
+        DELETE FROM qcv_department WHERE userid = #{userid}
+     </delete>
+     <delete id="delRelationByUserid" parameterType="Integer">
+        DELETE FROM qcv_emp_dept WHERE userid = #{userid}
+     </delete>
+     
+     <delete id="batchDelRelationByEmp" parameterType="java.util.List">
+        DELETE FROM qcv_emp_dept WHERE empid in 
+         <foreach collection="list" index="index" item="empids" open="(" separator="," close=")">     
+       		 #{empids}     
+         </foreach> 
+     </delete>
+      
+</mapper>

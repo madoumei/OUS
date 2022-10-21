@@ -1,0 +1,223 @@
+package com.web.controller;
+
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.client.service.EgPtRltService;
+import com.config.exception.ErrorEnum;
+import com.web.bean.*;
+import com.web.service.DaysOffTranslationServer;
+import com.web.service.HolidayService;
+import com.web.service.PassRuleService;
+import com.web.service.TokenServer;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+
+/**
+ * 通行策略相关
+ * @author qcvisit
+ * @date 2021-03-03 09:34
+ */
+@Controller
+@RequestMapping(value = "/*")
+@Api(value = "HolidayController", tags = "API_通行策略管理", hidden = true)
+public class PassRuleController {
+
+    @Autowired
+    private PassRuleService passRuleService;
+
+    @Autowired
+    private DaysOffTranslationServer daysOffTranslationServer;
+
+    @Autowired
+    private EgPtRltService egPtRltService;
+
+    @Autowired
+    private TokenServer tokenServer;
+
+
+    @ApiOperation(value = "策略管理_获取通行时刻列表 /getPassRuleList",
+            consumes = "application/json;charset=UFT-8", produces = "application/json;charset=UFT-8",
+            notes = "POST示例入参：\n" +
+                    "{\n" +
+                    "    \"userid\":2147483647,\n" +
+                    "}")
+    @RequestMapping(method = RequestMethod.POST, value = "/getPassRuleList")
+    @ResponseBody
+    public RespInfo getPassRuleList(@ApiParam(value = "PassRule 通行策略Bean", required = true) @Validated @RequestBody PassRule pr,HttpServletRequest request) {
+        AuthToken authToken = tokenServer.getAuthTokenByRequest(request);
+        if((!AuthToken.ROLE_ADMIN.equals(authToken.getAccountRole())
+                && !AuthToken.ROLE_SUBADMIN.equals(authToken.getAccountRole()))
+                ||authToken.getUserid() != pr.getUserid()){
+            return new RespInfo(ErrorEnum.E_610.getCode(), ErrorEnum.E_610.getMsg());
+        }
+
+        List<PassRule> prList = passRuleService.getPassRuleList(pr);
+        return new RespInfo(0, "success", prList);
+    }
+
+    @ApiOperation(value = "策略管理_设置设备组和通行时刻关系 /addEqptGroupPassTimeRlt",
+            consumes = "application/json;charset=UFT-8", produces = "application/json;charset=UFT-8",
+            notes = "POST示例入参：\n" +
+                    "{\n" +
+                    "    \"userid\":2147483647,\n" +
+                    "}")
+    @RequestMapping(method = RequestMethod.POST, value = "/addEqptGroupPassTimeRlt")
+    @ResponseBody
+    public RespInfo addEqptGroupPassTimeRlt(@ApiParam(value = "PassRule 通行策略Bean", required = true)  @RequestBody EqptGroupPassTimeRlt rlt,HttpServletRequest request) {
+        AuthToken authToken = tokenServer.getAuthTokenByRequest(request);
+        if((!AuthToken.ROLE_ADMIN.equals(authToken.getAccountRole())
+                && !AuthToken.ROLE_SUBADMIN.equals(authToken.getAccountRole()))){
+            return new RespInfo(ErrorEnum.E_610.getCode(), ErrorEnum.E_610.getMsg());
+        }
+        rlt.setUserid(authToken.getUserid());
+        boolean ret = egPtRltService.saveOrUpdate(rlt);
+        if(ret) {
+            return new RespInfo(0, "success");
+        }
+
+        return new RespInfo(ErrorEnum.E_2000.getCode(), ErrorEnum.E_2000.getMsg());
+    }
+
+
+    @ApiOperation(value = "策略管理_获取设备组和通行时刻关系 /getEqptGroupPassTimeRlt",
+            consumes = "application/json;charset=UFT-8", produces = "application/json;charset=UFT-8",
+            notes = "POST示例入参：\n" +
+                    "{\n" +
+                    "    \"userid\":2147483647,\n" +
+                    "}")
+    @RequestMapping(method = RequestMethod.POST, value = "/getEqptGroupPassTimeRlt")
+    @ResponseBody
+    public RespInfo getEqptGroupPassTimeRlt(@ApiParam(value = "PassRule 通行策略Bean", required = true)  @RequestBody EqptGroupPassTimeRlt rlt,HttpServletRequest request) {
+        AuthToken authToken = tokenServer.getAuthTokenByRequest(request);
+        if((!AuthToken.ROLE_ADMIN.equals(authToken.getAccountRole())
+                && !AuthToken.ROLE_SUBADMIN.equals(authToken.getAccountRole()))){
+            return new RespInfo(ErrorEnum.E_610.getCode(), ErrorEnum.E_610.getMsg());
+        }
+
+        List<EqptGroupPassTimeRlt> list = egPtRltService.getList(authToken.getUserid());
+        return new RespInfo(0, "success",list);
+    }
+
+    @ApiOperation(value = "策略管理_删除设备组和通行时刻关系 /delEqptGroupPassTimeRlt",
+            consumes = "application/json;charset=UFT-8", produces = "application/json;charset=UFT-8",
+            notes = "POST示例入参：\n" +
+                    "{\n" +
+                    "    \"userid\":2147483647,\n" +
+                    "}")
+    @RequestMapping(method = RequestMethod.POST, value = "/delEqptGroupPassTimeRlt")
+    @ResponseBody
+    public RespInfo delEqptGroupPassTimeRlt(@ApiParam(value = "PassRule 通行策略Bean", required = true)  @RequestBody EqptGroupPassTimeRlt rlt,HttpServletRequest request) {
+        AuthToken authToken = tokenServer.getAuthTokenByRequest(request);
+        if((!AuthToken.ROLE_ADMIN.equals(authToken.getAccountRole())
+                && !AuthToken.ROLE_SUBADMIN.equals(authToken.getAccountRole()))){
+            return new RespInfo(ErrorEnum.E_610.getCode(), ErrorEnum.E_610.getMsg());
+        }
+        rlt.setUserid(authToken.getUserid());
+        boolean ret = egPtRltService.remove(rlt);
+        if(ret) {
+            return new RespInfo(0, "success");
+        }
+
+        return new RespInfo(ErrorEnum.E_703.getCode(), ErrorEnum.E_703.getMsg());
+    }
+
+
+    //以下是欧胜代码
+
+    @ApiOperation(value = "策略管理_获取通行时刻列表 /getPassRuleRoadList",
+            consumes = "application/json;charset=UFT-8", produces = "application/json;charset=UFT-8",
+            notes = "POST示例入参：\n" +
+                    "{\n" +
+                    "    \"userid\":2147483647,\n" +
+                    "}")
+    @RequestMapping(method = RequestMethod.POST, value = "/getPassRuleRoadList")
+    @ResponseBody
+    public RespInfo getPassRuleRoadList(@ApiParam(value = "PassRule 通行策略Bean", required = true) @Validated @RequestBody PassRule pr,HttpServletRequest request) {
+        AuthToken authToken = tokenServer.getAuthTokenByRequest(request);
+        if((!AuthToken.ROLE_ADMIN.equals(authToken.getAccountRole())
+                && !AuthToken.ROLE_SUBADMIN.equals(authToken.getAccountRole()))
+                ||authToken.getUserid() != pr.getUserid()){
+            return new RespInfo(ErrorEnum.E_610.getCode(), ErrorEnum.E_610.getMsg());
+        }
+
+        List<PassRule> prList = passRuleService.getPassRuleList(pr);
+        return new RespInfo(0, "success", prList);
+    }
+
+    @ApiOperation(value = "策略管理_设置设备组和通行时刻关系 /addEqptGroupPassTimeRoadRlt",
+            consumes = "application/json;charset=UFT-8", produces = "application/json;charset=UFT-8",
+            notes = "POST示例入参：\n" +
+                    "{\n" +
+                    "    \"userid\":2147483647,\n" +
+                    "}")
+    @RequestMapping(method = RequestMethod.POST, value = "/addEqptGroupPassTimeRoadRlt")
+    @ResponseBody
+    public RespInfo addEqptGroupPassTimeRoadRlt(@ApiParam(value = "PassRule 通行策略Bean", required = true)  @RequestBody EqptGroupPassTimeRlt rlt,HttpServletRequest request) {
+        AuthToken authToken = tokenServer.getAuthTokenByRequest(request);
+        if((!AuthToken.ROLE_ADMIN.equals(authToken.getAccountRole())
+                && !AuthToken.ROLE_SUBADMIN.equals(authToken.getAccountRole()))){
+            return new RespInfo(ErrorEnum.E_610.getCode(), ErrorEnum.E_610.getMsg());
+        }
+        rlt.setUserid(authToken.getUserid());
+        boolean ret = egPtRltService.saveOrUpdate(rlt);
+        if(ret) {
+            return new RespInfo(0, "success");
+        }
+
+        return new RespInfo(ErrorEnum.E_2000.getCode(), ErrorEnum.E_2000.getMsg());
+    }
+
+    @ApiOperation(value = "策略管理_获取设备组和通行时刻关系 /getEqptGroupPassTimeRoadRlt",
+            consumes = "application/json;charset=UFT-8", produces = "application/json;charset=UFT-8",
+            notes = "POST示例入参：\n" +
+                    "{\n" +
+                    "    \"userid\":2147483647,\n" +
+                    "}")
+    @RequestMapping(method = RequestMethod.POST, value = "/getEqptGroupPassTimeRoadRlt")
+    @ResponseBody
+    public RespInfo getEqptGroupPassTimeRoadRlt(@ApiParam(value = "PassRule 通行策略Bean", required = true)  @RequestBody EqptGroupPassTimeRlt rlt,HttpServletRequest request) {
+        AuthToken authToken = tokenServer.getAuthTokenByRequest(request);
+        if((!AuthToken.ROLE_ADMIN.equals(authToken.getAccountRole())
+                && !AuthToken.ROLE_SUBADMIN.equals(authToken.getAccountRole()))){
+            return new RespInfo(ErrorEnum.E_610.getCode(), ErrorEnum.E_610.getMsg());
+        }
+
+        List<EqptGroupPassTimeRlt> list = egPtRltService.getList(authToken.getUserid());
+        return new RespInfo(0, "success",list);
+    }
+
+    @ApiOperation(value = "策略管理_删除设备组和通行时刻关系 /delEqptGroupPassTimeRoadRlt",
+            consumes = "application/json;charset=UFT-8", produces = "application/json;charset=UFT-8",
+            notes = "POST示例入参：\n" +
+                    "{\n" +
+                    "    \"userid\":2147483647,\n" +
+                    "}")
+    @RequestMapping(method = RequestMethod.POST, value = "/delEqptGroupPassTimeRoadRlt")
+    @ResponseBody
+    public RespInfo delEqptGroupPassTimeRoadRlt(@ApiParam(value = "PassRule 通行策略Bean", required = true)  @RequestBody EqptGroupPassTimeRlt rlt,HttpServletRequest request) {
+        AuthToken authToken = tokenServer.getAuthTokenByRequest(request);
+        if((!AuthToken.ROLE_ADMIN.equals(authToken.getAccountRole())
+                && !AuthToken.ROLE_SUBADMIN.equals(authToken.getAccountRole()))){
+            return new RespInfo(ErrorEnum.E_610.getCode(), ErrorEnum.E_610.getMsg());
+        }
+        rlt.setUserid(authToken.getUserid());
+        boolean ret = egPtRltService.remove(rlt);
+        if(ret) {
+            return new RespInfo(0, "success");
+        }
+
+        return new RespInfo(ErrorEnum.E_703.getCode(), ErrorEnum.E_703.getMsg());
+    }
+
+}

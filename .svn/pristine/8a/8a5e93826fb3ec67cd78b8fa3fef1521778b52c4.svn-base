@@ -1,0 +1,57 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.dao.CardDao">
+    <sql id="select_clause">
+	  c.cardid,
+	  c.name,
+	  c.sex,
+	  c.nationality,
+	  c.birthday,
+	  c.address,
+	  c.issue,
+	  c.indate,
+	  c.image,
+	  c.photo,
+	  c.cardType	  
+    </sql>    
+   
+    
+    <insert id="add"  keyProperty="cardid" parameterType="IDCard">
+		INSERT INTO qcv_idcard (
+		    cardid,
+        	name,
+        	sex,
+        	nationality,
+        	birthday,
+            address,
+	 		issue,
+	  		indate,
+	  		image,
+	  		photo,
+		    cardType
+		) VALUES (
+			#{cardId,jdbcType=VARCHAR},
+			#{name,jdbcType=VARCHAR},
+			#{sex,jdbcType=VARCHAR},
+			#{nationality,jdbcType=VARCHAR},
+			#{birthday,jdbcType=VARCHAR},
+			#{address,jdbcType=VARCHAR},
+			#{issue,jdbcType=VARCHAR},
+			#{indate,jdbcType=VARCHAR},
+			#{image,jdbcType=VARCHAR},
+			#{photo,jdbcType=VARCHAR},
+			#{cardType,jdbcType=INTEGER}
+		)
+    </insert>
+    
+	 <select id="getById" parameterType="String" resultType="IDCard">
+        SELECT
+           <include refid="select_clause"/>
+        FROM
+            qcv_idcard c WHERE c.cardid=#{cardId,jdbcType=CHAR} 
+      </select>
+      
+     <delete id="delete" parameterType="String">
+        DELETE FROM qcv_idcard WHERE cardid=#{cardid,jdbcType=CHAR}  
+     </delete>  
+    
+</mapper>

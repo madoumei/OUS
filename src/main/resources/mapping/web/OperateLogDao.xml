@@ -1,0 +1,77 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.dao.OperateLogDao">
+    <sql id="select_clause">
+		a.userid,
+		a.optId,
+		a.optName,
+		a.optRole,
+		a.ipAddr,
+		a.objId,
+		a.objName,
+		a.optEvent,
+		a.optClient,
+		a.optModule,
+		a.oTime,
+		a.optDesc
+    </sql>
+    
+    
+       <insert id="addLog"   parameterType="OperateLog">
+		INSERT INTO qcv_operation_log (
+			userid,
+			optId,
+			optName,
+			optRole,
+			ipAddr,
+			objId,
+			objName,
+			optEvent,
+			optClient,
+			optModule,
+			oTime,
+			optDesc
+		) VALUES (
+			#{userid,jdbcType=INTEGER},
+			#{optId,jdbcType=VARCHAR},
+			#{optName,jdbcType=VARCHAR},
+			#{optRole,jdbcType=VARCHAR},
+			#{ipAddr,jdbcType=VARCHAR},
+			#{objId,jdbcType=VARCHAR},
+			#{objName,jdbcType=VARCHAR},
+			#{optEvent,jdbcType=VARCHAR},
+			#{optClient,jdbcType=VARCHAR},
+			#{optModule,jdbcType=VARCHAR},
+			Now(),
+			#{optDesc,jdbcType=VARCHAR}
+		)
+    </insert>
+   
+      
+      <select id="getLogList" parameterType="ReqOperateLog" resultType="OperateLog">
+        SELECT 
+         <include refid="select_clause"/>
+        FROM  
+        	qcv_operation_log a where a.userid= #{userid}
+        	
+             <if test='startDate != null and startDate != "" and  startDate != "null"'>
+               and DATE_FORMAT(a.oTime, '%Y-%m-%d') &gt;= #{startDate}
+             </if>
+             
+             <if test='endDate != null and endDate != "" and  endDate != "null"'>
+              and DATE_FORMAT(a.oTime, '%Y-%m-%d')  &lt;= #{endDate}
+             </if>
+             
+             <if test='optModule != null and optModule != "" and  optModule != "null"'>
+            and a.optModule = #{optModule}
+            </if>
+
+             <if test='optName != null and optName != "" and  optName != "null"'>
+			and ( a.optName like "%"#{optName}"%"
+			or a.objId = #{optName}
+			or a.objName like "%"#{optName}"%" )
+            </if>
+
+        order by a.oTime desc
+      </select>
+      
+</mapper>

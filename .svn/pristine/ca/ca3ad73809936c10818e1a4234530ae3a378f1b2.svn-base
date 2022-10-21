@@ -1,0 +1,92 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.dao.PermissionDao">
+    <sql id="select_clause">
+			p.id,
+        	p.account,
+        	p.name,
+        	p.path,
+        	p.permission,
+        	p.routeName,
+        	p.parentId,
+        	p.component,
+        	p.iconCls,
+        	p.hidden,
+        	p.redirect,
+        	p.requiresAuth,
+        	p.showMenu,
+        	p.title,
+        	p.permission,
+        	p.leafClose,
+        	p.componentName
+    </sql>
+
+    <resultMap id="PermissionMap" type="Permission">
+        <id column="Id" property="id"/>
+        <result column="account" property="account"/>
+        <result column="parentId" property="parentId"/>
+        <result column="Path" property="path"/>
+        <result column="name" property="name"/>
+        <result column="routeName" property="routeName"/>
+        <result column="component" property="component"/>
+        <result column="iconCls" property="iconCls"/>
+        <result column="redirect" property="redirect"/>
+        <result column="hidden" property="hidden"/>
+        <result column="showMenu" property="showMenu"/>
+        <result column="permission" property="permission"/>
+        <result column="leafClose" property="leafClose"/>
+        <result column="componentName" property="componentName"/>
+        <association property="meta" javaType="com.web.bean.Meta">
+            <result column="requiresAuth" property="requiresAuth"/>
+            <result column="title" property="title"/>
+            <result column="routeName" property="routeName"/>
+        </association>
+    </resultMap>
+
+    <insert id="addPermission" useGeneratedKeys="true" keyProperty="id" keyColumn="id" parameterType="Permission">
+		INSERT INTO qcv_permission (
+        	account,
+        	path,
+        	name,
+        	component,
+        	iconCls,
+        	hidden,
+        	requiresAuth,
+        	title,
+        	routeName,
+        	permission,
+        	parentId,
+        	redirect,
+        	showMenu,
+        	leafClose,
+        	componentName
+		) VALUES (
+			#{account,jdbcType=VARCHAR},
+			#{path,jdbcType=VARCHAR},
+        	#{name,jdbcType=VARCHAR},
+        	#{component,jdbcType=VARCHAR},
+        	#{iconCls,jdbcType=VARCHAR},
+        	#{hidden,jdbcType=BOOLEAN},
+        	#{meta.requiresAuth,jdbcType=BOOLEAN},
+        	#{meta.title,jdbcType=VARCHAR},
+        	#{routeName,jdbcType=VARCHAR},
+        	#{permission,jdbcType=VARCHAR},
+        	#{parentId,jdbcType=INTEGER},
+        	#{redirect,jdbcType=VARCHAR},
+        	#{showMenu,jdbcType=BOOLEAN},
+        	#{leafClose,jdbcType=BOOLEAN},
+        	#{componentName,jdbcType=VARCHAR}
+		)
+    </insert>
+
+    <select id="getPermissionByaccount" resultMap="PermissionMap">
+        select
+        <include refid="select_clause"></include>
+        from qcv_permission p
+        where p.account = #{account}
+    </select>
+
+	<delete id="delPermissionByaccount">
+		delete FROM qcv_permission where account = #{account}
+	</delete>
+
+</mapper>

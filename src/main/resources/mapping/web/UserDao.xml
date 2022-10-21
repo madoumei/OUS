@@ -1,0 +1,1049 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.dao.UserDao">
+    <sql id="select_clause">
+	      a.userid,
+		  a.username,
+		  a.password,
+		  a.email,
+		  a.phone,
+		  a.company,
+		  a.regDate,
+		  a.loginDate,
+		  a.refreshDate,
+		  a.logo,
+		  a.msgNotify,
+		  a.emailType,
+		  a.emailAccount,
+		  a.emailPwd,
+		  a.smtp,
+		  a.smtpPort,
+		  a.smsNotify,
+		  a.exchange,
+		  a.domain,
+		  a.rtxAuto,
+		  a.rtxip,
+		  a.rtxport,
+		  a.userType,
+		  a.backgroundPic,
+		  a.appletCarouselPic,
+		  a.digest,
+		  a.themecolor,
+		  a.defaultPhoto,
+		  a.refreshCount,
+		  a.cardText,
+		  a.cardPic,
+		  a.expireDate,
+		  a.serverLocation,
+		  a.subAccount,
+		  a.faceScaner,
+		  a.webwalkins,
+		  a.preExtendTime,
+		  a.latExtendTime,
+		  a.keyExpireTime,
+		  a.leaveExpiryTime,
+		  a.questionnaireSwitch,
+		  a.escapeClause,
+		  a.fsNotify,
+		  a.wxBusNotify,
+		  a.notifyType,
+		  a.carouselPic
+    </sql>
+    
+     <sql id="select_clause2">
+	      a.userid,
+		  a.username,
+		  a.password,
+		  a.email,
+		  a.phone,
+		  a.company,
+		  a.regDate,
+		  a.loginDate,
+		  a.refreshDate,
+		  a.logo,
+		  a.msgNotify,
+		  a.emailType,
+		  a.emailAccount,
+		  a.emailPwd,
+		  a.smtp,
+		  a.smtpPort,
+		  a.smsNotify,
+		  a.exchange,
+		  a.domain,
+		  a.rtxAuto,
+		  a.rtxip,
+		  a.rtxport,
+		  a.userType,
+		  a.backgroundPic,
+		  a.digest,
+		  a.themecolor,
+		  a.defaultPhoto,
+		  a.refreshCount,
+		  a.cardText,
+		  a.cardPic,
+		  a.expireDate,
+		  a.serverLocation,
+		  a.subAccount,
+		  a.fsNotify,
+		  a.faceScaner,
+		  a.webwalkins,
+		  a.preExtendTime,
+		  a.latExtendTime,
+		  a.keyExpireTime,
+		  a.leaveExpiryTime,
+		  a.questionnaireSwitch,
+		  a.escapeClause,
+		  a.fsNotify,
+		  a.wxBusNotify,
+		  a.notifyType,
+		  a.appletCarouselPic,
+		  a.carouselPic,
+		  e.ddnotify,
+		  e.ddautosync,
+		  e.ddcorpid,
+		  e.ddcorpsecret,
+		  e.ddagentid,
+		  e.ddAppid,
+		  e.ddAppSccessSecret,
+		  e.qrcode,
+		  e.qrcodeSwitch,
+		  e.qrcodeType,
+		  e.custReqUrl,
+		  e.bindingType,
+		  e.comeAgain,
+		  e.printType,
+		  e.cardType,
+		  e.cardSize,
+		  e.cardLogo,
+		  e.custSource,
+		  e.custWeb,
+		  e.custAddress,
+		  e.remark,
+		  e.smsCount,
+		  e.wxSmsCount,
+		  e.appSmsCount,
+		  e.unsubscribe,
+		  e.preRegisterSwitch,
+		  e.scaner,
+		  e.ivrNotify,
+		  e.ivrPrint,
+		  e.permissionSwitch,
+		  e.idCardSwitch,
+		  e.signOutSwitch,
+		  e.permanentCode,
+		  e.corpid,
+		  e.agentid,
+		  e.serviceID,
+		  e.securityID,
+	 	  e.securityKey,
+	 	  e.tempEditSwitch,
+	 	  e.blackListSwitch,
+	 	  e.processSwitch,
+	 	  e.secureProtocol,
+	 	  e.upDuty,
+	 	  e.offDuty,
+	 	  e.qrMaxCount,
+	 	  e.qrMaxDuration,
+		  e.badgeMode,
+		  e.badgeCustom,
+		  e.brandType,
+		  e.brandPosition,
+		  e.showAvatar,
+		  e.avatarType,
+		  e.customText,
+		  e.passableSTime,
+		  e.passableETime,
+		  e.satisfactionQuestionnaire,
+		  e.dataKeepTime,
+		  e.appointmenProcessSwitch
+    </sql>
+    
+         <sql id="select_clause3">
+	      a.userid,
+		  a.username,
+		  a.email,
+		  a.phone,
+		  a.company,
+		  a.regDate,
+		  a.loginDate,
+		  a.refreshDate,
+		  a.logo,
+		  a.msgNotify,
+		  a.emailType,
+		  a.emailAccount,
+		  a.emailPwd,
+		  a.smtp,
+		  a.smtpPort,
+		  a.smsNotify,
+		  a.exchange,
+		  a.domain,
+		  a.rtxAuto,
+		  a.rtxip,
+		  a.rtxport,
+		  a.userType,
+		  a.backgroundPic,
+		  a.appletCarouselPic,
+		  a.digest,
+		  a.themecolor,
+		  a.defaultPhoto,
+		  a.refreshCount,
+		  a.cardText,
+		  a.cardPic,
+		  a.expireDate,
+		  a.serverLocation,
+		  a.subAccount,
+		  a.faceScaner,
+		  a.webwalkins,
+		  a.preExtendTime,
+		  a.latExtendTime,
+		  a.keyExpireTime,
+		  a.leaveExpiryTime,
+		  a.questionnaireSwitch,
+		  a.escapeClause,
+		  a.fsNotify,
+		  a.wxBusNotify,
+		  a.notifyType,
+		  a.carouselPic,
+		  e.ddnotify,
+		  e.ddautosync,
+		  e.ddcorpid,
+		  e.ddcorpsecret,
+		  e.ddagentid,
+ 		  e.ddAppid,
+		  e.ddAppSccessSecret,
+		  e.qrcode,
+		  e.qrcodeSwitch,
+		  e.qrcodeType,
+		  e.custReqUrl,
+		  e.bindingType,
+		  e.comeAgain,
+		  e.printType,
+		  e.cardType,
+		  e.cardSize,
+		  e.cardLogo,
+		  e.custSource,
+		  e.custWeb,
+		  e.custAddress,
+		  e.remark,
+		  e.smsCount,
+		  e.wxSmsCount,
+		  e.appSmsCount,
+		  e.unsubscribe,
+		  e.preRegisterSwitch,
+		  e.scaner,
+		  e.ivrNotify,
+		  e.ivrPrint,
+		  e.permissionSwitch,
+		  e.idCardSwitch,
+		  e.signOutSwitch,
+		  e.permanentCode,
+		  e.corpid,
+		  e.corpsecret,
+		  e.agentid,
+		  e.serviceID,
+		  e.securityID,
+	 	  e.securityKey,
+	 	  e.tempEditSwitch,
+	 	  e.blackListSwitch,
+	 	  e.processSwitch,
+	 	  e.secureProtocol,
+	 	  e.upDuty,
+	 	  e.offDuty,
+	 	  e.qrMaxCount,
+	 	  e.qrMaxDuration,
+	 	  e.badgeMode,
+		  e.badgeCustom,
+		  e.brandType,
+		  e.brandPosition,
+		  e.showAvatar,
+		  e.avatarType,
+		  e.customText,
+		  e.passableSTime,
+		  e.passableETime,
+		  e.satisfactionQuestionnaire,
+		  e.dataKeepTime,
+		  e.appointmenProcessSwitch
+    </sql>
+    
+       <sql id="select_clause4">
+	      a.userid,
+		  a.username,
+		  a.email,
+		  a.phone,
+		  a.company,
+		  a.regDate,
+		  a.loginDate,
+		  a.refreshDate,
+		  a.logo,
+		  a.msgNotify,
+		  a.emailType,
+		  a.emailAccount,
+		  a.emailPwd,
+		  a.smtp,
+		  a.smtpPort,
+		  a.smsNotify,
+		  a.exchange,
+		  a.domain,
+		  a.rtxAuto,
+		  a.rtxip,
+		  a.rtxport,
+		  a.userType,
+		  a.backgroundPic,
+		  a.appletCarouselPic,
+		  a.digest,
+		  a.themecolor,
+		  a.defaultPhoto,
+		  a.refreshCount,
+		  a.cardText,
+		  a.cardPic,
+		  a.expireDate,
+		  a.serverLocation,
+		  a.subAccount,
+		  a.faceScaner,
+		  a.webwalkins,
+		  a.preExtendTime,
+		  a.latExtendTime,
+		  a.keyExpireTime,
+		  a.leaveExpiryTime,
+		  a.questionnaireSwitch,
+		  a.escapeClause,
+		  a.fsNotify,
+		  a.wxBusNotify,
+		  a.notifyType,
+		  a.carouselPic
+    </sql>
+    
+      <sql id="select_clause5">
+      	  e.userid,
+		  e.ddnotify,
+		  e.ddautosync,
+		  e.ddcorpid,
+		  e.ddcorpsecret,
+		  e.ddagentid,
+		  e.qrcode,
+		  e.qrcodeSwitch,
+		  e.qrcodeType,
+		  e.custReqUrl,
+		  e.bindingType,
+		  e.comeAgain,
+		  e.printType,
+		  e.cardType,
+		  e.cardSize,
+		  e.cardLogo,
+		  e.custSource,
+		  e.custWeb,
+		  e.custAddress,
+		  e.remark,
+		  e.smsCount,
+		  e.wxSmsCount,
+		  e.appSmsCount,
+		  e.unsubscribe,
+		  e.preRegisterSwitch,
+		  e.scaner,
+		  e.ivrNotify,
+		  e.ivrPrint,
+		  e.permissionSwitch,
+		  e.idCardSwitch,
+		  e.signOutSwitch,
+		  e.permanentCode,
+		  e.corpid,
+		  e.agentid,
+		  e.serviceID,
+		  e.securityID,
+	 	  e.securityKey,
+	 	  e.tempEditSwitch,
+	 	  e.blackListSwitch,
+	 	  e.processSwitch,
+	 	  e.secureProtocol,
+	 	  e.upDuty,
+	 	  e.offDuty,
+	 	  e.qrMaxCount,
+	 	  e.qrMaxDuration,
+	 	  e.badgeMode,
+		  e.badgeCustom,
+		  e.brandType,
+		  e.brandPosition,
+		  e.showAvatar,
+		  e.avatarType,
+		  e.customText,
+		  e.passableSTime,
+		  e.passableETime,
+		  e.satisfactionQuestionnaire,
+		  e.dataKeepTime
+    </sql>
+    
+      <sql id="select_clause6">
+     	  a.userid,
+     	  a.username,
+		  a.company,
+		  a.logo,
+		  a.msgNotify,
+		  a.userType,
+		  a.backgroundPic,
+		  a.appletCarouselPic,
+		  a.digest,
+		  a.themecolor,
+		  a.defaultPhoto,
+		  a.refreshCount,
+		  a.cardText,
+		  a.cardPic,
+		  a.subAccount,
+		  a.faceScaner,
+		  a.webwalkins,
+		  a.preExtendTime,
+		  a.latExtendTime,
+		  a.keyExpireTime,
+		  a.leaveExpiryTime,
+		  a.questionnaireSwitch,
+		  a.escapeClause,
+		  a.fsNotify,
+		  a.wxBusNotify,
+		  a.notifyType,
+		  a.carouselPic,
+		  e.ddnotify,
+		  e.qrcode,
+		  e.qrcodeSwitch,
+		  e.qrcodeType,
+		  e.custReqUrl,
+		  e.bindingType,
+		  e.comeAgain,
+		  e.printType,
+		  e.cardType,
+		  e.cardSize,
+		  e.cardLogo,
+		  e.custSource,
+		  e.custWeb,
+		  e.custAddress,
+		  e.remark,
+		  e.smsCount,
+		  e.wxSmsCount,
+		  e.appSmsCount,
+		  e.unsubscribe,
+		  e.preRegisterSwitch,
+		  e.scaner,
+		  e.ivrNotify,
+		  e.ivrPrint,
+		  e.permissionSwitch,
+		  e.idCardSwitch,
+		  e.signOutSwitch,
+	 	  e.tempEditSwitch,
+	 	  e.blackListSwitch,
+	 	  e.processSwitch,
+	 	  e.secureProtocol,
+	 	  e.upDuty,
+	 	  e.offDuty,
+	 	  e.qrMaxCount,
+	 	  e.qrMaxDuration,
+	 	  e.badgeMode,
+		  e.badgeCustom,
+		  e.brandType,
+		  e.brandPosition,
+		  e.showAvatar,
+		  e.avatarType,
+		  e.customText,
+		  e.passableSTime,
+		  e.passableETime,
+		  e.satisfactionQuestionnaire,
+		  e.dataKeepTime
+    </sql>
+    
+       <insert id="register"  parameterType="UserInfo">
+		INSERT INTO qcv_users (
+			userid,
+			username,
+		    password,
+        	email,
+        	phone,
+        	company,
+        	msgNotify,
+		  	emailType,
+		  	userType,
+        	regDate,
+        	defaultPhoto,
+        	expireDate
+		) VALUES (
+			#{userid,jdbcType=INTEGER},
+			#{username,jdbcType=VARCHAR},
+			#{password,jdbcType=VARCHAR},
+			#{email,jdbcType=VARCHAR},
+			#{phone,jdbcType=VARCHAR},
+			#{company,jdbcType=VARCHAR},
+			#{msgNotify,jdbcType=INTEGER},
+			#{emailType,jdbcType=INTEGER},
+			#{userType,jdbcType=INTEGER},
+			#{regDate},
+			#{defaultPhoto,jdbcType=VARCHAR},
+			#{expireDate}
+		)
+    </insert>
+    
+    <insert id="updateLoginDate" parameterType="UserInfo">
+        UPDATE qcv_users SET  
+       		loginDate = #{loginDate}
+        WHERE userid = #{userid}
+    </insert>
+    
+	 <select id="selectByName" parameterType="String" resultType="UserInfo">
+        SELECT
+            <include refid="select_clause"/>
+        FROM
+            qcv_users a where a.email=#{email}        
+      </select>
+      
+      <select id="getUserByAccount" parameterType="UserInfo" resultType="UserInfo">
+        SELECT
+            <include refid="select_clause3"/>
+        FROM
+            qcv_users a LEFT JOIN qcv_user_extend e ON a.userid=e.userid where a.email=#{email} and a.userid = #{userid}    
+      </select>
+      <select id="selectBycompany" parameterType="String" resultType="UserInfo">
+        SELECT
+            <include refid="select_clause3"/>
+        FROM
+            qcv_users a LEFT JOIN qcv_user_extend e ON a.userid=e.userid where a.company=#{company}        
+      </select>
+      
+       <select id="getUserInfoWithExt" parameterType="String" resultType="UserInfo">
+        SELECT
+            <include refid="select_clause2"/>
+        FROM
+            qcv_users a LEFT JOIN qcv_user_extend e ON a.userid=e.userid where a.email=#{email}
+      </select>
+      
+      <select id="getUserInfo"  resultType="UserInfo">
+        SELECT
+            <include refid="select_clause3"/>
+        FROM
+            qcv_users a LEFT JOIN qcv_user_extend e ON a.userid=e.userid where a.userid=#{userid}
+      </select>
+      
+       <select id="getUserSwitch"  resultType="UserInfo">
+        SELECT
+            <include refid="select_clause6"/>
+        FROM
+            qcv_users a LEFT JOIN qcv_user_extend e ON a.userid=e.userid where a.userid=#{userid}
+      </select>
+      
+      <select id="getBaseUserInfo"  resultType="UserInfo">
+        SELECT
+            <include refid="select_clause"/>
+        FROM
+            qcv_users a  where a.userid=#{userid}
+      </select>
+      
+       <select id="getUsers" resultType="UserInfo">
+        SELECT
+            <include refid="select_clause4"/>
+        FROM
+            qcv_users a  where a.userid in
+         <foreach collection="list" index="index" item="userids" open="(" separator="," close=")">     
+	        #{userids}     
+	     </foreach>
+      </select>
+      
+      <select id="getUserInfoList"  resultType="UserInfo">
+        SELECT
+            <include refid="select_clause3"/>
+        FROM
+            qcv_users a LEFT JOIN qcv_user_extend e ON a.userid=e.userid
+      </select>
+      
+      <select id="getNotifyswitch" parameterType="String" resultType="UserInfo">
+      SELECT
+         <include refid="select_clause"/>
+		FROM `qcv_users` a WHERE userid IN (SELECT e.userid FROM `qcv_employee` e,`qcv_notify_conf` c WHERE e.`openid`=c.`openid` and c.openid=#{openid}) ORDER BY a.loginDate DESC LIMIT 0,1 
+	 </select> 
+	 
+	  <select id="getAllUser"  resultType="String">
+     	 SELECT company FROM `qcv_users`
+	  </select> 
+	  
+	  
+	  <select id="getAllUserinfo" parameterType="ReqUserInfo" resultType="UserInfo">
+     	  SELECT
+            <include refid="select_clause3"/>
+       	  FROM
+            qcv_users a LEFT JOIN qcv_user_extend e ON a.userid=e.userid   
+            
+             <if test='username != null and username != "" and  username != "null"'>
+               where  a.username like "%"#{username}"%"  or a.company like "%"#{username}"%" 
+             </if>
+            
+            <choose>
+	            <when  test='orderType != null and orderType != "" and  orderType != "null"'>
+	                 order by ${orderType} desc
+	            </when>
+	            <otherwise>
+	                 order by regDate desc
+	            </otherwise>
+           </choose>
+	  </select> 
+	  
+	  <select id="getDDUserinfo"  resultType="UserInfo">
+     	  SELECT
+            <include refid="select_clause3"/>
+       	  FROM
+            qcv_users a LEFT JOIN qcv_user_extend e ON a.userid=e.userid where e.ddnotify=1 and e.ddautosync=1
+	  </select> 
+	  
+	  <select id="getWeixinInfo"  resultType="UserInfo">
+     	  SELECT  e.permanentCode, e.corpid, e.agentid FROM qcv_user_extend e where e.userid=#{userid}
+	  </select> 
+	  
+	  <select id="getExtendsInfo"  resultType="UserInfo">
+     	  SELECT <include refid="select_clause5"/> FROM qcv_user_extend e where e.userid=#{userid}
+	  </select> 
+	 
+      <insert id="upEmailConf" parameterType="UserInfo">
+       UPDATE qcv_users SET  
+       		emailType = #{emailType,jdbcType=INTEGER},
+       		emailAccount= #{emailAccount,jdbcType=VARCHAR},
+       		emailPwd=#{emailPwd,jdbcType=VARCHAR},
+       		smtp=#{smtp,jdbcType=VARCHAR},
+       		smtpPort=#{smtpPort,jdbcType=INTEGER},
+       		exchange=#{exchange,jdbcType=VARCHAR},
+       		domain=#{domain,jdbcType=VARCHAR}
+        WHERE userid = #{userid}
+    </insert>
+      
+      
+      <insert id="updatePwd" parameterType="UserInfo">
+	        UPDATE qcv_users SET  
+	       		password = #{password},digest = #{digest}  
+	        WHERE email = #{email}
+      </insert>
+    
+      <insert id="upDigest" parameterType="UserInfo">
+	       UPDATE qcv_users SET  
+	       		digest = #{digest} 
+	        WHERE userid = #{userid}
+      </insert>
+      
+      <insert id="updateLogo" parameterType="UserInfo">
+	       UPDATE qcv_users SET  
+	       		logo = #{logo} 
+	        WHERE userid = #{userid}
+      </insert>
+      
+       <insert id="updatebgPicUrl" parameterType="UserInfo">
+	       UPDATE qcv_users SET  
+	       		backgroundPic = #{backgroundPic} 
+	        WHERE userid = #{userid}
+      </insert>
+      
+        <insert id="updateThemeColor" parameterType="UserInfo">
+	       UPDATE qcv_users SET  
+	       		themecolor = #{themecolor} 
+	        WHERE userid = #{userid}
+      </insert>
+      
+       <insert id="updateUserInfo" parameterType="UserInfo">
+	       UPDATE qcv_users SET  
+	       		username = #{username} ,
+	       		phone=#{phone},
+	       		company=#{company}
+	        WHERE userid = #{userid}
+      </insert>
+      
+        <insert id="updateRtxConf" parameterType="UserInfo">
+	       UPDATE qcv_users SET  
+	       		rtxip = #{rtxip},
+	       		rtxport = #{rtxport} 
+	        WHERE userid = #{userid}
+       </insert>
+       
+       <insert id="updateWxConf" parameterType="UserInfo">
+	       UPDATE qcv_users SET  
+	       		msgNotify = #{msgNotify}
+	        WHERE userid = #{userid}
+       </insert>
+       
+       <insert id="updateSMSConf" parameterType="UserInfo">
+	       UPDATE qcv_users SET  
+	       		smsNotify = #{smsNotify}
+	        WHERE userid = #{userid}
+       </insert>
+       
+       <insert id="updateDefaultPhoto" parameterType="UserInfo">
+       	UPDATE qcv_users SET  
+	       		defaultPhoto = #{defaultPhoto} 
+	        WHERE userid = #{userid}
+       </insert>
+       
+       
+        <insert id="updateRefreshDate" parameterType="UserInfo">
+       	UPDATE qcv_users SET  
+	       		refreshDate = #{refreshDate}, 
+	       		refreshCount = #{refreshCount} 
+	        WHERE userid = #{userid}
+       </insert>
+       
+        <insert id="updateRtxAuto" parameterType="UserInfo">
+       	UPDATE qcv_users SET  
+	       		rtxAuto = #{rtxAuto} 
+	        WHERE userid = #{userid}
+       </insert>
+       
+       <insert id="updateCardText" parameterType="UserInfo">
+       	UPDATE qcv_users SET  
+	       		cardText = #{cardText},
+	       		cardPic=#{cardPic}
+	        WHERE userid = #{userid}
+       </insert>
+           
+	    <insert id="updateDDNotify"  parameterType="UserInfo">
+	         	UPDATE qcv_user_extend SET  
+		       		  ddnotify=#{ddnotify},
+		       		  ddautosync=#{ddautosync},
+					  ddcorpid=#{ddcorpid},
+					  ddcorpsecret=#{ddcorpsecret},
+					  ddagentid=#{ddagentid} ,
+					  ddAppid=#{ddAppid} ,
+					  ddAppSccessSecret=#{ddAppSccessSecret}
+		        WHERE userid = #{userid}
+	    </insert>
+
+		<insert id="updateWechatConf"  parameterType="UserInfo">
+	         	UPDATE qcv_user_extend SET
+		       		  corpid=#{corpid},
+		       		  corpsecret=#{corpsecret},
+		       		  agentid=#{agentid},
+		       		  permanentCode=#{permanentCode}
+		        WHERE userid = #{userid}
+	    </insert>
+	    
+	     <insert id="updateQRcode"  parameterType="UserInfo">
+	         	UPDATE qcv_user_extend SET  
+		       		  qrcode=#{qrcode},
+					  qrcodeSwitch=#{qrcodeSwitch},
+					  qrcodeType=#{qrcodeType}
+		        WHERE userid = #{userid}
+	    </insert>
+	    
+	    <insert id="updateBindingType"  parameterType="UserInfo">
+	         	UPDATE qcv_user_extend SET  
+		       		  bindingType=#{bindingType}
+		        WHERE userid = #{userid}
+	    </insert>
+	    
+	    <insert id="updateCustReqUrl"  parameterType="UserInfo">
+	         	UPDATE qcv_user_extend SET  
+		       		  custReqUrl=#{custReqUrl}
+		        WHERE userid = #{userid}
+	    </insert>
+	    
+	    <insert id="updateComeAgain"  parameterType="UserInfo">
+	         	UPDATE qcv_user_extend SET  
+		       		  comeAgain=#{comeAgain}
+		        WHERE userid = #{userid}
+	    </insert>
+	    
+	    <insert id="updateCardType"  parameterType="UserInfo">
+	         	UPDATE qcv_user_extend SET  
+	         		  printType=#{printType},
+		       		  cardType=#{cardType},
+		       		  cardSize=#{cardSize},
+		       		  cardLogo=#{cardLogo}
+		        WHERE userid = #{userid}
+	    </insert>
+	    
+	    <insert id="updateCardStyle"  parameterType="UserInfo">
+	         	UPDATE qcv_user_extend SET  
+	         		  printType=#{printType},
+		       		  cardType=#{cardType},
+		       		  cardSize=#{cardSize},
+		       		  cardLogo=#{cardLogo},
+		       		  badgeMode=#{badgeMode},
+		       		  badgeCustom=#{badgeCustom},
+		       		  brandType=#{brandType},
+		       		  brandPosition=#{brandPosition},
+		       		  showAvatar=#{showAvatar},
+		       		  avatarType=#{avatarType},
+		       		  customText=#{customText}
+		        WHERE userid = #{userid}
+	    </insert>
+	    
+	    <insert id="updateUserType"  parameterType="UserInfo">
+	         	UPDATE qcv_users SET  
+		       		  userType=#{userType},
+		  			  serverLocation=#{serverLocation},
+		  			  expireDate=#{expireDate} 
+		         WHERE userid = #{userid}
+	    </insert>
+	    
+	    <insert id="updateCustInfo"  parameterType="UserInfo">
+	         	UPDATE qcv_user_extend SET  
+		       		  custSource=#{custSource},
+		       		  custWeb=#{custWeb},
+		       		  custAddress=#{custAddress}
+		        WHERE userid = #{userid}
+	    </insert>
+	    
+	     <insert id="updateSmsCount"  parameterType="UserInfo">
+	         	UPDATE qcv_user_extend SET  
+		       		  smsCount=#{smsCount}
+		        WHERE userid = #{userid}
+	    </insert>
+	    
+	    <insert id="updateWxSmsCount"  parameterType="UserInfo">
+	         	UPDATE qcv_user_extend SET  
+		       		  wxSmsCount=#{wxSmsCount}
+		        WHERE userid = #{userid}
+	    </insert>
+	    
+	    <insert id="updateAppSmsCount"  parameterType="UserInfo">
+	         	UPDATE qcv_user_extend SET  
+		       		  appSmsCount=#{appSmsCount}
+		        WHERE userid = #{userid}
+	    </insert>
+	    
+	    <insert id="updateRemark"  parameterType="UserInfo">
+	         	UPDATE qcv_user_extend SET  
+		       		  remark=#{remark} 
+		        WHERE userid = #{userid}
+	    </insert>
+	    
+	    <insert id="updateUnSubscribe"  parameterType="UserInfo">
+	         	UPDATE qcv_user_extend SET  
+		       		  unsubscribe=#{unsubscribe} 
+		        WHERE userid = #{userid}
+	    </insert>
+	    
+	    <insert id="updateSubAccountSwitch"  parameterType="UserInfo">
+	         	UPDATE qcv_users SET  
+		       		  subAccount=#{subAccount} 
+		        WHERE userid = #{userid}
+	    </insert>
+	    
+	    <insert id="updatePreRegisterSwitch"  parameterType="UserInfo">
+	         	UPDATE qcv_user_extend SET  
+		       		  preRegisterSwitch=#{preRegisterSwitch} 
+		         WHERE userid = #{userid}
+	    </insert>
+	    
+	    <insert id="updateScanerSwitch"  parameterType="UserInfo">
+	         	UPDATE qcv_user_extend SET  
+		       		  scaner=#{scaner} 
+		         WHERE userid = #{userid}
+	    </insert>
+	    
+	    <insert id="updateIvrNotifySwitch"  parameterType="UserInfo">
+	         	UPDATE qcv_user_extend SET  
+		       		  ivrNotify=#{ivrNotify} 
+		         WHERE userid = #{userid}
+	    </insert>
+	    
+	    <insert id="updateIvrPrintSwitch"  parameterType="UserInfo">
+	         	UPDATE qcv_user_extend SET  
+		       		  ivrPrint=#{ivrPrint} 
+		         WHERE userid = #{userid}
+	    </insert>
+	    
+	    <insert id="updatePermissionSwitch"  parameterType="UserInfo">
+	         	UPDATE qcv_user_extend SET  
+		       		  permissionSwitch=#{permissionSwitch} 
+		         WHERE userid = #{userid}
+	    </insert>
+	    
+	     <insert id="updateIdCardSwitch"  parameterType="UserInfo">
+	         	UPDATE qcv_user_extend SET  
+		       		  idCardSwitch=#{idCardSwitch} 
+		         WHERE userid = #{userid}
+	    </insert>
+	    
+	    <insert id="updateSignOutSwitch"  parameterType="UserInfo">
+	         	UPDATE qcv_user_extend SET  
+		       		  signOutSwitch=#{signOutSwitch} 
+		         WHERE userid = #{userid}
+	    </insert>
+	    
+	    <insert id="closeWeixinBus"  parameterType="UserInfo">
+	         	UPDATE qcv_user_extend SET  
+	       		      permanentCode=''
+		          WHERE corpid = #{corpid}
+	    </insert>
+	    
+	    <insert id="updateVNetConf"  parameterType="UserInfo">
+	         	UPDATE qcv_user_extend SET  
+	       		        serviceID=#{serviceID},
+						securityID=#{securityID},
+					 	securityKey=#{securityKey} 
+		          WHERE userid = #{userid}
+	    </insert>
+	    
+	    <insert id="updateFaceScaner"  parameterType="UserInfo">
+	         	UPDATE qcv_users SET  
+	       		       faceScaner=#{faceScaner} 
+		          WHERE userid = #{userid}
+	    </insert>
+	    
+	    <insert id="updateWebWalkins"  parameterType="UserInfo">
+	         	UPDATE qcv_users SET  
+	       		       webwalkins=#{webwalkins} 
+		          WHERE userid = #{userid}
+	    </insert>
+	    
+	     <insert id="updateExtendTime"  parameterType="UserInfo">
+	         	UPDATE qcv_users SET  
+	       		       preExtendTime=#{preExtendTime},
+	       		       latExtendTime=#{latExtendTime} 
+		          WHERE userid = #{userid}
+	    </insert>
+	    
+	     <insert id="updateTempEditSwitch"  parameterType="UserInfo">
+	         	UPDATE qcv_user_extend SET  
+					 	tempEditSwitch=#{tempEditSwitch} 
+		          WHERE userid = #{userid}
+	     </insert>
+	     
+	     <insert id="updateKeyExpireTime"  parameterType="UserInfo">
+	         	UPDATE qcv_users SET  
+					 	keyExpireTime=#{keyExpireTime} 
+		          WHERE userid = #{userid}
+	     </insert>
+	     
+	        <insert id="updateblackListSwitch"  parameterType="UserInfo">
+	         	UPDATE qcv_user_extend SET  
+					 	blackListSwitch=#{blackListSwitch} 
+		          WHERE userid = #{userid}
+	     </insert>
+	     
+	       <insert id="updateProcessSwitch"  parameterType="UserInfo">
+	         	UPDATE qcv_user_extend SET  
+					 	processSwitch=#{processSwitch} 
+		          WHERE userid = #{userid}
+	     </insert>
+	     
+	      <insert id="updateSecureProtocol"  parameterType="UserInfo">
+	         	UPDATE qcv_user_extend SET  
+					 	secureProtocol=#{secureProtocol} 
+		          WHERE userid = #{userid}
+	     </insert>
+	     
+	      <insert id="updateOffDutyTime"  parameterType="UserInfo">
+	         	UPDATE qcv_user_extend SET  
+	         			upDuty=#{upDuty}, 
+					 	offDuty=#{offDuty} 
+		          WHERE userid = #{userid}
+	     </insert>
+	     
+	     <insert id="updateQrcodeConf"  parameterType="UserInfo">
+	         	UPDATE qcv_user_extend SET  
+					 	qrMaxCount=#{qrMaxCount},
+					 	qrMaxDuration=#{qrMaxDuration}  
+		          WHERE userid = #{userid}
+	     </insert>
+
+		<insert id="updateDataKeepTime"  parameterType="UserInfo">
+	         	UPDATE qcv_user_extend SET
+					 	dataKeepTime=#{dataKeepTime}
+		          WHERE userid = #{userid}
+	     </insert>
+	     
+	      <insert id="updateLeaveExpiryTime"  parameterType="UserInfo">
+	         	UPDATE qcv_users SET  
+					 	leaveExpiryTime=#{leaveExpiryTime}
+		          WHERE userid = #{userid}
+	     </insert>
+	     
+	       <insert id="updatePassableTime"  parameterType="UserInfo">
+	         	UPDATE qcv_user_extend SET  
+					 	passableSTime=#{passableSTime},
+					 	passableETime=#{passableETime}
+		          WHERE userid = #{userid}
+	     </insert>
+	     
+	      <insert id="updateQuestionnaireSwitch"  parameterType="UserInfo">
+	         	UPDATE qcv_users SET  
+					 	questionnaireSwitch=#{questionnaireSwitch}
+		          WHERE userid = #{userid}
+	     </insert>
+	     
+	     <insert id="updateEscapeClause"  parameterType="UserInfo">
+	         	UPDATE qcv_users SET  
+					 	escapeClause=#{escapeClause}
+		          WHERE userid = #{userid}
+	     </insert>
+	     
+	        <insert id="updateFsNotify"  parameterType="UserInfo">
+	         	UPDATE qcv_users SET  
+					 	fsNotify=#{fsNotify}
+		          WHERE userid = #{userid}
+	     </insert>
+	     
+	         <insert id="updateNotifyType"  parameterType="UserInfo">
+	         	UPDATE qcv_users SET  
+					 	notifyType=#{notifyType}
+		          WHERE userid = #{userid}
+	     </insert>
+	     
+	       <insert id="updateWxBusNotify"  parameterType="UserInfo">
+	         	UPDATE qcv_users SET  
+					 	wxBusNotify=#{wxBusNotify}
+		          WHERE userid = #{userid}
+	     </insert>
+
+	<update id="updateDDScannerConf" parameterType="UserInfo">
+		UPDATE qcv_user_extend SET
+			ddAppid=#{ddAppid},
+			ddAppSccessSecret=#{ddAppSccessSecret}
+		WHERE userid = #{userid}
+	</update>
+	
+	<update id="updateSatisfactionSwitch" parameterType="UserInfo">
+		UPDATE qcv_user_extend
+		SET satisfactionQuestionnaire=#{satisfactionQuestionnaire}
+		WHERE userid = #{userid}
+	</update>
+    <update id="updateAppointmenProcessSwitch">
+		UPDATE qcv_user_extend SET
+			appointmenProcessSwitch=#{appointmenProcessSwitch}
+		WHERE userid = #{userid}
+	</update>
+    <!--根据userid更新小程序背景图-->
+	<insert id="updateAppletCarouselPicUrl" parameterType="UserInfo">
+		UPDATE qcv_users SET
+	       		appletCarouselPic = #{appletCarouselPic}
+	        WHERE userid = #{userid}
+	</insert>
+	
+	<update id="updateCarouselPic" parameterType="UserInfo">
+		UPDATE qcv_users SET 
+			carouselPic=#{carouselPic}
+		WHERE userid = #{userid}
+	</update>
+
+	<insert id="addUserinfoExtend"  keyProperty="userid" parameterType="UserInfo">
+			INSERT INTO qcv_user_extend (
+				 userid,
+				 ddnotify,
+		 	 	 ddcorpid,
+		  	 	 ddcorpsecret,
+		    	 ddagentid,
+		  		 qrcode,
+		  		 qrcodeSwitch,
+		  		 qrcodeType
+			) VALUES (
+				#{userid,jdbcType=INTEGER},
+				#{ddnotify,jdbcType=INTEGER},
+				#{ddcorpid,jdbcType=VARCHAR},
+				#{ddcorpsecret,jdbcType=VARCHAR},
+				#{ddagentid,jdbcType=VARCHAR},
+				#{qrcode,jdbcType=VARCHAR},
+				#{qrcodeSwitch,jdbcType=INTEGER},
+				#{qrcodeType,jdbcType=INTEGER}
+			)
+   	   </insert>
+
+	<update id="updateRiskArea">
+		UPDATE qcv_users SET
+			riskArea=#{riskArea}
+		WHERE userid = #{userid}
+	</update>
+
+	<select id="getRiskArea" resultType="com.web.bean.UserInfo">
+		SELECT <include refid="select_clause"/>
+		FROM qcv_users a
+		WHERE a.userid=#{userid}
+	</select>
+
+</mapper>

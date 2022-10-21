@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpm code="bpm.autoCheckin" name="bpm.autoCheckin" type="process" description="自动签到流程">
+  <var name="vt" description="签到记录" dataType="com.client.bean.Visitor" contextVarName="vt" inOutType="return"></var>
+  <var name="userinfo" dataType="com.web.bean.UserInfo" contextVarName="userinfo" inOutType="param"></var>
+  <var name="vtParam" description="签到入参" dataType="com.client.bean.Visitor" contextVarName="vtParam" inOutType="param"></var>
+  <var name="autoSignin" dataType="java.lang.Integer" contextVarName="autoSignin" inOutType="inner"></var>
+  <start id="1" name="开始" g="160,15,30,30">
+    <transition to="1650351144809"></transition>
+  </start>
+  <end id="11" name="结束" g="170,535,30,30"></end>
+  <autoTask id="1649381496169" name="生成签到数据" g="140,195,90,50">
+    <transition to="1650273323919"></transition>
+    <action type="spring-bean">
+      <actionHandle bean="appointmentService" clazz="com.web.service.AppointmentService" method="addSigninTask">
+        <var name="vtParam" dataType="com.client.bean.Visitor" contextVarName="vtParam" inOutType="param"></var>
+        <var name="userinfo" dataType="com.web.bean.UserInfo" contextVarName="userinfo" inOutType="param"></var>
+        <var name="vt" dataType="com.client.bean.Visitor" contextVarName="vt" inOutType="return"></var>
+      </actionHandle>
+    </action>
+  </autoTask>
+  <autoTask id="1650273323919" name="发送访客签到通知" g="140,355,90,50">
+    <transition to="11"></transition>
+    <action type="spring-bean">
+      <actionHandle bean="messageService" clazz="com.web.service.MessageService" method="sendCommonNotifyEvent">
+        <var name="visitor" dataType="com.client.bean.Visitor" contextVarName="vt" inOutType="param"></var>
+        <var name="eventType" dataType="java.lang.String" defaultValue="visitorArrived" inOutType="param"></var>
+      </actionHandle>
+    </action>
+  </autoTask>
+  <decision id="1650351144809" name="是否自动签到" g="310,90,90,50">
+    <transition to="11" name="不自动签到"></transition>
+    <transition to="1649381496169" priority="1" name="自动签到" expression="autoSignin ==1"></transition>
+    <action type="spring-bean">
+      <actionHandle bean="visitorService" clazz="com.client.service.VisitorService" method="autoSigninRouter">
+        <var name="vtParam" dataType="com.client.bean.Visitor" contextVarName="vtParam" inOutType="param"></var>
+        <var name="autoSignin" dataType="java.lang.Integer" contextVarName="autoSignin" inOutType="return"></var>
+      </actionHandle>
+    </action>
+  </decision>
+</bpm>
