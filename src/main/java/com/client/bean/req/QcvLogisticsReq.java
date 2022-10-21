@@ -130,6 +130,8 @@ public class QcvLogisticsReq {
 
     private String otherextend;
 
+    private String loadtime;
+
     private static final long serialVersionUID = 1L;
     private Integer pageNum = 1;
     private Integer pageSize = 10;

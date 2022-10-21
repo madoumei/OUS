@@ -130,5 +130,7 @@ public class QcvLogisticsVo {
      */
     private String remark;
 
+    private String loadtime;
+
     private String otherextend;
 }

@@ -139,6 +139,8 @@ public class QcvLogistics implements Serializable {
      */
     private String openid;
 
+    private String loadtime;
+
     /**
      *
      */

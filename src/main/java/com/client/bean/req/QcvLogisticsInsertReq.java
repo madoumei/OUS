@@ -122,6 +122,8 @@ public class QcvLogisticsInsertReq {
 
     private String openid;
 
+    private String loadtime;
+
     /**
      *
      */

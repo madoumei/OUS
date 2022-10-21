@@ -14,6 +14,7 @@ import com.client.service.QcvLogisticsService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -66,14 +67,29 @@ public class QcvLogisticsServiceImpl extends ServiceImpl<QcvLogisticsMapper, Qcv
         Date endDateFormart = calendarEnd.getTime();
         String endDate = simpleDateFormat.format(endDateFormart);
         LambdaQueryWrapper<QcvLogistics> queryWrapper = new LambdaQueryWrapper<QcvLogistics>();
-        queryWrapper.between(QcvLogistics::getAppointmentstartdate,startFormat,endDate)
-        //queryWrapper.between("appointmentStartDate",startFormat,endDate)
-                .eq(QcvLogistics::getPlatenum,plateNum);
+        queryWrapper.between(QcvLogistics::getAppointmentstartdate, startFormat, endDate)
+                //queryWrapper.between("appointmentStartDate",startFormat,endDate)
+                .eq(QcvLogistics::getPlatenum, plateNum);
         //queryWrapper.eq(QcvLogistics::getPlatenum,plateNum);
         List<QcvLogistics> qcvLogistics = this.baseMapper.selectList(queryWrapper);
-        if (!qcvLogistics.isEmpty()){
-            if (){
+        QcvLogistics returnQcvlog = new QcvLogistics();
+        Date date = new Date();
 
+        if (!qcvLogistics.isEmpty()) {
+
+            if (1 < qcvLogistics.size()) {
+                long timea = date.getTime();
+                long shortTime = 0;
+                try {
+                    for (QcvLogistics qcvLogistic : qcvLogistics) {
+                       shortTime = timea - simpleDateFormat.parse(qcvLogistics.get(0).getAppointmentstartdate()).getTime();
+                        if (){
+
+                        }
+                    }
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
         return null;
