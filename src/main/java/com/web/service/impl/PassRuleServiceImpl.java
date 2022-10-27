@@ -1,5 +1,6 @@
 package com.web.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.client.bean.Gate;
 import com.client.service.VisitorService;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -27,7 +28,7 @@ import java.util.stream.Collectors;
 
 
 @Service("passRuleService")
-public class PassRuleServiceImpl implements PassRuleService {
+public class PassRuleServiceImpl extends ServiceImpl<PassRuleDao,PassRule> implements PassRuleService {
     @Autowired
     private PassRuleDao passRuleDao;
 

@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class QcvQueue {
+
     private static String queuename = "";
 
 }

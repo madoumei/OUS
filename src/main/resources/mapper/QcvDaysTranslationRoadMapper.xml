@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="generator.mapper.QcvDaysTranslationRoadMapper">
+
+    <resultMap id="BaseResultMap" type="generator.domain.QcvDaysTranslationRoad">
+            <id property="did" column="did" jdbcType="VARCHAR"/>
+            <id property="userid" column="userid" jdbcType="INTEGER"/>
+            <result property="date" column="date" jdbcType="DATE"/>
+            <result property="remark" column="remark" jdbcType="VARCHAR"/>
+            <result property="rid" column="rid" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        did,userid,date,
+        remark,rid
+    </sql>
+</mapper>

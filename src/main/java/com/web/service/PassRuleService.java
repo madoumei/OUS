@@ -3,11 +3,12 @@ package com.web.service;
 import java.util.Date;
 import java.util.List;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.client.bean.RequestVisit;
 import com.web.bean.PassConfig;
 import com.web.bean.PassRule;
 
-public interface PassRuleService {
+public interface PassRuleService extends IService<PassRule> {
 	public int addPassRule(PassRule pr);
 	
 	public int updatePassRule(PassRule pr);

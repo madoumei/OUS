@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="generator.mapper.QcvPasstimeRuleRoadMapper">
+
+    <resultMap id="BaseResultMap" type="generator.domain.QcvPasstimeRuleRoad">
+            <id property="rid" column="rid" jdbcType="INTEGER"/>
+            <result property="userid" column="userid" jdbcType="INTEGER"/>
+            <result property="rname" column="rname" jdbcType="VARCHAR"/>
+            <result property="startdate" column="startDate" jdbcType="DATE"/>
+            <result property="enddate" column="endDate" jdbcType="DATE"/>
+            <result property="mon" column="mon" jdbcType="VARCHAR"/>
+            <result property="tues" column="tues" jdbcType="VARCHAR"/>
+            <result property="wed" column="wed" jdbcType="VARCHAR"/>
+            <result property="thur" column="thur" jdbcType="VARCHAR"/>
+            <result property="fri" column="fri" jdbcType="VARCHAR"/>
+            <result property="sat" column="sat" jdbcType="VARCHAR"/>
+            <result property="sun" column="sun" jdbcType="VARCHAR"/>
+            <result property="hol" column="hol" jdbcType="VARCHAR"/>
+            <result property="daysoff" column="daysOff" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        rid,userid,rname,
+        startDate,endDate,mon,
+        tues,wed,thur,
+        fri,sat,sun,
+        hol,daysOff
+    </sql>
+</mapper>

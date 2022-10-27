@@ -2,6 +2,8 @@ package com.client.bean.req;
 
 import lombok.Data;
 
+import java.util.List;
+
 
 @Data
 public class QcvSupplierReq {
@@ -9,6 +11,8 @@ public class QcvSupplierReq {
      *
      */
     private Integer id;
+
+    private List<Integer> ids;
 
     /**
      *

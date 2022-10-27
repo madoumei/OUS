@@ -1,19 +1,19 @@
 package compileflow.stateless.bpm;
 
-import com.alibaba.compileflow.engine.common.utils.DataType;
-import com.client.service.VisitorService;
-import java.util.Map;
-import com.alibaba.compileflow.engine.process.preruntime.generator.bean.BeanProvider;
-import java.lang.String;
 import com.alibaba.compileflow.engine.ProcessEngineFactory;
-import com.web.bean.UserInfo;
 import com.web.service.AppointmentService;
-import java.util.HashMap;
-import com.alibaba.compileflow.engine.runtime.instance.ProcessInstance;
-import java.lang.Integer;
+import com.alibaba.compileflow.engine.process.preruntime.generator.bean.BeanProvider;
 import com.client.bean.Visitor;
-import com.alibaba.compileflow.engine.common.utils.ObjectFactory;
+import java.lang.String;
+import java.util.HashMap;
 import com.web.service.MessageService;
+import java.lang.Integer;
+import com.alibaba.compileflow.engine.common.utils.DataType;
+import com.alibaba.compileflow.engine.common.utils.ObjectFactory;
+import com.client.service.VisitorService;
+import com.alibaba.compileflow.engine.runtime.instance.ProcessInstance;
+import com.web.bean.UserInfo;
+import java.util.Map;
 
 public class AutoCheckinFlow implements ProcessInstance {
 

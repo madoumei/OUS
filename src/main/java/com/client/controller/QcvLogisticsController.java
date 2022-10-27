@@ -48,7 +48,7 @@ public class QcvLogisticsController {
         }
         int userid = authToken.getUserid();
         qcvLogistics.setUserid(userid);
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         try {
             Date parse = simpleDateFormat.parse(qcvLogistics.getAppointmentstartdate());
             int i = PassRuleServiceImpl.Confirm_today(parse, qcvLogistics.getDatejson());

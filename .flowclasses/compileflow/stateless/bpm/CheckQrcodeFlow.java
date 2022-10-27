@@ -1,27 +1,27 @@
 package compileflow.stateless.bpm;
 
-import com.alibaba.compileflow.engine.process.preruntime.generator.bean.BeanProvider;
+import java.util.Map;
 import com.alibaba.compileflow.engine.runtime.instance.ProcessInstance;
-import com.client.bean.Visitor;
 import com.client.service.VisitorService;
-import com.web.service.ResidentVisitorService;
-import java.util.HashMap;
-import com.alibaba.compileflow.engine.ProcessEngineFactory;
-import com.web.bean.ResidentVisitor;
-import com.client.bean.Equipment;
-import com.client.service.EquipmentService;
-import com.web.bean.UserInfo;
-import com.web.bean.Appointment;
+import com.alibaba.compileflow.engine.common.utils.DataType;
 import java.lang.Boolean;
-import com.utils.BeanUtils;
+import com.alibaba.compileflow.engine.process.preruntime.generator.bean.BeanProvider;
 import com.web.bean.Employee;
+import com.client.bean.Visitor;
 import com.web.service.AppointmentService;
+import com.web.service.ResidentVisitorService;
+import com.web.bean.ResidentVisitor;
+import java.util.HashMap;
+import com.web.bean.Appointment;
+import com.alibaba.compileflow.engine.ProcessEngineFactory;
+import com.client.service.EquipmentService;
+import com.client.bean.Equipment;
+import com.utils.BeanUtils;
+import com.web.bean.UserInfo;
+import com.alibaba.compileflow.engine.common.utils.ObjectFactory;
+import com.web.service.UserService;
 import java.lang.Integer;
 import java.lang.String;
-import java.util.Map;
-import com.alibaba.compileflow.engine.common.utils.DataType;
-import com.web.service.UserService;
-import com.alibaba.compileflow.engine.common.utils.ObjectFactory;
 
 public class CheckQrcodeFlow implements ProcessInstance {
 

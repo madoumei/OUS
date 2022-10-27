@@ -1,18 +1,18 @@
 package compileflow.stateless.bpm;
 
+import com.alibaba.compileflow.engine.common.utils.ObjectFactory;
+import java.lang.Integer;
+import com.web.service.MessageService;
+import java.util.Map;
+import com.alibaba.compileflow.engine.ProcessEngineFactory;
 import com.alibaba.compileflow.engine.common.utils.DataType;
 import com.alibaba.compileflow.engine.runtime.instance.ProcessInstance;
+import com.web.service.UserService;
 import com.client.service.VisitorService;
+import com.client.bean.Visitor;
+import com.alibaba.compileflow.engine.process.preruntime.generator.bean.BeanProvider;
 import java.util.HashMap;
 import java.lang.String;
-import java.lang.Integer;
-import com.client.bean.Visitor;
-import java.util.Map;
-import com.alibaba.compileflow.engine.process.preruntime.generator.bean.BeanProvider;
-import com.web.service.UserService;
-import com.web.service.MessageService;
-import com.alibaba.compileflow.engine.ProcessEngineFactory;
-import com.alibaba.compileflow.engine.common.utils.ObjectFactory;
 
 public class AddVisitorApponintmnetFlow implements ProcessInstance {
 

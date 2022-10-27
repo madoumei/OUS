@@ -118,7 +118,8 @@ public class Constant {
             "/qcvisit/checkSystem", //系统检测
             "/qcvisit/testOnVisitAppoinmentNotify", //测试接口
             "/qcvisit/releaseLock", //解除锁定ip
-            "/qcvisit/getRiskArea" //获取危险区域
+            "/qcvisit/getRiskArea", //获取危险区域
+            "/qcvisit/addQueue" //获取危险区域
     };
 
     public static String path = "/work/account.properties";

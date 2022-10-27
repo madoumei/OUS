@@ -21,4 +21,6 @@ public interface QcvLogisticsService extends IService<QcvLogistics> {
     QcvLogisticsVo getLogisticsDetails(QcvLogisticsReq qcvLogisticsReq);
 
     QcvLogistics getLogisticsByPlateNum(String plateNum);
+
+    List<QcvLogistics> getTodayLogByPstatus(int i);
 }

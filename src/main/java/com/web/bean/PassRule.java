@@ -1,5 +1,8 @@
 package com.web.bean;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.client.bean.dto.QcvLogistics;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -7,40 +10,58 @@ import lombok.Setter;
 
 import java.util.List;
 
+@TableName("qcv_passtime_rule")
 @ApiModel("PassRule 通行策略Bean")
 public class PassRule {
 
 	@ApiModelProperty("rid")
+	@TableField(value = "rid")
 	private int rid;
 	@ApiModelProperty("")
+	@TableField(value = "userid")
 	private int userid;
 	@ApiModelProperty("策略名称")
+	@TableField(value = "rname")
 	private String rname;
 	@ApiModelProperty("策略规开始时间")
+	@TableField(value = "startDate")
 	private String startDate;
 	@ApiModelProperty("策略规则结束时间")
+	@TableField(value = "endDate")
 	private String endDate;
 	@ApiModelProperty("周一通行时间")
+	@TableField(value = "mon")
 	private String mon;
 	@ApiModelProperty("周二通行时间")
+	@TableField(value = "tues")
 	private String tues;
 	@ApiModelProperty("周三通行时间")
+	@TableField(value = "wed")
 	private String wed;
 	@ApiModelProperty("周四通行时间")
+	@TableField(value = "thur")
 	private String thur;
 	@ApiModelProperty("周五通行时间")
+	@TableField(value = "fri")
 	private String fri;
 	@ApiModelProperty("周六通行时间")
+	@TableField(value = "sat")
 	private String sat;
 	@ApiModelProperty("周日通行时间")
+	@TableField(value = "sun")
 	private String sun;
 	@ApiModelProperty("节假日通行时间")
+	@TableField(value = "hol")
 	private String hol;
 	@ApiModelProperty("调休通行时间")
+	@TableField(value = "daysOff")
 	private String daysOff;
 	@ApiModelProperty("调休假期")
+	@TableField(exist = false)
 	private List<Holiday> hList;
+
 	@ApiModelProperty("调休工作日")
+	@TableField(exist = false)
 	private List<DaysOffTranslation> daysOffTranslations;
 
 	public int getRid() {

@@ -22,10 +22,10 @@ public class QcvSupplierServiceImpl extends ServiceImpl<QcvSupplierMapper, QcvSu
 
     @Override
     public IPage<QcvSupplier> getSupplier(QcvSupplierReq qcvSupplierReq) {
-        IPage<QcvSupplier> qcvSupplierIPage = new Page<QcvSupplier>(qcvSupplierReq.getPageNum(),qcvSupplierReq.getPageNum());
+        IPage<QcvSupplier> qcvSupplierIPage = new Page<QcvSupplier>(qcvSupplierReq.getPageNum(),qcvSupplierReq.getPageSize());
         LambdaQueryWrapper<QcvSupplier> objectLambdaQueryWrapper = new LambdaQueryWrapper<>();
         if (StringUtils.isNotBlank(qcvSupplierReq.getName())){
-            objectLambdaQueryWrapper.eq(QcvSupplier::getName,qcvSupplierReq.getName());
+            objectLambdaQueryWrapper.like(QcvSupplier::getName,qcvSupplierReq.getName());
         }
         IPage<QcvSupplier> qcvSupplierIPage1 = this.baseMapper.selectPage(qcvSupplierIPage, objectLambdaQueryWrapper);
         return qcvSupplierIPage1;

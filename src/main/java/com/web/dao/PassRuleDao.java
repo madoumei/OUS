@@ -2,6 +2,7 @@ package com.web.dao;
 
 import java.util.List;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
@@ -11,7 +12,7 @@ import com.web.bean.PassRule;
 
 
 @Mapper
-public interface PassRuleDao {
+public interface PassRuleDao extends BaseMapper<PassRule> {
     public int addPassRule(PassRule pr);
 
     public int updatePassRule(PassRule pr);
