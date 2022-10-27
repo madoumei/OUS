@@ -1,7 +1,7 @@
-package generator.mapper;
+package com.client.dao;
 
-import generator.domain.QcvPasstimeRuleRoad;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import generator.domain.QcvPasstimeRuleRoad;
 
 /**
 * @author ernest

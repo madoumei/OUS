@@ -1,7 +1,7 @@
-package generator.mapper;
+package com.client.dao;
 
-import generator.domain.QcvDaysTranslationRoad;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import generator.domain.QcvDaysTranslationRoad;
 
 /**
 * @author ernest

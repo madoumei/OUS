@@ -1,7 +1,7 @@
-package generator.service;
+package com.client.service;
 
-import generator.domain.QcvPasstimeRuleRoad;
 import com.baomidou.mybatisplus.extension.service.IService;
+import generator.domain.QcvPasstimeRuleRoad;
 
 /**
 * @author ernest

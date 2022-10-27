@@ -1,7 +1,7 @@
-package generator.service;
+package com.client.service;
 
-import generator.domain.QcvDaysTranslationRoad;
 import com.baomidou.mybatisplus.extension.service.IService;
+import generator.domain.QcvDaysTranslationRoad;
 
 /**
 * @author ernest

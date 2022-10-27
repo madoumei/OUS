@@ -1,9 +1,9 @@
-package generator.service.impl;
+package com.client.service.Impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import generator.domain.QcvPasstimeRuleRoad;
-import generator.service.QcvPasstimeRuleRoadService;
 import generator.mapper.QcvPasstimeRuleRoadMapper;
+import generator.service.QcvPasstimeRuleRoadService;
 import org.springframework.stereotype.Service;
 
 /**

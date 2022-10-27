@@ -9,4 +9,5 @@ public class QcvLogQueueVo {
     private String plateNum;
     private Integer status;
     private String company;
+
 }

@@ -1,9 +1,9 @@
-package generator.service.impl;
+package com.client.service.Impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import generator.domain.QcvDaysTranslationRoad;
-import generator.service.QcvDaysTranslationRoadService;
 import generator.mapper.QcvDaysTranslationRoadMapper;
+import generator.service.QcvDaysTranslationRoadService;
 import org.springframework.stereotype.Service;
 
 /**
